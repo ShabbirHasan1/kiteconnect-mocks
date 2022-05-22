@@ -3,8 +3,13 @@ use std::collections::HashMap;
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Ltp {
-    pub status: String,
-    pub data: HashMap<String, LtpData>,
+    pub status: super::common::Status,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub data: Option<HashMap<String, LtpData>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub error_type: Option<super::common::Exception>,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -12,8 +17,6 @@ pub struct LtpData {
     pub instrument_token: u32,
     pub last_price: f64,
 }
-
-// serde_json::from_reader
 
 #[test]
 fn test_ltp_json() -> serde_json::Result<()> {
@@ -31,8 +34,9 @@ fn test_ltp_json() -> serde_json::Result<()> {
     assert_eq!(
         deserialized,
         Ltp {
-            status: "success".to_owned(),
-            data: data,
+            status: super::common::Status::Success,
+            data: Some(data),
+            ..Ltp::default()
         }
     );
     // let serialized = serde_json::to_string(&deserialized).unwrap();
@@ -73,8 +77,9 @@ fn test_ltp_multiple_instruments() -> serde_json::Result<()> {
     assert_eq!(
         deserialized,
         Ltp {
-            status: "success".to_owned(),
-            data: data,
+            status: super::common::Status::Success,
+            data: Some(data),
+            ..Ltp::default()
         }
     );
     // let serialized = serde_json::to_string(&deserialized).unwrap();
@@ -87,12 +92,34 @@ fn test_ltp_multiple_instruments() -> serde_json::Result<()> {
 fn test_ltp_no_instruments() -> serde_json::Result<()> {
     let raw_data = r#"{"status":"success","data":{}}"#;
     let deserialized: Ltp = serde_json::from_str(&raw_data)?;
+    println!("{:#?}", &deserialized);
+    assert_eq!(
+        deserialized,
+        Ltp {
+            status: super::common::Status::Success,
+            data: Some(HashMap::new()),
+            ..Ltp::default()
+        }
+    );
+    // let serialized = serde_json::to_string(&deserialized).unwrap();
+    // println!("{:#?}", &serialized);
+    // assert_eq!(raw_data, serialized);
+    Ok(())
+}
+
+#[test]
+fn test_ltp_error() -> serde_json::Result<()> {
+    let raw_data =
+        r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#;
+    let deserialized: Ltp = serde_json::from_str(&raw_data)?;
     // println!("{:#?}", &deserialized);
     assert_eq!(
         deserialized,
         Ltp {
-            status: "success".to_owned(),
-            ..Ltp::default()
+            status: super::common::Status::Error,
+            data: None,
+            message: Some("Error message".to_owned()),
+            error_type: Some(super::common::Exception::GeneralException),
         }
     );
     // let serialized = serde_json::to_string(&deserialized).unwrap();

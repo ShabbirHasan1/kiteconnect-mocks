@@ -3,8 +3,13 @@ use std::collections::HashMap;
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Ohlc {
-    pub status: String,
-    pub data: HashMap<String, OhlcData>,
+    pub status: super::common::Status,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub data: Option<HashMap<String, OhlcData>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub error_type: Option<super::common::Exception>,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -44,8 +49,9 @@ fn test_ohlc_json() -> serde_json::Result<()> {
     assert_eq!(
         deserialized,
         Ohlc {
-            status: "success".to_owned(),
-            data: data,
+            status: super::common::Status::Success,
+            data: Some(data),
+            ..Ohlc::default()
         }
     );
     // let serialized = serde_json::to_string(&deserialized).unwrap();
@@ -104,8 +110,9 @@ fn test_ohlc_multiple_instruments() -> serde_json::Result<()> {
     assert_eq!(
         deserialized,
         Ohlc {
-            status: "success".to_owned(),
-            data: data,
+            status: super::common::Status::Success,
+            data: Some(data),
+            ..Ohlc::default()
         }
     );
     // let serialized = serde_json::to_string(&deserialized).unwrap();
@@ -122,8 +129,30 @@ fn test_ohlc_no_instruments() -> serde_json::Result<()> {
     assert_eq!(
         deserialized,
         Ohlc {
-            status: "success".to_owned(),
+            status: super::common::Status::Success,
+            data: Some(HashMap::new()),
             ..Ohlc::default()
+        }
+    );
+    // let serialized = serde_json::to_string(&deserialized).unwrap();
+    // println!("{:#?}", &serialized);
+    // assert_eq!(raw_data, serialized);
+    Ok(())
+}
+
+#[test]
+fn test_ohlc_error() -> serde_json::Result<()> {
+    let raw_data =
+        r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#;
+    let deserialized: Ohlc = serde_json::from_str(&raw_data)?;
+    // println!("{:#?}", &deserialized);
+    assert_eq!(
+        deserialized,
+        Ohlc {
+            status: super::common::Status::Error,
+            data: None,
+            message: Some("Error message".to_owned()),
+            error_type: Some(super::common::Exception::GeneralException),
         }
     );
     // let serialized = serde_json::to_string(&deserialized).unwrap();

@@ -3,8 +3,13 @@ use std::collections::HashMap;
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Quote {
-    pub status: String,
-    pub data: HashMap<String, QuoteData>,
+    pub status: super::common::Status,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub data: Option<HashMap<String, QuoteData>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub error_type: Option<super::common::Exception>,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -134,8 +139,9 @@ fn test_quote_json() -> serde_json::Result<()> {
     assert_eq!(
         deserialized,
         Quote {
-            status: "success".to_owned(),
-            data: data,
+            status: super::common::Status::Success,
+            data: Some(data),
+            ..Quote::default()
         }
     );
     // let serialized = serde_json::to_string(&deserialized).unwrap();
@@ -152,8 +158,30 @@ fn test_quote_no_instruments() -> serde_json::Result<()> {
     assert_eq!(
         deserialized,
         Quote {
-            status: "success".to_owned(),
+            status: super::common::Status::Success,
+            data: Some(HashMap::new()),
             ..Quote::default()
+        }
+    );
+    // let serialized = serde_json::to_string(&deserialized).unwrap();
+    // println!("{:#?}", &serialized);
+    // assert_eq!(raw_data, serialized);
+    Ok(())
+}
+
+#[test]
+fn test_quote_error() -> serde_json::Result<()> {
+    let raw_data =
+        r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#;
+    let deserialized: Quote = serde_json::from_str(&raw_data)?;
+    // println!("{:#?}", &deserialized);
+    assert_eq!(
+        deserialized,
+        Quote {
+            status: super::common::Status::Error,
+            data: None,
+            message: Some("Error message".to_owned()),
+            error_type: Some(super::common::Exception::GeneralException),
         }
     );
     // let serialized = serde_json::to_string(&deserialized).unwrap();

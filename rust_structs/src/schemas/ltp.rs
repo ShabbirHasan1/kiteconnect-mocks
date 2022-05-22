@@ -3,8 +3,8 @@ use std::collections::HashMap;
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Ltp {
-    pub status: String,
-    pub data: HashMap<String, LtpData>,
+    pub status: &'static str,
+    pub data: HashMap<&'static str, LtpData>,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -18,24 +18,24 @@ fn test_ltp() -> serde_json::Result<()> {
     let raw_data = r#"{"status":"success","data":{"NSE:INFY":{"instrument_token":408065,"last_price":1074.35},"NSE:SBIN":{"instrument_token":408065,"last_price":1074.35},"NSE:HDFC":{"instrument_token":408065,"last_price":1074.35}}}"#;
     let deserialized: Ltp = serde_json::from_str(&raw_data)?;
     // println!("{:#?}", &deserialized);
-    let mut data: HashMap<String, LtpData> = HashMap::new();
+    let mut data: HashMap<&str, LtpData> = HashMap::new();
     data.extend([
         (
-            "NSE:INFY".into(),
+            "NSE:INFY",
             LtpData {
                 instrument_token: 408065,
                 last_price: 1074.35,
             },
         ),
         (
-            "NSE:SBIN".into(),
+            "NSE:SBIN",
             LtpData {
                 instrument_token: 408065,
                 last_price: 1074.35,
             },
         ),
         (
-            "NSE:HDFC".into(),
+            "NSE:HDFC",
             LtpData {
                 instrument_token: 408065,
                 last_price: 1074.35,
@@ -45,7 +45,7 @@ fn test_ltp() -> serde_json::Result<()> {
     assert_eq!(
         deserialized,
         Ltp {
-            status: "success".into(),
+            status: "success",
             data: data,
         }
     );

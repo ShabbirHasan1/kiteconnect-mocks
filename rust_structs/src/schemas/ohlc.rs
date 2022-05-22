@@ -3,8 +3,8 @@ use std::collections::HashMap;
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Ohlc {
-    pub status: &'static str,
-    pub data: HashMap<&'static str, OhlcData>,
+    pub status: String,
+    pub data: HashMap<String, OhlcData>,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -23,14 +23,46 @@ pub struct OhlcInner {
 }
 
 #[test]
-fn test_ohlc() -> serde_json::Result<()> {
+fn test_ohlc_json() -> serde_json::Result<()> {
+    let jsonfile = crate::utils::read_user_from_file("../ohlc.json").unwrap();
+    let deserialized: Ohlc = serde_json::from_reader(jsonfile)?;
+    // println!("{:#?}", &deserialized);
+    let mut data: HashMap<String, OhlcData> = HashMap::new();
+    data.insert(
+        "NSE:INFY".to_owned(),
+        OhlcData {
+            instrument_token: 408065,
+            last_price: 1075.0,
+            ohlc: OhlcInner {
+                open: 1085.8,
+                high: 1085.9,
+                low: 1070.9,
+                close: 1075.8,
+            },
+        },
+    );
+    assert_eq!(
+        deserialized,
+        Ohlc {
+            status: "success".to_owned(),
+            data: data,
+        }
+    );
+    // let serialized = serde_json::to_string(&deserialized).unwrap();
+    // println!("{:#?}", &serialized);
+    // assert_eq!(raw_data, serialized);
+    Ok(())
+}
+
+#[test]
+fn test_ohlc_multiple_instruments() -> serde_json::Result<()> {
     let raw_data = r#"{"status":"success","data":{"NSE:INFY":{"instrument_token":408065,"last_price":1459,"ohlc":{"open":1453,"high":1466.75,"low":1446.7,"close":1455.15}},"NSE:SBIN":{"instrument_token":500112,"last_price":465.5,"ohlc":{"open":454.85,"high":464,"low":454.15,"close":462.4}},"NSE:HDFC":{"instrument_token":500010,"last_price":2209.85,"ohlc":{"open":2165,"high":2212,"low":2152.3,"close":2201.6}}}}"#;
     let deserialized: Ohlc = serde_json::from_str(&raw_data)?;
     // println!("{:#?}", &deserialized);
-    let mut data: HashMap<&str, OhlcData> = HashMap::new();
+    let mut data: HashMap<String, OhlcData> = HashMap::new();
     data.extend([
         (
-            "NSE:INFY",
+            "NSE:INFY".to_owned(),
             OhlcData {
                 instrument_token: 408065,
                 last_price: 1459.0,
@@ -43,7 +75,7 @@ fn test_ohlc() -> serde_json::Result<()> {
             },
         ),
         (
-            "NSE:SBIN",
+            "NSE:SBIN".to_owned(),
             OhlcData {
                 instrument_token: 500112,
                 last_price: 465.5,
@@ -56,7 +88,7 @@ fn test_ohlc() -> serde_json::Result<()> {
             },
         ),
         (
-            "NSE:HDFC",
+            "NSE:HDFC".to_owned(),
             OhlcData {
                 instrument_token: 500010,
                 last_price: 2209.85,
@@ -72,7 +104,7 @@ fn test_ohlc() -> serde_json::Result<()> {
     assert_eq!(
         deserialized,
         Ohlc {
-            status: "success",
+            status: "success".to_owned(),
             data: data,
         }
     );
@@ -83,14 +115,14 @@ fn test_ohlc() -> serde_json::Result<()> {
 }
 
 #[test]
-fn test_ohlc_empty_data() -> serde_json::Result<()> {
+fn test_ohlc_no_instruments() -> serde_json::Result<()> {
     let raw_data = r#"{"status":"success","data":{}}"#;
     let deserialized: Ohlc = serde_json::from_str(&raw_data)?;
     // println!("{:#?}", &deserialized);
     assert_eq!(
         deserialized,
         Ohlc {
-            status: "success",
+            status: "success".to_owned(),
             ..Ohlc::default()
         }
     );

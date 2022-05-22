@@ -1,0 +1,1 @@
+{"rustc":9973061925509304020,"features":"[]","target":8261881835615490997,"profile":3735503092003429423,"path":8418920509451552039,"deps":[],"local":[{"CheckDepInfo":{"dep_info":"debug\\.fingerprint\\ryu-72e71a0beb35a09d\\dep-lib-ryu"}}],"rustflags":["-Ctarget-feature=+crt-static","-Ctarget-cpu=native"],"metadata":10387617312689919117,"config":309067984465949588,"compile_kind":0}

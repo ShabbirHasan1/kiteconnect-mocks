@@ -1,4 +1,11 @@
 pub mod common;
+pub mod convert_position;
+pub mod generate_session;
+pub mod logout;
 pub mod ltp;
+pub mod margin;
+pub mod margin_commodity;
+pub mod margins_equity;
 pub mod ohlc;
+pub mod profile;
 pub mod quote;

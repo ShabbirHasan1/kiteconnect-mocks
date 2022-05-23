@@ -1,15 +1,16 @@
+use super::common::*;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Quote {
-    pub status: super::common::Status,
+    pub status: Status,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub data: Option<HashMap<String, QuoteData>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub message: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub error_type: Option<super::common::Exception>,
+    pub error_type: Option<Exception>,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -139,7 +140,7 @@ fn test_quote_json() -> serde_json::Result<()> {
     assert_eq!(
         deserialized,
         Quote {
-            status: super::common::Status::Success,
+            status: Status::Success,
             data: Some(data),
             ..Quote::default()
         }
@@ -158,7 +159,7 @@ fn test_quote_no_instruments() -> serde_json::Result<()> {
     assert_eq!(
         deserialized,
         Quote {
-            status: super::common::Status::Success,
+            status: Status::Success,
             data: Some(HashMap::new()),
             ..Quote::default()
         }
@@ -178,10 +179,10 @@ fn test_quote_error() -> serde_json::Result<()> {
     assert_eq!(
         deserialized,
         Quote {
-            status: super::common::Status::Error,
+            status: Status::Error,
             data: None,
             message: Some("Error message".to_owned()),
-            error_type: Some(super::common::Exception::GeneralException),
+            error_type: Some(Exception::GeneralException),
         }
     );
     // let serialized = serde_json::to_string(&deserialized).unwrap();

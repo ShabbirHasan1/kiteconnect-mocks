@@ -1,6 +1,2 @@
-mod schemas;
-mod utils;
-
-fn main() {
-    println!("Hello, world!");
-}
+pub mod schemas;
+pub mod utils;

@@ -18,7 +18,7 @@ pub struct TradesData {
     pub order_id: String,
     pub exchange: Exchanges,
     pub tradingsymbol: String,
-    pub instrument_token: u32,
+    pub instrument_token: u64,
     pub product: Products,
     pub average_price: f64,
     pub quantity: i64,

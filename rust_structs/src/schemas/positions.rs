@@ -22,7 +22,7 @@ pub struct PositionsData {
 pub struct PositionsDataDetails {
     pub tradingsymbol: String,
     pub exchange: Exchanges,
-    pub instrument_token: u32,
+    pub instrument_token: u64,
     pub product: Products,
     pub quantity: i64,
     pub overnight_quantity: i64,

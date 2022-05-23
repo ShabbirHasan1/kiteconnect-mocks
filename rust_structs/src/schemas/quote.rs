@@ -15,7 +15,7 @@ pub struct Quote {
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct QuoteData {
-    pub instrument_token: u32,
+    pub instrument_token: u64,
     pub timestamp: String,
     pub last_trade_time: Option<String>,
     pub last_price: f64,

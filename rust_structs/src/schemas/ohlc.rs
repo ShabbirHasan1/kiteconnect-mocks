@@ -15,7 +15,7 @@ pub struct Ohlc {
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct OhlcData {
-    pub instrument_token: u32,
+    pub instrument_token: u64,
     pub last_price: f64,
     pub ohlc: OhlcInner,
 }

@@ -87,11 +87,11 @@ impl Default for Exchanges {
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum Products {
-    CNC,
-    NRML,
-    MIS,
-    BO,
-    CO,
+    CNC,  //Cash & Carry for equity
+    NRML, //Normal for futures and options
+    MIS,  //Margin Intraday Squareoff for futures and options
+    BO,   // Bracket Order
+    CO,   // Cover Order
 }
 impl Default for Products {
     fn default() -> Self {
@@ -101,11 +101,11 @@ impl Default for Products {
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum OrderTypes {
-    MARKET,
-    LIMIT,
-    SL,
+    MARKET, //Market order
+    LIMIT,  //Limit order
+    SL,     //Stoploss order
     #[serde(rename = "SL-M")]
-    SLM,
+    SLM, //Stoploss-market order
 }
 impl Default for OrderTypes {
     fn default() -> Self {
@@ -154,6 +154,93 @@ pub enum TransactionType {
 impl Default for TransactionType {
     fn default() -> Self {
         TransactionType::BUY
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum Variety {
+    Regular, //Regular order
+    Amo,     //After Market Order
+    Co,      //Cover Order
+    Iceberg, //Iceberg Order
+}
+
+impl Default for Variety {
+    fn default() -> Self {
+        Variety::Regular
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub enum Validity {
+    DAY, //Regular order
+    IOC, //Immediate or Cancel
+    TTL, //Order validity in minutes
+}
+
+impl Default for Validity {
+    fn default() -> Self {
+        Validity::DAY
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum OrderStatus {
+    Enum(OrderStatusValue),
+    String(String),
+}
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub enum OrderStatusValue {
+    COMPLETE,
+    REJECTED,
+    CANCELLED,
+    OPEN,
+    #[serde(rename = "PUT ORDER REQUEST RECEIVED")]
+    PUTORDERREQUESTRECEIVED, // Order request has been received by the backend
+    #[serde(rename = "PUT ORDER REQ RECEIVED")]
+    PUTORDERREQRECEIVED, // Order request has been received by the backend
+    #[serde(rename = "VALIDATION PENDING")]
+    VALIDATIONPENDING, // Order pending validation by the RMS (Risk Management System)
+    #[serde(rename = "OPEN PENDING")]
+    OPENPENDING, // Order is pending registration at the exchange
+    #[serde(rename = "MODIFY VALIDATION PENDING")]
+    MODIFYVALIDATIONPENDING, // Order's modification values are pending validation by the RMS
+    #[serde(rename = "MODIFY PENDING")]
+    MODIFYPENDING, // Order's modification values are pending registration at the exchange
+    #[serde(rename = "TRIGGER PENDING")]
+    TRIGGERPENDING, // Order's placed but the fill is pending based on a trigger price.
+    #[serde(rename = "CANCEL PENDING")]
+    CANCELPENDING, // Order's cancellation request is pending registration at the exchange
+    #[serde(rename = "AMO REQ RECEIVED")]
+    AMOREQRECEIVED, // Same as PUT ORDER REQUEST RECEIVED, but for AMOs
+    MODIFIED,
+}
+
+impl Default for OrderStatus {
+    fn default() -> Self {
+        OrderStatus::Enum(OrderStatusValue::OPEN)
+    }
+}
+
+impl Default for OrderStatusValue {
+    fn default() -> Self {
+        OrderStatusValue::OPEN
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum OrderMarginTypes {
+    Equity,
+    Commodity,
+}
+
+impl Default for OrderMarginTypes {
+    fn default() -> Self {
+        OrderMarginTypes::Equity
     }
 }
 

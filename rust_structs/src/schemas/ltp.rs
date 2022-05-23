@@ -15,7 +15,7 @@ pub struct Ltp {
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct LtpData {
-    pub instrument_token: u32,
+    pub instrument_token: u64,
     pub last_price: f64,
 }
 

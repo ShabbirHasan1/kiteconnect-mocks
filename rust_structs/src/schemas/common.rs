@@ -145,6 +145,18 @@ impl Default for ProfileMetaValueEnum {
     }
 }
 
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub enum TransactionType {
+    BUY,
+    SELL,
+}
+
+impl Default for TransactionType {
+    fn default() -> Self {
+        TransactionType::BUY
+    }
+}
+
 #[test]
 fn test_status_success_json() -> serde_json::Result<()> {
     let raw_data = r#"{"status":"success"}"#;

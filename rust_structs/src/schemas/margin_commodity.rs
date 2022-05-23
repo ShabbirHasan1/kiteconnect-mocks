@@ -1,5 +1,5 @@
 use super::common::{Exception, Status};
-use super::margin::{Available, Commodity, Utilised};
+use super::margin::Commodity;
 use serde::{Deserialize, Serialize};
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -25,7 +25,7 @@ fn test_margins_commodity_json() -> serde_json::Result<()> {
             data: Some(Commodity {
                 enabled: true,
                 net: 96426.33,
-                available: Available {
+                available: super::margin::Available {
                     adhoc_margin: 0.0,
                     cash: 97297.5,
                     opening_balance: 97297.5,
@@ -33,7 +33,7 @@ fn test_margins_commodity_json() -> serde_json::Result<()> {
                     collateral: 0.0,
                     intraday_payin: 0.0,
                 },
-                utilised: Utilised {
+                utilised: super::margin::Utilised {
                     debits: 871.17,
                     exposure: 117.35,
                     m2m_realised: 0.0,

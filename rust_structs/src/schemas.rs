@@ -7,5 +7,7 @@ pub mod margin;
 pub mod margin_commodity;
 pub mod margins_equity;
 pub mod ohlc;
+pub mod positions;
 pub mod profile;
 pub mod quote;
+pub mod trades;

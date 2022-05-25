@@ -20,6 +20,7 @@ Cargo.lock
 
 /.openvscode-server/
 /.rustup/
+/.idea/
 
 Cargo.sublime-project
 Cargo.sublime-workspace

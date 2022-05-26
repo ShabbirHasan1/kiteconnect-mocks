@@ -35,58 +35,62 @@ pub struct Pnl {
     pub unrealised: f64,
 }
 
-#[test]
-fn test_order_margins_json() -> serde_json::Result<()> {
-    let jsonfile = crate::utils::read_user_from_file("../order_margins.json").unwrap();
-    let deserialized: OrderMargins = serde_json::from_reader(jsonfile)?;
-    // println!("{:#?}", &deserialized);
-    assert_eq!(
-        deserialized,
-        OrderMargins {
-            status: Status::Success,
-            data: Some(vec![OrderMarginsData {
-                order_margins_type: OrderMarginTypes::Equity,
-                tradingsymbol: "INFY".to_owned(),
-                exchange: Exchanges::NSE,
-                span: 0.0,
-                exposure: 0.0,
-                option_premium: 0.0,
-                additional: 0.0,
-                bo: 0.0,
-                cash: 0.0,
-                var: 961.45,
-                pnl: Pnl {
-                    realised: 0.0,
-                    unrealised: 0.0,
-                },
-                total: 961.45,
-            },]),
-            ..OrderMargins::default()
-        }
-    );
-    // let serialized = serde_json::to_string(&deserialized).unwrap();
-    // println!("{:#?}", &serialized);
-    // assert_eq!(raw_data, serialized);
-    Ok(())
-}
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn test_order_margins_json() -> serde_json::Result<()> {
+        let jsonfile = crate::utils::read_user_from_file("../order_margins.json").unwrap();
+        let deserialized: OrderMargins = serde_json::from_reader(jsonfile)?;
+        // println!("{:#?}", &deserialized);
+        assert_eq!(
+            deserialized,
+            OrderMargins {
+                status: Status::Success,
+                data: Some(vec![OrderMarginsData {
+                    order_margins_type: OrderMarginTypes::Equity,
+                    tradingsymbol: "INFY".to_owned(),
+                    exchange: Exchanges::NSE,
+                    span: 0.0,
+                    exposure: 0.0,
+                    option_premium: 0.0,
+                    additional: 0.0,
+                    bo: 0.0,
+                    cash: 0.0,
+                    var: 961.45,
+                    pnl: Pnl {
+                        realised: 0.0,
+                        unrealised: 0.0,
+                    },
+                    total: 961.45,
+                },]),
+                ..OrderMargins::default()
+            }
+        );
+        // let serialized = serde_json::to_string(&deserialized).unwrap();
+        // println!("{:#?}", &serialized);
+        // assert_eq!(raw_data, serialized);
+        Ok(())
+    }
 
-#[test]
-fn test_order_margins_error() -> serde_json::Result<()> {
-    let raw_data =
-        r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#;
-    let deserialized: OrderMargins = serde_json::from_str(&raw_data)?;
-    // println!("{:#?}", &deserialized);
-    assert_eq!(
-        deserialized,
-        OrderMargins {
-            status: Status::Error,
-            data: None,
-            message: Some("Error message".to_owned()),
-            error_type: Some(Exception::GeneralException),
-        }
-    );
-    // let serialized = serde_json::to_string(&deserialized).unwrap();
-    // println!("{:#?}", &serialized);
-    // assert_eq!(raw_data, serialized);
-    Ok(())
+    #[test]
+    fn test_order_margins_error() -> serde_json::Result<()> {
+        let raw_data =
+            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#;
+        let deserialized: OrderMargins = serde_json::from_str(&raw_data)?;
+        // println!("{:#?}", &deserialized);
+        assert_eq!(
+            deserialized,
+            OrderMargins {
+                status: Status::Error,
+                data: None,
+                message: Some("Error message".to_owned()),
+                error_type: Some(Exception::GeneralException),
+            }
+        );
+        // let serialized = serde_json::to_string(&deserialized).unwrap();
+        // println!("{:#?}", &serialized);
+        // assert_eq!(raw_data, serialized);
+        Ok(())
+    }
 }

@@ -1,4 +1,18 @@
 use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum Meta {
+    HashMap(HashMap<String, serde_json::Value>),
+    String(String),
+}
+
+impl Default for Meta {
+    fn default() -> Self {
+        Meta::HashMap(HashMap::new())
+    }
+}
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct StatusCheck {
@@ -244,28 +258,32 @@ impl Default for OrderMarginTypes {
     }
 }
 
-#[test]
-fn test_status_success_json() -> serde_json::Result<()> {
-    let raw_data = r#"{"status":"success"}"#;
-    let deserialized: StatusCheck = serde_json::from_str(&raw_data)?;
-    assert_eq!(
-        deserialized,
-        StatusCheck {
-            status: Status::Success
-        }
-    );
-    Ok(())
-}
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn test_status_success_json() -> serde_json::Result<()> {
+        let raw_data = r#"{"status":"success"}"#;
+        let deserialized: StatusCheck = serde_json::from_str(&raw_data)?;
+        assert_eq!(
+            deserialized,
+            StatusCheck {
+                status: Status::Success
+            }
+        );
+        Ok(())
+    }
 
-#[test]
-fn test_status_error_json() -> serde_json::Result<()> {
-    let raw_data = r#"{"status":"error"}"#;
-    let deserialized: StatusCheck = serde_json::from_str(&raw_data)?;
-    assert_eq!(
-        deserialized,
-        StatusCheck {
-            status: Status::Error
-        }
-    );
-    Ok(())
+    #[test]
+    fn test_status_error_json() -> serde_json::Result<()> {
+        let raw_data = r#"{"status":"error"}"#;
+        let deserialized: StatusCheck = serde_json::from_str(&raw_data)?;
+        assert_eq!(
+            deserialized,
+            StatusCheck {
+                status: Status::Error
+            }
+        );
+        Ok(())
+    }
 }

@@ -22,3 +22,4 @@ serde_json = { version = "1.0.81", features = [
     "preserve_order",
     "unbounded_depth",
 ] }
+sha2 = "0.10"

@@ -12,42 +12,46 @@ pub struct SessionLogout {
     pub error_type: Option<Exception>,
 }
 
-#[test]
-fn test_session_logout_range() -> serde_json::Result<()> {
-    let jsonfile = crate::utils::read_user_from_file("../session_logout.json").unwrap();
-    let deserialized: SessionLogout = serde_json::from_reader(jsonfile)?;
-    // println!("{:#?}", &deserialized);
-    assert_eq!(
-        deserialized,
-        SessionLogout {
-            status: Status::Success,
-            data: Some(true),
-            ..SessionLogout::default()
-        }
-    );
-    // let serialized = serde_json::to_string(&deserialized).unwrap();
-    // println!("{:#?}", &serialized);
-    // assert_eq!(raw_data, serialized);
-    Ok(())
-}
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn test_session_logout_json() -> serde_json::Result<()> {
+        let jsonfile = crate::utils::read_user_from_file("../session_logout.json").unwrap();
+        let deserialized: SessionLogout = serde_json::from_reader(jsonfile)?;
+        // println!("{:#?}", &deserialized);
+        assert_eq!(
+            deserialized,
+            SessionLogout {
+                status: Status::Success,
+                data: Some(true),
+                ..SessionLogout::default()
+            }
+        );
+        // let serialized = serde_json::to_string(&deserialized).unwrap();
+        // println!("{:#?}", &serialized);
+        // assert_eq!(raw_data, serialized);
+        Ok(())
+    }
 
-#[test]
-fn test_session_logout_error() -> serde_json::Result<()> {
-    let raw_data =
-        r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#;
-    let deserialized: SessionLogout = serde_json::from_str(&raw_data)?;
-    // println!("{:#?}", &deserialized);
-    assert_eq!(
-        deserialized,
-        SessionLogout {
-            status: Status::Error,
-            data: None,
-            message: Some("Error message".to_owned()),
-            error_type: Some(Exception::GeneralException),
-        }
-    );
-    // let serialized = serde_json::to_string(&deserialized).unwrap();
-    // println!("{:#?}", &serialized);
-    // assert_eq!(raw_data, serialized);
-    Ok(())
+    #[test]
+    fn test_session_logout_error() -> serde_json::Result<()> {
+        let raw_data =
+            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#;
+        let deserialized: SessionLogout = serde_json::from_str(&raw_data)?;
+        // println!("{:#?}", &deserialized);
+        assert_eq!(
+            deserialized,
+            SessionLogout {
+                status: Status::Error,
+                data: None,
+                message: Some("Error message".to_owned()),
+                error_type: Some(Exception::GeneralException),
+            }
+        );
+        // let serialized = serde_json::to_string(&deserialized).unwrap();
+        // println!("{:#?}", &serialized);
+        // assert_eq!(raw_data, serialized);
+        Ok(())
+    }
 }

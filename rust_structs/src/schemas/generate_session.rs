@@ -40,83 +40,87 @@ pub struct GenerateSessionData {
     pub meta: ProfileMeta,
 }
 
-#[test]
-fn test_profile_json() -> serde_json::Result<()> {
-    let jsonfile = crate::utils::read_user_from_file("../generate_session.json").unwrap();
-    let deserialized: GenerateSession = serde_json::from_reader(jsonfile)?;
-    // println!("{:#?}", &deserialized);
-    assert_eq!(
-        deserialized,
-        GenerateSession {
-            status: Status::Success,
-            data: Some(GenerateSessionData {
-                user_type: UserType::Enum(UserTypeEnum::INDIVIDUAL),
-                email: "XXXXXX".to_owned(),
-                user_name: "Kite Connect".to_owned(),
-                user_shortname: "Connect".to_owned(),
-                broker: Broker::Enum(BrokerName::ZERODHA),
-                exchanges: vec![
-                    Exchanges::NSE,
-                    Exchanges::NFO,
-                    Exchanges::BFO,
-                    Exchanges::CDS,
-                    Exchanges::BSE,
-                    Exchanges::MCX,
-                    Exchanges::BCD,
-                    Exchanges::MF
-                ],
-                products: vec![
-                    Products::CNC,
-                    Products::NRML,
-                    Products::MIS,
-                    Products::BO,
-                    Products::CO,
-                ],
-                order_types: vec![
-                    OrderTypes::MARKET,
-                    OrderTypes::LIMIT,
-                    OrderTypes::SL,
-                    OrderTypes::SLM,
-                ],
-                avatar_url: Some("abc".to_owned()),
-                user_id: "XX0000".to_owned(),
-                api_key: "XXXXXX".to_owned(),
-                access_token: Some("XXXXXX".to_owned()),
-                public_token: Some("XXXXXXXX".to_owned()),
-                enctoken: Some("XXXXXX".to_owned()),
-                refresh_token: Some("".to_owned()),
-                silo: Some("".to_owned()),
-                login_time: "2021-01-01 16:15:14".to_owned(),
-                meta: ProfileMeta {
-                    demat_consent: ProfileMetaEnum::Enum(ProfileMetaValueEnum::Physical),
-                },
-            }),
-            ..GenerateSession::default()
-        }
-    );
-    // let serialized = serde_json::to_string(&deserialized).unwrap();
-    // println!("{:#?}", &serialized);
-    // assert_eq!(raw_data, serialized);
-    Ok(())
-}
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn test_profile_json() -> serde_json::Result<()> {
+        let jsonfile = crate::utils::read_user_from_file("../generate_session.json").unwrap();
+        let deserialized: GenerateSession = serde_json::from_reader(jsonfile)?;
+        // println!("{:#?}", &deserialized);
+        assert_eq!(
+            deserialized,
+            GenerateSession {
+                status: Status::Success,
+                data: Some(GenerateSessionData {
+                    user_type: UserType::Enum(UserTypeEnum::INDIVIDUAL),
+                    email: "XXXXXX".to_owned(),
+                    user_name: "Kite Connect".to_owned(),
+                    user_shortname: "Connect".to_owned(),
+                    broker: Broker::Enum(BrokerName::ZERODHA),
+                    exchanges: vec![
+                        Exchanges::NSE,
+                        Exchanges::NFO,
+                        Exchanges::BFO,
+                        Exchanges::CDS,
+                        Exchanges::BSE,
+                        Exchanges::MCX,
+                        Exchanges::BCD,
+                        Exchanges::MF
+                    ],
+                    products: vec![
+                        Products::CNC,
+                        Products::NRML,
+                        Products::MIS,
+                        Products::BO,
+                        Products::CO,
+                    ],
+                    order_types: vec![
+                        OrderTypes::MARKET,
+                        OrderTypes::LIMIT,
+                        OrderTypes::SL,
+                        OrderTypes::SLM,
+                    ],
+                    avatar_url: Some("abc".to_owned()),
+                    user_id: "XX0000".to_owned(),
+                    api_key: "XXXXXX".to_owned(),
+                    access_token: Some("XXXXXX".to_owned()),
+                    public_token: Some("XXXXXXXX".to_owned()),
+                    enctoken: Some("XXXXXX".to_owned()),
+                    refresh_token: Some("".to_owned()),
+                    silo: Some("".to_owned()),
+                    login_time: "2021-01-01 16:15:14".to_owned(),
+                    meta: ProfileMeta {
+                        demat_consent: ProfileMetaEnum::Enum(ProfileMetaValueEnum::Physical),
+                    },
+                }),
+                ..GenerateSession::default()
+            }
+        );
+        // let serialized = serde_json::to_string(&deserialized).unwrap();
+        // println!("{:#?}", &serialized);
+        // assert_eq!(raw_data, serialized);
+        Ok(())
+    }
 
-#[test]
-fn test_profile_error() -> serde_json::Result<()> {
-    let raw_data =
-        r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#;
-    let deserialized: GenerateSession = serde_json::from_str(&raw_data)?;
-    // println!("{:#?}", &deserialized);
-    assert_eq!(
-        deserialized,
-        GenerateSession {
-            status: Status::Error,
-            data: None,
-            message: Some("Error message".to_owned()),
-            error_type: Some(Exception::GeneralException),
-        }
-    );
-    // let serialized = serde_json::to_string(&deserialized).unwrap();
-    // println!("{:#?}", &serialized);
-    // assert_eq!(raw_data, serialized);
-    Ok(())
+    #[test]
+    fn test_profile_error() -> serde_json::Result<()> {
+        let raw_data =
+            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#;
+        let deserialized: GenerateSession = serde_json::from_str(&raw_data)?;
+        // println!("{:#?}", &deserialized);
+        assert_eq!(
+            deserialized,
+            GenerateSession {
+                status: Status::Error,
+                data: None,
+                message: Some("Error message".to_owned()),
+                error_type: Some(Exception::GeneralException),
+            }
+        );
+        // let serialized = serde_json::to_string(&deserialized).unwrap();
+        // println!("{:#?}", &serialized);
+        // assert_eq!(raw_data, serialized);
+        Ok(())
+    }
 }

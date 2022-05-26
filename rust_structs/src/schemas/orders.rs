@@ -1,6 +1,5 @@
 use super::common::*;
 use serde::{Deserialize, Serialize};
-use std::collections::HashMap;
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Orders {

@@ -2,8 +2,6 @@ use super::checksum::Checksum;
 use super::common::*;
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
-use std::collections::HashMap;
-use std::str::FromStr;
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Postback {
@@ -78,7 +76,7 @@ impl Postback {
 #[cfg(test)]
 mod tests {
     use super::*;
-
+    use std::str::FromStr;
     #[test]
     fn test_postback_json() -> serde_json::Result<()> {
         let jsonfile = crate::utils::read_user_from_file("../postback.json").unwrap();

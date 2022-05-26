@@ -18,3 +18,5 @@ pub mod positions;
 pub mod profile;
 pub mod quote;
 pub mod trades;
+pub mod trigger_range;
+pub mod session_logout;

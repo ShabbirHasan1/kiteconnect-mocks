@@ -70,9 +70,9 @@ mod tests {
                     net: vec![
                         PositionsDataDetails {
                             tradingsymbol: "LEADMINI17DECFUT".to_owned(),
-                            exchange: Exchanges::MCX,
+                            exchange: Exchanges::Mcx,
                             instrument_token: 53496327,
-                            product: Products::NRML,
+                            product: Products::Normal,
                             quantity: 1,
                             overnight_quantity: 0,
                             multiplier: 1000,
@@ -101,9 +101,9 @@ mod tests {
                         },
                         PositionsDataDetails {
                             tradingsymbol: "GOLDGUINEA17DECFUT".to_owned(),
-                            exchange: Exchanges::MCX,
+                            exchange: Exchanges::Mcx,
                             instrument_token: 53505799,
-                            product: Products::NRML,
+                            product: Products::Normal,
                             quantity: 0,
                             overnight_quantity: 3,
                             multiplier: 1,
@@ -132,9 +132,9 @@ mod tests {
                         },
                         PositionsDataDetails {
                             tradingsymbol: "SBIN".to_owned(),
-                            exchange: Exchanges::NSE,
+                            exchange: Exchanges::Nse,
                             instrument_token: 779521,
-                            product: Products::CO,
+                            product: Products::CoverOrder,
                             quantity: 0,
                             overnight_quantity: 0,
                             multiplier: 1,
@@ -166,9 +166,9 @@ mod tests {
                     day: vec![
                         PositionsDataDetails {
                             tradingsymbol: "GOLDGUINEA17DECFUT".to_owned(),
-                            exchange: Exchanges::MCX,
+                            exchange: Exchanges::Mcx,
                             instrument_token: 53505799,
-                            product: Products::NRML,
+                            product: Products::Normal,
                             quantity: -3,
                             overnight_quantity: 0,
                             multiplier: 1,
@@ -197,9 +197,9 @@ mod tests {
                         },
                         PositionsDataDetails {
                             tradingsymbol: "LEADMINI17DECFUT".to_owned(),
-                            exchange: Exchanges::MCX,
+                            exchange: Exchanges::Mcx,
                             instrument_token: 53496327,
-                            product: Products::NRML,
+                            product: Products::Normal,
                             quantity: 1,
                             overnight_quantity: 0,
                             multiplier: 1000,
@@ -228,9 +228,9 @@ mod tests {
                         },
                         PositionsDataDetails {
                             tradingsymbol: "SBIN".to_owned(),
-                            exchange: Exchanges::NSE,
+                            exchange: Exchanges::Nse,
                             instrument_token: 779521,
-                            product: Products::CO,
+                            product: Products::CoverOrder,
                             quantity: 0,
                             overnight_quantity: 0,
                             multiplier: 1,

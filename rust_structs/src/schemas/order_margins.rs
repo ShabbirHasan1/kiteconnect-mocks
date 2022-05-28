@@ -50,7 +50,7 @@ mod tests {
                 data: Some(vec![OrderMarginsData {
                     order_margins_type: OrderMarginTypes::Equity,
                     tradingsymbol: "INFY".to_owned(),
-                    exchange: Exchanges::NSE,
+                    exchange: Exchanges::Nse,
                     span: 0.0,
                     exposure: 0.0,
                     option_premium: 0.0,

@@ -22,3 +22,5 @@ pub mod quote;
 pub mod session_logout;
 pub mod trades;
 pub mod trigger_range;
+pub mod historical_oi;
+pub mod historical_minute;

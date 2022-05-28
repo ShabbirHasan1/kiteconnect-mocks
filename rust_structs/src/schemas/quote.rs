@@ -1,4 +1,6 @@
 use super::common::*;
+use crate::utils::*;
+use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
@@ -16,8 +18,16 @@ pub struct Quote {
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct QuoteData {
     pub instrument_token: u64,
-    pub timestamp: String,
-    pub last_trade_time: Option<String>,
+    #[serde(
+        with = "optional_naive_date_time_from_str",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub timestamp: Option<NaiveDateTime>,
+    #[serde(
+        with = "optional_naive_date_time_from_str",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub last_trade_time: Option<NaiveDateTime>,
     pub last_price: f64,
     pub last_quantity: i64,
     pub buy_quantity: i64,
@@ -50,6 +60,7 @@ pub struct Pqo {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use chrono::NaiveDate;
     #[test]
     fn test_quote_json() -> serde_json::Result<()> {
         let jsonfile = crate::utils::read_user_from_file("../quote.json").unwrap();
@@ -60,8 +71,8 @@ mod tests {
             "NSE:INFY".to_owned(),
             QuoteData {
                 instrument_token: 408065,
-                timestamp: "2021-06-08 15:45:56".to_owned(),
-                last_trade_time: Some("2021-06-08 15:45:52".to_owned()),
+                timestamp: Some(NaiveDate::from_ymd(2021, 6, 8).and_hms(15, 45, 56)),
+                last_trade_time: Some(NaiveDate::from_ymd(2021, 6, 8).and_hms(15, 45, 52)),
                 last_price: 1412.95,
                 last_quantity: 5,
                 buy_quantity: 0,

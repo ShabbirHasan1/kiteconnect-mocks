@@ -1,4 +1,6 @@
 use super::common::*;
+use crate::utils::*;
+use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -22,27 +24,32 @@ pub struct GenerateSessionData {
     pub exchanges: Vec<Exchanges>,
     pub products: Vec<Products>,
     pub order_types: Vec<OrderTypes>,
-    // #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub avatar_url: Option<String>,
     pub user_id: String,
     pub api_key: String,
-    // #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub access_token: Option<String>,
-    // #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub public_token: Option<String>,
-    // #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub enctoken: Option<String>,
-    // #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub refresh_token: Option<String>,
-    // #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub silo: Option<String>,
-    pub login_time: String,
+    #[serde(
+        with = "optional_naive_date_time_from_str",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub login_time:  Option<NaiveDateTime>,
     pub meta: ProfileMeta,
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use chrono::NaiveDate;
     #[test]
     fn test_profile_json() -> serde_json::Result<()> {
         let jsonfile = crate::utils::read_user_from_file("../generate_session.json").unwrap();
@@ -53,33 +60,33 @@ mod tests {
             GenerateSession {
                 status: Status::Success,
                 data: Some(GenerateSessionData {
-                    user_type: UserType::Enum(UserTypeEnum::INDIVIDUAL),
+                    user_type: UserType::Enum(UserTypeEnum::Individual),
                     email: "XXXXXX".to_owned(),
                     user_name: "Kite Connect".to_owned(),
                     user_shortname: "Connect".to_owned(),
-                    broker: Broker::Enum(BrokerName::ZERODHA),
+                    broker: Broker::Enum(BrokerName::Zerodha),
                     exchanges: vec![
-                        Exchanges::NSE,
-                        Exchanges::NFO,
-                        Exchanges::BFO,
-                        Exchanges::CDS,
-                        Exchanges::BSE,
-                        Exchanges::MCX,
-                        Exchanges::BCD,
-                        Exchanges::MF
+                        Exchanges::Nse,
+                        Exchanges::Nfo,
+                        Exchanges::Bfo,
+                        Exchanges::Cds,
+                        Exchanges::Bse,
+                        Exchanges::Mcx,
+                        Exchanges::Bcd,
+                        Exchanges::Mf,
                     ],
                     products: vec![
-                        Products::CNC,
-                        Products::NRML,
-                        Products::MIS,
-                        Products::BO,
-                        Products::CO,
+                        Products::CashAndCarry,
+                        Products::Normal,
+                        Products::MarginIntradaySquareoff,
+                        Products::BracketOrder,
+                        Products::CoverOrder,
                     ],
                     order_types: vec![
-                        OrderTypes::MARKET,
-                        OrderTypes::LIMIT,
-                        OrderTypes::SL,
-                        OrderTypes::SLM,
+                        OrderTypes::Market,
+                        OrderTypes::Limit,
+                        OrderTypes::StopLoss,
+                        OrderTypes::StopLossMarket,
                     ],
                     avatar_url: Some("abc".to_owned()),
                     user_id: "XX0000".to_owned(),
@@ -89,7 +96,7 @@ mod tests {
                     enctoken: Some("XXXXXX".to_owned()),
                     refresh_token: Some("".to_owned()),
                     silo: Some("".to_owned()),
-                    login_time: "2021-01-01 16:15:14".to_owned(),
+                    login_time: Some(NaiveDate::from_ymd(2021, 1, 1).and_hms(16, 15, 14)),
                     meta: ProfileMeta {
                         demat_consent: ProfileMetaEnum::Enum(ProfileMetaValueEnum::Physical),
                     },

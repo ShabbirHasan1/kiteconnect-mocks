@@ -1,9 +1,24 @@
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct MetaIceberg {
+    pub iceberg: Iceberg,
+}
+
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct Iceberg {
+    pub leg: i64,
+    pub legs: i64,
+    pub leg_quantity: i64,
+    pub total_quantity: i64,
+    pub remaining_quantity: i64,
+}
+
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum Meta {
+    MetaIceberg(MetaIceberg),
     HashMap(HashMap<String, serde_json::Value>),
     String(String),
 }
@@ -15,15 +30,36 @@ impl Default for Meta {
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum Tags {
+    Array([TagsValue; 1]),
+    Vector(Vec<String>),
+    Enum(TagsValue),
+    String(String),
+}
+
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub enum TagsValue {
+    #[default]
+    #[serde(rename = "icebergord")]
+    IcebergOrder,
+}
+
+impl Default for Tags {
+    fn default() -> Self {
+        Tags::Vector(Vec::new())
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct StatusCheck {
     status: Status,
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
 pub enum Status {
-    #[serde(rename = "success")]
     Success,
-    #[serde(rename = "error")]
     Error,
 }
 
@@ -55,11 +91,11 @@ pub enum UserType {
 #[serde(rename_all = "lowercase")]
 pub enum UserTypeEnum {
     #[default]
-    INDIVIDUAL,
+    Individual,
 }
 impl Default for UserType {
     fn default() -> Self {
-        UserType::Enum(UserTypeEnum::INDIVIDUAL)
+        UserType::Enum(UserTypeEnum::Individual)
     }
 }
 
@@ -71,59 +107,69 @@ pub enum Broker {
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "UPPERCASE")]
 pub enum BrokerName {
     #[default]
-    ZERODHA,
+    Zerodha,
 }
 
 impl Default for Broker {
     fn default() -> Self {
-        Broker::Enum(BrokerName::ZERODHA)
+        Broker::Enum(BrokerName::Zerodha)
     }
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "UPPERCASE")]
 pub enum Exchanges {
-    NSE,
-    NFO,
-    BFO,
-    CDS,
-    BSE,
-    MCX,
-    BCD,
-    MF,
+    Nse,
+    Nfo,
+    Bfo,
+    Cds,
+    Bse,
+    Mcx,
+    Bcd,
+    Mf,
 }
 impl Default for Exchanges {
     fn default() -> Self {
-        Exchanges::NSE
+        Exchanges::Nse
     }
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum Products {
-    CNC,  //Cash & Carry for equity
-    NRML, //Normal for futures and options
-    MIS,  //Margin Intraday Squareoff for futures and options
-    BO,   // Bracket Order
-    CO,   // Cover Order
+    #[serde(rename = "CNC")]
+    CashAndCarry, //Cash & Carry for equity
+    #[serde(rename = "NRML")]
+    Normal, //Normal for futures and options
+    #[serde(rename = "MIS")]
+    MarginIntradaySquareoff, //Margin Intraday Squareoff for futures and options
+    #[serde(rename = "BO")]
+    BracketOrder, // Bracket Order
+    #[serde(rename = "CO")]
+    CoverOrder, // Cover Order
 }
 impl Default for Products {
     fn default() -> Self {
-        Products::CNC
+        Products::CashAndCarry
     }
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum OrderTypes {
-    MARKET, //Market order
-    LIMIT,  //Limit order
-    SL,     //Stoploss order
+    #[serde(rename = "MARKET")]
+    Market, //Market Order
+    #[serde(rename = "LIMIT")]
+    Limit, //Limit Order
+    #[serde(rename = "SL")]
+    StopLoss, //StopLoss Order
     #[serde(rename = "SL-M")]
-    SLM, //Stoploss-market order
+    StopLossMarket, //StopLoss-Market Order
 }
 impl Default for OrderTypes {
     fn default() -> Self {
-        OrderTypes::MARKET
+        OrderTypes::Market
     }
 }
 
@@ -160,24 +206,26 @@ impl Default for ProfileMetaValueEnum {
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "UPPERCASE")]
 pub enum TransactionType {
-    BUY,
-    SELL,
+    Buy,
+    Sell,
 }
 
 impl Default for TransactionType {
     fn default() -> Self {
-        TransactionType::BUY
+        TransactionType::Buy
     }
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum Variety {
-    Regular, //Regular order
-    Amo,     //After Market Order
-    Co,      //Cover Order
-    Iceberg, //Iceberg Order
+    Regular, // Regular order
+    Amo,     // After Market Order
+    Bo,      // Bracket Order
+    Co,      // Cover Order
+    Iceberg, // Iceberg Order
 }
 
 impl Default for Variety {
@@ -187,15 +235,26 @@ impl Default for Variety {
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "UPPERCASE")]
 pub enum Validity {
-    DAY, //Regular order
-    IOC, //Immediate or Cancel
-    TTL, //Order validity in minutes
+    Day, //Regular order
+    Ioc, //Immediate or Cancel
+    Ttl, //Order validity in minutes
 }
 
 impl Default for Validity {
     fn default() -> Self {
-        Validity::DAY
+        Validity::Day
+    }
+}
+
+impl Validity {
+    pub fn is_not_ttl(&self) -> bool {
+        match self {
+            Validity::Day => true,
+            Validity::Ioc => true,
+            Validity::Ttl => false,
+        }
     }
 }
 
@@ -208,40 +267,45 @@ pub enum OrderStatus {
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum OrderStatusValue {
-    COMPLETE,
-    REJECTED,
-    CANCELLED,
-    OPEN,
+    #[serde(rename = "COMPLETE")]
+    Complete,
+    #[serde(rename = "REJECTED")]
+    Rejected,
+    #[serde(rename = "CANCELLED")]
+    Cancelled,
+    #[serde(rename = "OPEN")]
+    Open,
     #[serde(rename = "PUT ORDER REQUEST RECEIVED")]
-    PUTORDERREQUESTRECEIVED, // Order request has been received by the backend
+    PutOrderRequestReceived, // Order request has been received by the backend
     #[serde(rename = "PUT ORDER REQ RECEIVED")]
-    PUTORDERREQRECEIVED, // Order request has been received by the backend
+    PutOrderReqReceived, // Order request has been received by the backend
     #[serde(rename = "VALIDATION PENDING")]
-    VALIDATIONPENDING, // Order pending validation by the RMS (Risk Management System)
+    ValidationPending, // Order pending validation by the RMS (Risk Management System)
     #[serde(rename = "OPEN PENDING")]
-    OPENPENDING, // Order is pending registration at the exchange
+    OpenPending, // Order is pending registration at the exchange
     #[serde(rename = "MODIFY VALIDATION PENDING")]
-    MODIFYVALIDATIONPENDING, // Order's modification values are pending validation by the RMS
+    ModifyValidationPending, // Order's modification values are pending validation by the RMS
     #[serde(rename = "MODIFY PENDING")]
-    MODIFYPENDING, // Order's modification values are pending registration at the exchange
+    ModifyPending, // Order's modification values are pending registration at the exchange
     #[serde(rename = "TRIGGER PENDING")]
-    TRIGGERPENDING, // Order's placed but the fill is pending based on a trigger price.
+    TriggerPending, // Order's placed but the fill is pending based on a trigger price.
     #[serde(rename = "CANCEL PENDING")]
-    CANCELPENDING, // Order's cancellation request is pending registration at the exchange
+    CancelPending, // Order's cancellation request is pending registration at the exchange
     #[serde(rename = "AMO REQ RECEIVED")]
-    AMOREQRECEIVED, // Same as PUT ORDER REQUEST RECEIVED, but for AMOs
-    MODIFIED,
+    AmoReqReceived, // Same as PUT ORDER REQUEST RECEIVED, but for AMOs
+    #[serde(rename = "MODIFIED")]
+    Modified,
 }
 
 impl Default for OrderStatus {
     fn default() -> Self {
-        OrderStatus::Enum(OrderStatusValue::OPEN)
+        OrderStatus::Enum(OrderStatusValue::Open)
     }
 }
 
 impl Default for OrderStatusValue {
     fn default() -> Self {
-        OrderStatusValue::OPEN
+        OrderStatusValue::Open
     }
 }
 

@@ -63,7 +63,7 @@ mod tests {
     use chrono::NaiveDate;
     #[test]
     fn test_order_info_json() -> serde_json::Result<()> {
-        let jsonfile = crate::utils::read_user_from_file("../order_info.json").unwrap();
+        let jsonfile = crate::utils::read_json_from_file("../order_info.json").unwrap();
         let deserialized: OrderInfo = serde_json::from_reader(jsonfile)?;
         // println!("{:#?}", &deserialized);
         assert_eq!(

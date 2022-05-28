@@ -24,7 +24,7 @@ mod tests {
     use super::*;
     #[test]
     fn test_ltp_json() -> serde_json::Result<()> {
-        let jsonfile = crate::utils::read_user_from_file("../ltp.json").unwrap();
+        let jsonfile = crate::utils::read_json_from_file("../ltp.json").unwrap();
         let deserialized: Ltp = serde_json::from_reader(jsonfile)?;
         // println!("{:#?}", &deserialized);
         let mut data: HashMap<String, LtpData> = HashMap::new();

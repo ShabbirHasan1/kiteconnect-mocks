@@ -65,7 +65,7 @@ mod tests {
     use super::*;
     #[test]
     fn test_margins_json() -> serde_json::Result<()> {
-        let jsonfile = crate::utils::read_user_from_file("../margins.json").unwrap();
+        let jsonfile = crate::utils::read_json_from_file("../margins.json").unwrap();
         let deserialized: Margins = serde_json::from_reader(jsonfile)?;
         // println!("{:#?}", &deserialized);
         assert_eq!(

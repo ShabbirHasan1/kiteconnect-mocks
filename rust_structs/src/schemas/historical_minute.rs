@@ -52,7 +52,7 @@ mod tests {
     use chrono::{FixedOffset, TimeZone};
     #[test]
     fn test_historical_minute_json() -> serde_json::Result<()> {
-        let jsonfile = crate::utils::read_user_from_file("../historical_minute.json").unwrap();
+        let jsonfile = crate::utils::read_json_from_file("../historical_minute.json").unwrap();
         let deserialized: HistoricalMinute = serde_json::from_reader(jsonfile)?;
         // println!("{:#?}", &deserialized);
         assert_eq!(

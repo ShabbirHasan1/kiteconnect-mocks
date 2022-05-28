@@ -79,7 +79,7 @@ mod tests {
     use std::str::FromStr;
     #[test]
     fn test_postback_json() -> serde_json::Result<()> {
-        let jsonfile = crate::utils::read_user_from_file("../postback.json").unwrap();
+        let jsonfile = crate::utils::read_json_from_file("../postback.json").unwrap();
         let deserialized: Postback = serde_json::from_reader(jsonfile)?;
         // println!("{:#?}", &deserialized);
         assert!(deserialized.match_checksum("API_SECRET"));
@@ -134,7 +134,7 @@ mod tests {
 
     #[test]
     fn test_postback_json_match_checksum() -> serde_json::Result<()> {
-        let jsonfile = crate::utils::read_user_from_file("../postback.json").unwrap();
+        let jsonfile = crate::utils::read_json_from_file("../postback.json").unwrap();
         let deserialized: Postback = serde_json::from_reader(jsonfile)?;
         // println!("{:#?}", &deserialized);
         assert!(deserialized.match_checksum("API_SECRET"));

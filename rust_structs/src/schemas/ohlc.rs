@@ -33,7 +33,7 @@ mod tests {
     use super::*;
     #[test]
     fn test_ohlc_json() -> serde_json::Result<()> {
-        let jsonfile = crate::utils::read_user_from_file("../ohlc.json").unwrap();
+        let jsonfile = crate::utils::read_json_from_file("../ohlc.json").unwrap();
         let deserialized: Ohlc = serde_json::from_reader(jsonfile)?;
         // println!("{:#?}", &deserialized);
         let mut data: HashMap<String, OhlcData> = HashMap::new();

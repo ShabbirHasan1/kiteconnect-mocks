@@ -33,7 +33,7 @@ mod tests {
     use super::*;
     #[test]
     fn test_profile_json() -> serde_json::Result<()> {
-        let jsonfile = crate::utils::read_user_from_file("../profile.json").unwrap();
+        let jsonfile = crate::utils::read_json_from_file("../profile.json").unwrap();
         let deserialized: Profile = serde_json::from_reader(jsonfile)?;
         // println!("{:#?}", &deserialized);
         assert_eq!(

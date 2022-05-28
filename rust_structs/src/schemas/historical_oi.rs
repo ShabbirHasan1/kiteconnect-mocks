@@ -57,7 +57,7 @@ mod tests {
 
     #[test]
     fn test_historical_oi_json() -> serde_json::Result<()> {
-        let jsonfile = crate::utils::read_user_from_file("../historical_oi.json").unwrap();
+        let jsonfile = crate::utils::read_json_from_file("../historical_oi.json").unwrap();
         let deserialized: HistoricalOi = serde_json::from_reader(jsonfile)?;
         println!("{:#?}", &deserialized);
         assert_eq!(

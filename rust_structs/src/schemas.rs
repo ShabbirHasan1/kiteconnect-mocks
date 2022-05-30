@@ -1,3 +1,4 @@
+pub mod basket_margins;
 pub mod checksum;
 pub mod common;
 pub mod convert_position;
@@ -5,6 +6,7 @@ pub mod generate_session;
 pub mod historical_minute;
 pub mod historical_oi;
 pub mod holdings;
+pub mod holdings_auth;
 pub mod instruments;
 pub mod logout;
 pub mod ltp;
@@ -26,4 +28,3 @@ pub mod quote;
 pub mod session_logout;
 pub mod trades;
 pub mod trigger_range;
-pub mod holdings_auth;

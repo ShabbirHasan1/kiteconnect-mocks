@@ -138,6 +138,19 @@ impl Default for Exchanges {
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum OptionalExchanges {
+    Enum(Exchanges),
+    String(String),
+}
+
+impl Default for OptionalExchanges {
+    fn default() -> Self {
+        OptionalExchanges::Enum(Exchanges::Nse)
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum Products {
     #[serde(rename = "CNC")]
     CashAndCarry, //Cash & Carry for equity
@@ -319,6 +332,19 @@ pub enum OrderMarginTypes {
 impl Default for OrderMarginTypes {
     fn default() -> Self {
         OrderMarginTypes::Equity
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum OptionalOrderMarginTypes {
+    Enum(OrderMarginTypes),
+    String(String),
+}
+
+impl Default for OptionalOrderMarginTypes {
+    fn default() -> Self {
+        OptionalOrderMarginTypes::Enum(OrderMarginTypes::Equity)
     }
 }
 

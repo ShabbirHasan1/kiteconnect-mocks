@@ -51,7 +51,7 @@ impl Default for Tags {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct StatusCheck {
     status: Status,
 }
@@ -61,6 +61,7 @@ pub struct StatusCheck {
 pub enum Status {
     Success,
     Error,
+    Failed,
 }
 
 impl Default for Status {
@@ -397,6 +398,38 @@ pub enum Segment {
 impl Default for Segment {
     fn default() -> Self {
         Segment::Nse
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum GttOrderStatus {
+    Active,
+    Triggered,
+    Disabled,
+    Expired,
+    Cancelled,
+    Rejected,
+    Deleted,
+}
+
+impl Default for GttOrderStatus {
+    fn default() -> Self {
+        GttOrderStatus::Active
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub enum GttOrderType {
+    #[serde(rename = "single")]
+    Single,
+    #[serde(rename = "two-leg")]
+    TwoLeg,
+}
+
+impl Default for GttOrderType {
+    fn default() -> Self {
+        GttOrderType::Single
     }
 }
 

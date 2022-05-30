@@ -322,6 +322,58 @@ impl Default for OrderMarginTypes {
     }
 }
 
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub enum InstrumentType {
+    #[serde(rename = "EQ")]
+    Equity,
+    #[serde(rename = "PE")]
+    PutOption,
+    #[serde(rename = "CE")]
+    CallOption,
+    #[serde(rename = "FUT")]
+    Future,
+}
+
+impl Default for InstrumentType {
+    fn default() -> Self {
+        InstrumentType::Equity
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub enum Segment {
+    #[serde(rename = "BCD-OPT")]
+    BcdOptions,
+    #[serde(rename = "BCD-FUT")]
+    BcdFutures,
+    #[serde(rename = "BCD")]
+    Bcd,
+    #[serde(rename = "BSE")]
+    Bse,
+    #[serde(rename = "INDICES")]
+    Indices,
+    #[serde(rename = "CDS-OPT")]
+    CdsOptions,
+    #[serde(rename = "CDS-FUT")]
+    CdsFutures,
+    #[serde(rename = "MCX-FUT")]
+    McxFutures,
+    #[serde(rename = "MCX-OPT")]
+    McxOptions,
+    #[serde(rename = "NFO-OPT")]
+    NfoOptions,
+    #[serde(rename = "NFO-FUT")]
+    NfoFutures,
+    #[serde(rename = "NSE")]
+    Nse,
+}
+
+impl Default for Segment {
+    fn default() -> Self {
+        Segment::Nse
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

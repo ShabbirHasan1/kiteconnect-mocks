@@ -78,11 +78,20 @@ mod tests {
     use super::*;
     use std::str::FromStr;
     #[test]
+    fn test_postback_json_match_checksum() -> serde_json::Result<()> {
+        let jsonfile = crate::utils::read_json_from_file("../postback.json").unwrap();
+        let deserialized: Postback = serde_json::from_reader(jsonfile)?;
+        // println!("{:#?}", &deserialized);
+        assert!(deserialized.match_checksum("0hdv7iw5examplesecret"));
+        Ok(())
+    }
+
+    #[test]
     fn test_postback_json() -> serde_json::Result<()> {
         let jsonfile = crate::utils::read_json_from_file("../postback.json").unwrap();
         let deserialized: Postback = serde_json::from_reader(jsonfile)?;
         // println!("{:#?}", &deserialized);
-        assert!(deserialized.match_checksum("API_SECRET"));
+        assert!(deserialized.match_checksum("0hdv7iw5examplesecret"));
         assert_eq!(
             deserialized,
             Postback {
@@ -90,9 +99,9 @@ mod tests {
                 unfilled_quantity: 0,
                 app_id: 1234,
                 checksum: Checksum::from_str(
-                    "aa389e3f151b51d34809d96299463207da0353105274d9495bad54a38ec227c1",
+                    "2011845d9348bd6795151bf4258102a03431e3bb12a79c0df73fcb4b7fde4b5d",
                 )
-                .unwrap(), // keeping api_secret as "API_SECRET"
+                .unwrap(), // keeping api_secret as "0hdv7iw5examplesecret"
                 placed_by: "AB1234".to_owned(),
                 order_id: "220303000308932".to_owned(),
                 exchange_order_id: Some("1000000001482421".to_owned()),
@@ -129,15 +138,6 @@ mod tests {
         // let serialized = serde_json::to_string(&deserialized).unwrap();
         // println!("{:#?}", &serialized);
         // assert_eq!(raw_data, serialized);
-        Ok(())
-    }
-
-    #[test]
-    fn test_postback_json_match_checksum() -> serde_json::Result<()> {
-        let jsonfile = crate::utils::read_json_from_file("../postback.json").unwrap();
-        let deserialized: Postback = serde_json::from_reader(jsonfile)?;
-        // println!("{:#?}", &deserialized);
-        assert!(deserialized.match_checksum("API_SECRET"));
         Ok(())
     }
 }

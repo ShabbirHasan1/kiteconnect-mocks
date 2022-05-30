@@ -45,6 +45,7 @@ pub struct HoldingsData {
     pub day_change_percentage: f64,
 }
 
+#[cfg(test)]
 mod tests {
     use super::*;
     use chrono::NaiveDate;

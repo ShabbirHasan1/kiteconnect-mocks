@@ -34,15 +34,21 @@ pub struct GenerateSessionData {
     pub public_token: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub enctoken: Option<String>,
-    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(
+        with = "serde_with::rust::string_empty_as_none",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub refresh_token: Option<String>,
-    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(
+        with = "serde_with::rust::string_empty_as_none",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub silo: Option<String>,
     #[serde(
         with = "optional_naive_date_time_from_str",
         skip_serializing_if = "Option::is_none"
     )]
-    pub login_time:  Option<NaiveDateTime>,
+    pub login_time: Option<NaiveDateTime>,
     pub meta: ProfileMeta,
 }
 
@@ -94,8 +100,8 @@ mod tests {
                     access_token: Some("XXXXXX".to_owned()),
                     public_token: Some("XXXXXXXX".to_owned()),
                     enctoken: Some("XXXXXX".to_owned()),
-                    refresh_token: Some("".to_owned()),
-                    silo: Some("".to_owned()),
+                    refresh_token: None,
+                    silo: None,
                     login_time: Some(NaiveDate::from_ymd(2021, 1, 1).and_hms(16, 15, 14)),
                     meta: ProfileMeta {
                         demat_consent: ProfileMetaEnum::Enum(ProfileMetaValueEnum::Physical),

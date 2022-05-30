@@ -233,13 +233,21 @@ impl Default for TransactionType {
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "lowercase")]
 pub enum Variety {
+    #[serde(rename = "regular")]
     Regular, // Regular order
-    Amo,     // After Market Order
-    Bo,      // Bracket Order
-    Co,      // Cover Order
+    #[serde(rename = "amo")]
+    Amo, // After Market Order
+    #[serde(rename = "bo")]
+    Bo, // Bracket Order
+    #[serde(rename = "co")]
+    Co, // Cover Order
+    #[serde(rename = "iceberg")]
     Iceberg, // Iceberg Order
+    #[serde(rename = "sip")]
+    Sip,
+    #[serde(rename = "amc_sip")]
+    AmcSip,
 }
 
 impl Default for Variety {
@@ -403,6 +411,34 @@ impl Default for Segment {
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
+pub enum DividendType {
+    Growth,
+    Payout,
+    Idcw,
+}
+
+impl Default for DividendType {
+    fn default() -> Self {
+        DividendType::Growth
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "UPPERCASE")]
+pub enum MfSipStatus {
+    Active,
+    Paused,
+    Cancelled,
+}
+
+impl Default for MfSipStatus {
+    fn default() -> Self {
+        MfSipStatus::Active
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
 pub enum GttOrderStatus {
     Active,
     Triggered,
@@ -432,6 +468,106 @@ impl Default for GttOrderType {
         GttOrderType::Single
     }
 }
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum MfPurchaseType {
+    Enum(MfPurchaseTypeValue),
+    String(String),
+}
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "UPPERCASE")]
+pub enum MfPurchaseTypeValue {
+    Fresh,
+    Additional,
+}
+
+impl Default for MfPurchaseType {
+    fn default() -> Self {
+        MfPurchaseType::Enum(MfPurchaseTypeValue::Fresh)
+    }
+}
+
+impl Default for MfPurchaseTypeValue {
+    fn default() -> Self {
+        MfPurchaseTypeValue::Fresh
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum SipFrequency {
+    Daily,
+    Weekly,
+    BiWeekly,
+    Fortnightly,
+    Monthly,
+    Quarterly,
+    HalfYearly,
+    Yearly,
+    Annualy,
+}
+
+impl Default for SipFrequency {
+    fn default() -> Self {
+        SipFrequency::Daily
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub enum SettlementType {
+    #[serde(rename = "T1")]
+    Tone,
+    #[serde(rename = "T2")]
+    Ttwo,
+    #[serde(rename = "T3")]
+    Tthree,
+    #[serde(rename = "T4")]
+    Tfour,
+    #[serde(rename = "T5")]
+    Tfive,
+    #[serde(rename = "T6")]
+    Tsix,
+    #[serde(rename = "T7")]
+    Tseven,
+}
+
+impl Default for SettlementType {
+    fn default() -> Self {
+        SettlementType::Tone
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum MfPlan {
+    Direct,
+    Regular,
+}
+
+impl Default for MfPlan {
+    fn default() -> Self {
+        MfPlan::Direct
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum MfScheme {
+    Balanced,
+    Debt,
+    Equity,
+    Fof,
+    Liquid,
+}
+
+impl Default for MfScheme {
+    fn default() -> Self {
+        MfScheme::Balanced
+    }
+}
+
 
 #[cfg(test)]
 mod tests {

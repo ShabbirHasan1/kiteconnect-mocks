@@ -121,9 +121,7 @@ mod tests {
                                             triggered_at: 103.7,
                                             order_result: GttOrderResult {
                                                 status: Status::Failed,
-                                                order_id: Some(
-                                                    "".into(),
-                                                ),
+                                                order_id: None,
                                                 rejection_reason: Some(
                                                     "Your order price is lower than the current lower circuit limit of 70.65. Place an order within the daily range.".into(),
                                                 ),

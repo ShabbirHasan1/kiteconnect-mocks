@@ -89,6 +89,10 @@ pub struct GttResult {
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct GttOrderResult {
     pub status: Status,
+    #[serde(
+        with = "serde_with::rust::string_empty_as_none",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub order_id: Option<String>,
     pub rejection_reason: Option<String>,
 }
@@ -172,9 +176,7 @@ mod tests {
                                         triggered_at: 103.7,
                                         order_result: GttOrderResult {
                                             status: Status::Failed,
-                                            order_id: Some(
-                                                "".into(),
-                                            ),
+                                            order_id: None,
                                             rejection_reason: Some(
                                                 "Your order price is lower than the current lower circuit limit of 70.65. Place an order within the daily range.".into(),
                                             ),

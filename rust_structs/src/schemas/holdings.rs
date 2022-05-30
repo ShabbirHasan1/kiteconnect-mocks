@@ -34,7 +34,10 @@ pub struct HoldingsData {
     pub authorised_date: Option<NaiveDateTime>,
     pub opening_quantity: i64,
     pub collateral_quantity: i64,
-    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(
+        with = "serde_with::rust::string_empty_as_none",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub collateral_type: Option<String>,
     pub discrepancy: bool,
     pub average_price: f64,
@@ -74,7 +77,7 @@ mod tests {
                         authorised_date: Some(NaiveDate::from_ymd(2021, 6, 8).and_hms(0, 0, 0)),
                         opening_quantity: 2,
                         collateral_quantity: 0,
-                        collateral_type: Some("".to_owned()),
+                        collateral_type: None,
                         discrepancy: false,
                         average_price: 40.67,
                         last_price: 42.47,
@@ -98,7 +101,7 @@ mod tests {
                         authorised_date: Some(NaiveDate::from_ymd(2021, 6, 8).and_hms(0, 0, 0)),
                         opening_quantity: 5,
                         collateral_quantity: 0,
-                        collateral_type: Some("".to_owned()),
+                        collateral_type: None,
                         discrepancy: false,
                         average_price: 8.466,
                         last_price: 10.0,

@@ -64,7 +64,7 @@ pub mod naive_date_from_str {
         S: ser::Serializer,
     {
         serializer
-            .serialize_some(&naive_date.format(DT_FORMAT).to_string())
+            .serialize_str(&naive_date.format(DT_FORMAT).to_string())
             .map_err(ser::Error::custom)
     }
 }
@@ -145,6 +145,105 @@ pub mod optional_naive_date_time_from_str {
     }
 }
 
+pub mod naive_date_time_from_str {
+    use chrono::NaiveDateTime;
+    use serde::{de, ser, Deserialize, Deserializer};
+    const DT_FORMAT: &'static str = "%Y-%m-%d %H:%M:%S";
+
+    pub fn deserialize<'de, D>(deserializer: D) -> Result<NaiveDateTime, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        let naive_date_time_string: String = Deserialize::deserialize(deserializer)?;
+        NaiveDateTime::parse_from_str(&naive_date_time_string, DT_FORMAT).map_err(de::Error::custom)
+    }
+    pub fn serialize<'de, S>(
+        naive_date_time: &NaiveDateTime,
+        serializer: S,
+    ) -> Result<S::Ok, S::Error>
+    where
+        S: ser::Serializer,
+    {
+        serializer
+            .serialize_str(&naive_date_time.format(DT_FORMAT).to_string())
+            .map_err(ser::Error::custom)
+    }
+}
+
+pub mod optional_naive_date_time_with_milli_or_micro_from_str {
+    use chrono::NaiveDateTime;
+    use serde::{de, ser, Deserialize, Deserializer};
+    const DT_FORMAT: &'static str = "%Y-%m-%d %H:%M:%S%.f";
+
+    pub fn deserialize<'de, D>(deserializer: D) -> Result<Option<NaiveDateTime>, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        let maybe_naive_date_time_with_milli_or_micro_string: Option<String> =
+            match Deserialize::deserialize(deserializer) {
+                Ok(naive_date_time_with_milli_or_micro_string) => {
+                    Some(naive_date_time_with_milli_or_micro_string)
+                }
+                Err(_) => None,
+            };
+
+        match maybe_naive_date_time_with_milli_or_micro_string {
+            Some(naive_date_time_with_milli_or_micro_string) => NaiveDateTime::parse_from_str(
+                &naive_date_time_with_milli_or_micro_string,
+                DT_FORMAT,
+            )
+            .map(Some)
+            .map_err(de::Error::custom),
+            None => Ok(None),
+        }
+    }
+    pub fn serialize<'de, S>(
+        naive_date_time_with_milli_or_micro: &Option<NaiveDateTime>,
+        serializer: S,
+    ) -> Result<S::Ok, S::Error>
+    where
+        S: ser::Serializer,
+    {
+        match *naive_date_time_with_milli_or_micro {
+            Some(ref dt) => serializer
+                .serialize_some(&dt.format(DT_FORMAT).to_string())
+                .map_err(ser::Error::custom),
+            None => serializer.serialize_none(),
+        }
+    }
+}
+
+pub mod naive_date_time_with_milli_or_micro_from_str {
+    use chrono::NaiveDateTime;
+    use serde::{de, ser, Deserialize, Deserializer};
+    const DT_FORMAT: &'static str = "%Y-%m-%d %H:%M:%S%.f";
+
+    pub fn deserialize<'de, D>(deserializer: D) -> Result<NaiveDateTime, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        let naive_date_time_with_milli_or_micro_string: String =
+            Deserialize::deserialize(deserializer)?;
+        NaiveDateTime::parse_from_str(&naive_date_time_with_milli_or_micro_string, DT_FORMAT)
+            .map_err(de::Error::custom)
+    }
+    pub fn serialize<'de, S>(
+        naive_date_time_with_milli_or_micro: &NaiveDateTime,
+        serializer: S,
+    ) -> Result<S::Ok, S::Error>
+    where
+        S: ser::Serializer,
+    {
+        serializer
+            .serialize_str(
+                &naive_date_time_with_milli_or_micro
+                    .format(DT_FORMAT)
+                    .to_string(),
+            )
+            .map_err(ser::Error::custom)
+    }
+}
+
 pub mod naive_date_time_timezone_from_str {
     use chrono::{DateTime, FixedOffset};
     use serde::{de, ser, Deserialize, Deserializer};
@@ -165,6 +264,53 @@ pub mod naive_date_time_timezone_from_str {
         serializer
             .serialize_str(&dt.to_rfc3339().replace("+05:30", "+0530"))
             .map_err(ser::Error::custom)
+    }
+}
+
+pub mod double_optional_naive_date_from_str {
+    use chrono::NaiveDate;
+    use serde::{de, ser, Deserialize, Deserializer};
+    const DT_FORMAT: &'static str = "%Y-%m-%d";
+    /// Deserialize potentially non-existing optional value
+    pub fn deserialize<'de, D>(deserializer: D) -> Result<Option<Option<NaiveDate>>, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        let maybe_naive_date_time_string: Option<Option<String>> =
+            match Deserialize::deserialize(deserializer) {
+                Ok(Some(Some(naive_date_time_string))) => Some(Some(naive_date_time_string)),
+                Ok(Some(None)) => None,
+                Ok(None) => None,
+                Err(_) => None,
+            };
+
+        match maybe_naive_date_time_string {
+            Some(Some(naive_date_time_string)) => {
+                NaiveDate::parse_from_str(&naive_date_time_string, DT_FORMAT)
+                    .map(Some)
+                    .map(Some)
+                    .map_err(de::Error::custom)
+            }
+            Some(None) => Ok(None),
+            None => Ok(None),
+        }
+    }
+
+    /// Serialize optional value
+    pub fn serialize<'de, S>(
+        naive_date_time: &Option<Option<NaiveDate>>,
+        serializer: S,
+    ) -> Result<S::Ok, S::Error>
+    where
+        S: ser::Serializer,
+    {
+        match naive_date_time {
+            None => serializer.serialize_unit(),
+            Some(None) => serializer.serialize_none(),
+            Some(Some(dt)) => serializer
+                .serialize_some(&dt.format(DT_FORMAT).to_string())
+                .map_err(ser::Error::custom),
+        }
     }
 }
 

@@ -4,6 +4,7 @@ pub mod convert_position;
 pub mod generate_session;
 pub mod historical_minute;
 pub mod historical_oi;
+pub mod holdings;
 pub mod instruments;
 pub mod logout;
 pub mod ltp;

@@ -3,6 +3,7 @@
 #![deny(clippy::perf)]
 #![deny(clippy::style)]
 #![deny(clippy::cargo)]
+#![deny(clippy::correctness)]
 #![deny(clippy::suspicious)]
 #![deny(clippy::complexity)]
 #![warn(clippy::needless_return)]
@@ -13,6 +14,8 @@
 #![allow(clippy::single_match_else)]
 #![allow(clippy::let_underscore_drop)]
 #![allow(clippy::multiple_crate_versions)]
+#![feature(custom_inner_attributes)]
+#![clippy::msrv = "1.61.0"]
 
 pub mod schemas;
 pub mod utils;

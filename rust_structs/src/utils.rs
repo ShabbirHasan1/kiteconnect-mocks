@@ -262,7 +262,6 @@ pub mod double_optional_naive_date_from_str {
     use chrono::NaiveDate;
     use serde::{de, ser, Deserialize, Deserializer};
     const DT_FORMAT: &str = "%Y-%m-%d";
-    /// Deserialize potentially non-existing optional value
     pub fn deserialize<'de, D>(deserializer: D) -> Result<Option<Option<NaiveDate>>, D::Error>
     where
         D: Deserializer<'de>,
@@ -270,9 +269,9 @@ pub mod double_optional_naive_date_from_str {
         let maybe_naive_date_time_string: Option<Option<String>> =
             match Deserialize::deserialize(deserializer) {
                 Ok(Some(Some(naive_date_time_string))) => Some(Some(naive_date_time_string)),
-                Ok(Some(None)) => None,
-                Ok(None) => None,
-                Err(_) => None,
+                Ok(Some(None) | None) | Err(_) => None,
+                // Ok(Some(None)) | Err(_) => None,
+                // Ok(None) | Err(_) => None,
             };
 
         match maybe_naive_date_time_string {
@@ -282,12 +281,10 @@ pub mod double_optional_naive_date_from_str {
                     .map(Some)
                     .map_err(de::Error::custom)
             }
-            Some(None) => Ok(None),
-            None => Ok(None),
+            Some(None) | None => Ok(None),
         }
     }
 
-    /// Serialize optional value
     pub fn serialize<S>(
         naive_date_time: &Option<Option<NaiveDate>>,
         serializer: S,
@@ -305,6 +302,7 @@ pub mod double_optional_naive_date_from_str {
     }
 }
 
+#[must_use]
 pub fn string_to_static_str(s: String) -> &'static str {
     Box::leak(s.into_boxed_str())
 }

@@ -34,7 +34,7 @@ impl From<io::Error> for Error {
 
 impl From<std::num::ParseIntError> for Error {
     fn from(err: std::num::ParseIntError) -> Self {
-        Error::Parse(err.to_string())
+        Self::Parse(err.to_string())
     }
 }
 
@@ -49,18 +49,20 @@ pub enum Checksum {
 
 impl Default for Checksum {
     fn default() -> Self {
-        Checksum::Sha256([0; 32])
+        Self::Sha256([0; 32])
     }
 }
 
 impl Checksum {
     // Is this checksum SHA-256?
+    #[must_use]
     pub fn is_sha256(&self) -> bool {
         self.as_sha256().is_some()
     }
 
     // If this is a SHA-256 checksum, get the raw bytes
-    pub fn as_sha256(&self) -> Option<[u8; 32]> {
+    #[must_use]
+    pub const fn as_sha256(&self) -> Option<[u8; 32]> {
         match self {
             Checksum::Sha256(digest) => Some(*digest),
         }
@@ -68,8 +70,8 @@ impl Checksum {
 }
 
 impl From<[u8; 32]> for Checksum {
-    fn from(bytes: [u8; 32]) -> Checksum {
-        Checksum::Sha256(bytes)
+    fn from(bytes: [u8; 32]) -> Self {
+        Self::Sha256(bytes)
     }
 }
 
@@ -90,7 +92,7 @@ impl FromStr for Checksum {
             *byte = u8::from_str_radix(&s[(i * 2)..=(i * 2) + 1], 16)?;
         }
 
-        Ok(Checksum::Sha256(digest))
+        Ok(Self::Sha256(digest))
     }
 }
 

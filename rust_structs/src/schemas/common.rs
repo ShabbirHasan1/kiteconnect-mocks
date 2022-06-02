@@ -25,7 +25,7 @@ pub enum Meta {
 
 impl Default for Meta {
     fn default() -> Self {
-        Meta::HashMap(HashMap::new())
+        Self::HashMap(HashMap::new())
     }
 }
 
@@ -47,7 +47,7 @@ pub enum TagsValue {
 
 impl Default for Tags {
     fn default() -> Self {
-        Tags::Vector(Vec::new())
+        Self::Vector(Vec::new())
     }
 }
 
@@ -66,7 +66,7 @@ pub enum Status {
 
 impl Default for Status {
     fn default() -> Self {
-        Status::Success
+        Self::Success
     }
 }
 
@@ -96,7 +96,7 @@ pub enum UserTypeEnum {
 }
 impl Default for UserType {
     fn default() -> Self {
-        UserType::Enum(UserTypeEnum::Individual)
+        Self::Enum(UserTypeEnum::Individual)
     }
 }
 
@@ -116,7 +116,7 @@ pub enum BrokerName {
 
 impl Default for Broker {
     fn default() -> Self {
-        Broker::Enum(BrokerName::Zerodha)
+        Self::Enum(BrokerName::Zerodha)
     }
 }
 
@@ -134,7 +134,7 @@ pub enum Exchanges {
 }
 impl Default for Exchanges {
     fn default() -> Self {
-        Exchanges::Nse
+        Self::Nse
     }
 }
 
@@ -147,7 +147,7 @@ pub enum OptionalExchanges {
 
 impl Default for OptionalExchanges {
     fn default() -> Self {
-        OptionalExchanges::Enum(Exchanges::Nse)
+        Self::Enum(Exchanges::Nse)
     }
 }
 
@@ -166,7 +166,7 @@ pub enum Products {
 }
 impl Default for Products {
     fn default() -> Self {
-        Products::CashAndCarry
+        Self::CashAndCarry
     }
 }
 
@@ -183,7 +183,7 @@ pub enum OrderTypes {
 }
 impl Default for OrderTypes {
     fn default() -> Self {
-        OrderTypes::Market
+        Self::Market
     }
 }
 
@@ -209,13 +209,13 @@ pub enum ProfileMetaValueEnum {
 
 impl Default for ProfileMetaEnum {
     fn default() -> Self {
-        ProfileMetaEnum::Enum(ProfileMetaValueEnum::Empty)
+        Self::Enum(ProfileMetaValueEnum::Empty)
     }
 }
 
 impl Default for ProfileMetaValueEnum {
     fn default() -> Self {
-        ProfileMetaValueEnum::Empty
+        Self::Empty
     }
 }
 
@@ -228,7 +228,7 @@ pub enum TransactionType {
 
 impl Default for TransactionType {
     fn default() -> Self {
-        TransactionType::Buy
+        Self::Buy
     }
 }
 
@@ -252,7 +252,7 @@ pub enum Variety {
 
 impl Default for Variety {
     fn default() -> Self {
-        Variety::Regular
+        Self::Regular
     }
 }
 
@@ -266,16 +266,16 @@ pub enum Validity {
 
 impl Default for Validity {
     fn default() -> Self {
-        Validity::Day
+        Self::Day
     }
 }
 
 impl Validity {
-    pub fn is_not_ttl(&self) -> bool {
+    #[must_use]
+    pub const fn is_not_ttl(&self) -> bool {
         match self {
-            Validity::Day => true,
-            Validity::Ioc => true,
-            Validity::Ttl => false,
+            Self::Day | Self::Ioc => true,
+            Self::Ttl => false,
         }
     }
 }
@@ -321,13 +321,13 @@ pub enum OrderStatusValue {
 
 impl Default for OrderStatus {
     fn default() -> Self {
-        OrderStatus::Enum(OrderStatusValue::Open)
+        Self::Enum(OrderStatusValue::Open)
     }
 }
 
 impl Default for OrderStatusValue {
     fn default() -> Self {
-        OrderStatusValue::Open
+        Self::Open
     }
 }
 
@@ -340,7 +340,7 @@ pub enum OrderMarginTypes {
 
 impl Default for OrderMarginTypes {
     fn default() -> Self {
-        OrderMarginTypes::Equity
+        Self::Equity
     }
 }
 
@@ -353,7 +353,7 @@ pub enum OptionalOrderMarginTypes {
 
 impl Default for OptionalOrderMarginTypes {
     fn default() -> Self {
-        OptionalOrderMarginTypes::Enum(OrderMarginTypes::Equity)
+        Self::Enum(OrderMarginTypes::Equity)
     }
 }
 
@@ -371,7 +371,7 @@ pub enum InstrumentType {
 
 impl Default for InstrumentType {
     fn default() -> Self {
-        InstrumentType::Equity
+        Self::Equity
     }
 }
 
@@ -405,7 +405,7 @@ pub enum Segment {
 
 impl Default for Segment {
     fn default() -> Self {
-        Segment::Nse
+        Self::Nse
     }
 }
 
@@ -419,7 +419,7 @@ pub enum DividendType {
 
 impl Default for DividendType {
     fn default() -> Self {
-        DividendType::Growth
+        Self::Growth
     }
 }
 
@@ -433,7 +433,7 @@ pub enum MfSipStatus {
 
 impl Default for MfSipStatus {
     fn default() -> Self {
-        MfSipStatus::Active
+        Self::Active
     }
 }
 
@@ -451,7 +451,7 @@ pub enum GttOrderStatus {
 
 impl Default for GttOrderStatus {
     fn default() -> Self {
-        GttOrderStatus::Active
+        Self::Active
     }
 }
 
@@ -465,7 +465,7 @@ pub enum GttOrderType {
 
 impl Default for GttOrderType {
     fn default() -> Self {
-        GttOrderType::Single
+        Self::Single
     }
 }
 
@@ -485,13 +485,13 @@ pub enum MfPurchaseTypeValue {
 
 impl Default for MfPurchaseType {
     fn default() -> Self {
-        MfPurchaseType::Enum(MfPurchaseTypeValue::Fresh)
+        Self::Enum(MfPurchaseTypeValue::Fresh)
     }
 }
 
 impl Default for MfPurchaseTypeValue {
     fn default() -> Self {
-        MfPurchaseTypeValue::Fresh
+        Self::Fresh
     }
 }
 
@@ -511,7 +511,7 @@ pub enum SipFrequency {
 
 impl Default for SipFrequency {
     fn default() -> Self {
-        SipFrequency::Daily
+        Self::Daily
     }
 }
 
@@ -535,7 +535,7 @@ pub enum SettlementType {
 
 impl Default for SettlementType {
     fn default() -> Self {
-        SettlementType::Tone
+        Self::Tone
     }
 }
 
@@ -548,7 +548,7 @@ pub enum MfPlan {
 
 impl Default for MfPlan {
     fn default() -> Self {
-        MfPlan::Direct
+        Self::Direct
     }
 }
 
@@ -564,7 +564,7 @@ pub enum MfScheme {
 
 impl Default for MfScheme {
     fn default() -> Self {
-        MfScheme::Balanced
+        Self::Balanced
     }
 }
 
@@ -578,7 +578,6 @@ pub enum MfSipTags {
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum MfSipTagsValue {
-
     CoinAndroidSip,
     CoinIosSip,
     CoinWebSip,
@@ -586,13 +585,13 @@ pub enum MfSipTagsValue {
 
 impl Default for MfSipTags {
     fn default() -> Self {
-        MfSipTags::Enum(MfSipTagsValue::CoinWebSip)
+        Self::Enum(MfSipTagsValue::CoinWebSip)
     }
 }
 
 impl Default for MfSipTagsValue {
     fn default() -> Self {
-        MfSipTagsValue::CoinWebSip
+        Self::CoinWebSip
     }
 }
 

@@ -63,6 +63,7 @@ impl Postback {
         Checksum::Sha256(hash.as_slice().try_into().unwrap())
     }
 
+    #[must_use]
     pub fn set_checksum<T: Into<String>>(mut self, api_secret: T) -> Self {
         self.checksum = self.calculate_checksum(api_secret);
         self

@@ -30,7 +30,7 @@ pub enum Expiry {
 
 impl Default for Expiry {
     fn default() -> Self {
-        Expiry::NaiveDate(NaiveDate::from_ymd(0, 0, 0))
+        Self::NaiveDate(NaiveDate::from_ymd(0, 0, 0))
     }
 }
 

@@ -67,7 +67,7 @@ mod tests {
     #[test]
     fn test_ohlc_multiple_instruments() -> serde_json::Result<()> {
         let raw_data = r#"{"status":"success","data":{"NSE:INFY":{"instrument_token":408065,"last_price":1459,"ohlc":{"open":1453,"high":1466.75,"low":1446.7,"close":1455.15}},"NSE:SBIN":{"instrument_token":500112,"last_price":465.5,"ohlc":{"open":454.85,"high":464,"low":454.15,"close":462.4}},"NSE:HDFC":{"instrument_token":500010,"last_price":2209.85,"ohlc":{"open":2165,"high":2212,"low":2152.3,"close":2201.6}}}}"#;
-        let deserialized: Ohlc = serde_json::from_str(&raw_data)?;
+        let deserialized: Ohlc = serde_json::from_str(raw_data)?;
         // println!("{:#?}", &deserialized);
         let mut data: HashMap<String, OhlcData> = HashMap::new();
         data.extend([
@@ -128,7 +128,7 @@ mod tests {
     #[test]
     fn test_ohlc_no_instruments() -> serde_json::Result<()> {
         let raw_data = r#"{"status":"success","data":{}}"#;
-        let deserialized: Ohlc = serde_json::from_str(&raw_data)?;
+        let deserialized: Ohlc = serde_json::from_str(raw_data)?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,
@@ -148,7 +148,7 @@ mod tests {
     fn test_ohlc_error() -> serde_json::Result<()> {
         let raw_data =
             r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#;
-        let deserialized: Ohlc = serde_json::from_str(&raw_data)?;
+        let deserialized: Ohlc = serde_json::from_str(raw_data)?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,

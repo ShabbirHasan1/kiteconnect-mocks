@@ -1,7 +1,7 @@
 use super::common::*;
 use serde::{Deserialize, Serialize};
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Profile {
     pub status: Status,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -12,7 +12,7 @@ pub struct Profile {
     pub error_type: Option<Exception>,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct ProfileData {
     pub user_id: String,
     pub user_type: UserType,
@@ -88,7 +88,7 @@ mod tests {
     fn test_profile_error() -> serde_json::Result<()> {
         let raw_data =
             r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#;
-        let deserialized: Profile = serde_json::from_str(&raw_data)?;
+        let deserialized: Profile = serde_json::from_str(raw_data)?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,

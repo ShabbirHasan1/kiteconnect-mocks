@@ -139,7 +139,7 @@ mod tests {
     fn test_margins_error() -> serde_json::Result<()> {
         let raw_data =
             r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#;
-        let deserialized: Margins = serde_json::from_str(&raw_data)?;
+        let deserialized: Margins = serde_json::from_str(raw_data)?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,

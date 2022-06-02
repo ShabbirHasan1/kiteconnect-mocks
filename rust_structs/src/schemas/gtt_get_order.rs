@@ -86,7 +86,7 @@ pub struct GttResult {
     pub order_result: GttOrderResult,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct GttOrderResult {
     pub status: Status,
     #[serde(
@@ -97,7 +97,7 @@ pub struct GttOrderResult {
     pub rejection_reason: Option<String>,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct GttOrderResultMeta {
     pub app_id: u64,
     pub gtt: u64,
@@ -201,7 +201,7 @@ mod tests {
     fn test_gtt_get_order_error() -> serde_json::Result<()> {
         let raw_data =
             r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#;
-        let deserialized: GttGetOrder = serde_json::from_str(&raw_data)?;
+        let deserialized: GttGetOrder = serde_json::from_str(raw_data)?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,

@@ -319,7 +319,7 @@ mod tests {
     fn test_order_info_error() -> serde_json::Result<()> {
         let raw_data =
             r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#;
-        let deserialized: OrderInfo = serde_json::from_str(&raw_data)?;
+        let deserialized: OrderInfo = serde_json::from_str(raw_data)?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,

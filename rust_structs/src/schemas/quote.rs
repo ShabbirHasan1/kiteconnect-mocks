@@ -168,7 +168,7 @@ mod tests {
     #[test]
     fn test_quote_no_instruments() -> serde_json::Result<()> {
         let raw_data = r#"{"status":"success","data":{}}"#;
-        let deserialized: Quote = serde_json::from_str(&raw_data)?;
+        let deserialized: Quote = serde_json::from_str(raw_data)?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,
@@ -188,7 +188,7 @@ mod tests {
     fn test_quote_error() -> serde_json::Result<()> {
         let raw_data =
             r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#;
-        let deserialized: Quote = serde_json::from_str(&raw_data)?;
+        let deserialized: Quote = serde_json::from_str(raw_data)?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,

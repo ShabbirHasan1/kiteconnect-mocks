@@ -65,7 +65,7 @@ mod tests {
     fn test_margins_equity_error() -> serde_json::Result<()> {
         let raw_data =
             r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#;
-        let deserialized: MarginsEquity = serde_json::from_str(&raw_data)?;
+        let deserialized: MarginsEquity = serde_json::from_str(raw_data)?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,

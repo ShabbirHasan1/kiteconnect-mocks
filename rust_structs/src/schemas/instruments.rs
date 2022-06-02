@@ -20,7 +20,7 @@ struct Instruments {
     exchange: Exchanges,
 }
 
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum Expiry {
     #[serde(with = "naive_date_from_str")]

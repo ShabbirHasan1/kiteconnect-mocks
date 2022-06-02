@@ -1,5 +1,5 @@
-use super::common::*;
-use crate::utils::*;
+use super::common::{Exception, Exchanges, Products, Status, TransactionType};
+use crate::utils::{optional_naive_date_time_from_str, optional_naive_time_from_str};
 use chrono::{NaiveDateTime, NaiveTime};
 use serde::{Deserialize, Serialize};
 
@@ -140,7 +140,7 @@ mod tests {
     fn test_trades_error() -> serde_json::Result<()> {
         let raw_data =
             r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#;
-        let deserialized: Trades = serde_json::from_str(&raw_data)?;
+        let deserialized: Trades = serde_json::from_str(raw_data)?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,

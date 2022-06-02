@@ -52,7 +52,7 @@ mod tests {
     #[test]
     fn test_ltp_multiple_instruments() -> serde_json::Result<()> {
         let raw_data = r#"{"status":"success","data":{"NSE:INFY":{"instrument_token":408065,"last_price":1459.00},"NSE:SBIN":{"instrument_token":500112,"last_price":465.50},"NSE:HDFC":{"instrument_token":500010,"last_price":2209.85}}}"#;
-        let deserialized: Ltp = serde_json::from_str(&raw_data)?;
+        let deserialized: Ltp = serde_json::from_str(raw_data)?;
         // println!("{:#?}", &deserialized);
         let mut data: HashMap<String, LtpData> = HashMap::new();
         data.extend([
@@ -95,7 +95,7 @@ mod tests {
     #[test]
     fn test_ltp_no_instruments() -> serde_json::Result<()> {
         let raw_data = r#"{"status":"success","data":{}}"#;
-        let deserialized: Ltp = serde_json::from_str(&raw_data)?;
+        let deserialized: Ltp = serde_json::from_str(raw_data)?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,
@@ -115,7 +115,7 @@ mod tests {
     fn test_ltp_error() -> serde_json::Result<()> {
         let raw_data =
             r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#;
-        let deserialized: Ltp = serde_json::from_str(&raw_data)?;
+        let deserialized: Ltp = serde_json::from_str(raw_data)?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,

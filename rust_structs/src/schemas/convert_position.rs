@@ -1,7 +1,7 @@
-use super::common::*;
+use super::common::{Exception, Status};
 use serde::{Deserialize, Serialize};
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct ConvertPosition {
     pub status: Status,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -38,7 +38,7 @@ mod tests {
     fn test_convert_position_error() -> serde_json::Result<()> {
         let raw_data =
             r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#;
-        let deserialized: ConvertPosition = serde_json::from_str(&raw_data)?;
+        let deserialized: ConvertPosition = serde_json::from_str(raw_data)?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,

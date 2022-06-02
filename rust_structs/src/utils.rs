@@ -13,7 +13,7 @@ pub fn read_json_from_file<P: AsRef<Path>>(path: P) -> Result<BufReader<File>, B
 pub mod optional_naive_date_from_str {
     use chrono::NaiveDate;
     use serde::{de, ser, Deserialize, Deserializer};
-    const DT_FORMAT: &'static str = "%Y-%m-%d";
+    const DT_FORMAT: &str = "%Y-%m-%d";
 
     pub fn deserialize<'de, D>(deserializer: D) -> Result<Option<NaiveDate>, D::Error>
     where
@@ -31,10 +31,7 @@ pub mod optional_naive_date_from_str {
             None => Ok(None),
         }
     }
-    pub fn serialize<'de, S>(
-        naive_date: &Option<NaiveDate>,
-        serializer: S,
-    ) -> Result<S::Ok, S::Error>
+    pub fn serialize<S>(naive_date: &Option<NaiveDate>, serializer: S) -> Result<S::Ok, S::Error>
     where
         S: ser::Serializer,
     {
@@ -50,7 +47,7 @@ pub mod optional_naive_date_from_str {
 pub mod naive_date_from_str {
     use chrono::NaiveDate;
     use serde::{de, ser, Deserialize, Deserializer};
-    const DT_FORMAT: &'static str = "%Y-%m-%d";
+    const DT_FORMAT: &str = "%Y-%m-%d";
 
     pub fn deserialize<'de, D>(deserializer: D) -> Result<NaiveDate, D::Error>
     where
@@ -59,7 +56,7 @@ pub mod naive_date_from_str {
         let naive_date_string: String = String::deserialize(deserializer)?;
         NaiveDate::parse_from_str(&naive_date_string, DT_FORMAT).map_err(de::Error::custom)
     }
-    pub fn serialize<'de, S>(naive_date: &NaiveDate, serializer: S) -> Result<S::Ok, S::Error>
+    pub fn serialize<S>(naive_date: &NaiveDate, serializer: S) -> Result<S::Ok, S::Error>
     where
         S: ser::Serializer,
     {
@@ -72,7 +69,7 @@ pub mod naive_date_from_str {
 pub mod optional_naive_time_from_str {
     use chrono::NaiveTime;
     use serde::{de, ser, Deserialize, Deserializer};
-    const DT_FORMAT: &'static str = "%H:%M:%S";
+    const DT_FORMAT: &str = "%H:%M:%S";
     pub fn deserialize<'de, D>(deserializer: D) -> Result<Option<NaiveTime>, D::Error>
     where
         D: Deserializer<'de>,
@@ -89,10 +86,7 @@ pub mod optional_naive_time_from_str {
             None => Ok(None),
         }
     }
-    pub fn serialize<'de, S>(
-        naive_time: &Option<NaiveTime>,
-        serializer: S,
-    ) -> Result<S::Ok, S::Error>
+    pub fn serialize<S>(naive_time: &Option<NaiveTime>, serializer: S) -> Result<S::Ok, S::Error>
     where
         S: ser::Serializer,
     {
@@ -108,7 +102,7 @@ pub mod optional_naive_time_from_str {
 pub mod optional_naive_date_time_from_str {
     use chrono::NaiveDateTime;
     use serde::{de, ser, Deserialize, Deserializer};
-    const DT_FORMAT: &'static str = "%Y-%m-%d %H:%M:%S";
+    const DT_FORMAT: &str = "%Y-%m-%d %H:%M:%S";
 
     pub fn deserialize<'de, D>(deserializer: D) -> Result<Option<NaiveDateTime>, D::Error>
     where
@@ -129,7 +123,7 @@ pub mod optional_naive_date_time_from_str {
             None => Ok(None),
         }
     }
-    pub fn serialize<'de, S>(
+    pub fn serialize<S>(
         naive_date_time: &Option<NaiveDateTime>,
         serializer: S,
     ) -> Result<S::Ok, S::Error>
@@ -148,7 +142,7 @@ pub mod optional_naive_date_time_from_str {
 pub mod naive_date_time_from_str {
     use chrono::NaiveDateTime;
     use serde::{de, ser, Deserialize, Deserializer};
-    const DT_FORMAT: &'static str = "%Y-%m-%d %H:%M:%S";
+    const DT_FORMAT: &str = "%Y-%m-%d %H:%M:%S";
 
     pub fn deserialize<'de, D>(deserializer: D) -> Result<NaiveDateTime, D::Error>
     where
@@ -157,10 +151,7 @@ pub mod naive_date_time_from_str {
         let naive_date_time_string: String = Deserialize::deserialize(deserializer)?;
         NaiveDateTime::parse_from_str(&naive_date_time_string, DT_FORMAT).map_err(de::Error::custom)
     }
-    pub fn serialize<'de, S>(
-        naive_date_time: &NaiveDateTime,
-        serializer: S,
-    ) -> Result<S::Ok, S::Error>
+    pub fn serialize<S>(naive_date_time: &NaiveDateTime, serializer: S) -> Result<S::Ok, S::Error>
     where
         S: ser::Serializer,
     {
@@ -173,7 +164,7 @@ pub mod naive_date_time_from_str {
 pub mod optional_naive_date_time_with_milli_or_micro_from_str {
     use chrono::NaiveDateTime;
     use serde::{de, ser, Deserialize, Deserializer};
-    const DT_FORMAT: &'static str = "%Y-%m-%d %H:%M:%S%.f";
+    const DT_FORMAT: &str = "%Y-%m-%d %H:%M:%S%.f";
 
     pub fn deserialize<'de, D>(deserializer: D) -> Result<Option<NaiveDateTime>, D::Error>
     where
@@ -197,7 +188,7 @@ pub mod optional_naive_date_time_with_milli_or_micro_from_str {
             None => Ok(None),
         }
     }
-    pub fn serialize<'de, S>(
+    pub fn serialize<S>(
         naive_date_time_with_milli_or_micro: &Option<NaiveDateTime>,
         serializer: S,
     ) -> Result<S::Ok, S::Error>
@@ -216,7 +207,7 @@ pub mod optional_naive_date_time_with_milli_or_micro_from_str {
 pub mod naive_date_time_with_milli_or_micro_from_str {
     use chrono::NaiveDateTime;
     use serde::{de, ser, Deserialize, Deserializer};
-    const DT_FORMAT: &'static str = "%Y-%m-%d %H:%M:%S%.f";
+    const DT_FORMAT: &str = "%Y-%m-%d %H:%M:%S%.f";
 
     pub fn deserialize<'de, D>(deserializer: D) -> Result<NaiveDateTime, D::Error>
     where
@@ -227,7 +218,7 @@ pub mod naive_date_time_with_milli_or_micro_from_str {
         NaiveDateTime::parse_from_str(&naive_date_time_with_milli_or_micro_string, DT_FORMAT)
             .map_err(de::Error::custom)
     }
-    pub fn serialize<'de, S>(
+    pub fn serialize<S>(
         naive_date_time_with_milli_or_micro: &NaiveDateTime,
         serializer: S,
     ) -> Result<S::Ok, S::Error>
@@ -249,7 +240,7 @@ pub mod naive_date_time_timezone_from_str {
     use serde::{de, ser, Deserialize, Deserializer};
 
     // "2017-12-15T09:15:00+0530"
-    const DT_FORMAT: &'static str = "%Y-%m-%dT%H:%M:%S%z";
+    const DT_FORMAT: &str = "%Y-%m-%dT%H:%M:%S%z";
     pub fn deserialize<'de, D>(deserializer: D) -> Result<DateTime<FixedOffset>, D::Error>
     where
         D: Deserializer<'de>,
@@ -257,7 +248,7 @@ pub mod naive_date_time_timezone_from_str {
         let date_time_tz_string = String::deserialize(deserializer)?;
         DateTime::parse_from_str(&date_time_tz_string, DT_FORMAT).map_err(de::Error::custom)
     }
-    pub fn serialize<'de, S>(dt: &DateTime<FixedOffset>, serializer: S) -> Result<S::Ok, S::Error>
+    pub fn serialize<S>(dt: &DateTime<FixedOffset>, serializer: S) -> Result<S::Ok, S::Error>
     where
         S: ser::Serializer,
     {
@@ -270,7 +261,7 @@ pub mod naive_date_time_timezone_from_str {
 pub mod double_optional_naive_date_from_str {
     use chrono::NaiveDate;
     use serde::{de, ser, Deserialize, Deserializer};
-    const DT_FORMAT: &'static str = "%Y-%m-%d";
+    const DT_FORMAT: &str = "%Y-%m-%d";
     /// Deserialize potentially non-existing optional value
     pub fn deserialize<'de, D>(deserializer: D) -> Result<Option<Option<NaiveDate>>, D::Error>
     where
@@ -297,7 +288,7 @@ pub mod double_optional_naive_date_from_str {
     }
 
     /// Serialize optional value
-    pub fn serialize<'de, S>(
+    pub fn serialize<S>(
         naive_date_time: &Option<Option<NaiveDate>>,
         serializer: S,
     ) -> Result<S::Ok, S::Error>
@@ -334,7 +325,7 @@ mod tests {
     use serde::{Deserialize, Serialize};
     #[test]
     fn test_optional_naive_date_time_from_str() -> serde_json::Result<()> {
-        #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+        #[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
         pub struct OrdersData {
             #[serde(
                 with = "optional_naive_date_time_from_str",
@@ -343,7 +334,7 @@ mod tests {
             pub order_timestamp: Option<NaiveDateTime>,
         }
         let raw_data = r#"{"order_timestamp":"2017-12-29 11:06:52"}"#;
-        let deserialized: OrdersData = serde_json::from_str(&raw_data)?;
+        let deserialized: OrdersData = serde_json::from_str(raw_data)?;
         // println!("{:?}", deserialized);
         assert_eq!(
             deserialized,
@@ -358,7 +349,7 @@ mod tests {
     }
     #[test]
     fn test_optional_naive_time_from_str() -> serde_json::Result<()> {
-        #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+        #[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
         pub struct OrdersData {
             #[serde(
                 with = "optional_naive_time_from_str",
@@ -367,7 +358,7 @@ mod tests {
             pub order_timestamp: Option<NaiveTime>,
         }
         let raw_data = r#"{"order_timestamp":"11:06:52"}"#;
-        let deserialized: OrdersData = serde_json::from_str(&raw_data)?;
+        let deserialized: OrdersData = serde_json::from_str(raw_data)?;
         // println!("{:?}", deserialized);
         assert_eq!(
             deserialized,
@@ -382,13 +373,13 @@ mod tests {
     }
     #[test]
     fn test_naive_date_time_timezone_from_str() -> serde_json::Result<()> {
-        #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+        #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
         pub struct OrdersData {
             #[serde(with = "naive_date_time_timezone_from_str")]
             pub order_timestamp: DateTime<FixedOffset>,
         }
         let raw_data = r#"{"order_timestamp":"2017-12-15T09:15:00+0530"}"#;
-        let deserialized: OrdersData = serde_json::from_str(&raw_data)?;
+        let deserialized: OrdersData = serde_json::from_str(raw_data)?;
         // println!("{:?}", deserialized);
         assert_eq!(
             deserialized,
@@ -403,13 +394,13 @@ mod tests {
     }
     #[test]
     fn test_naive_date_from_str() -> serde_json::Result<()> {
-        #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+        #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
         pub struct OrdersData {
             #[serde(with = "optional_naive_date_from_str")]
             pub order_timestamp: Option<NaiveDate>,
         }
         let raw_data = r#"{"order_timestamp":"2017-12-15"}"#;
-        let deserialized: OrdersData = serde_json::from_str(&raw_data)?;
+        let deserialized: OrdersData = serde_json::from_str(raw_data)?;
         // println!("{:?}", deserialized);
         assert_eq!(
             deserialized,

@@ -124,7 +124,7 @@ mod tests {
     fn test_holdings_error() -> serde_json::Result<()> {
         let raw_data =
             r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#;
-        let deserialized: Holdings = serde_json::from_str(&raw_data)?;
+        let deserialized: Holdings = serde_json::from_str(raw_data)?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,

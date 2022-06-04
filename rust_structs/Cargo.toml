@@ -7,8 +7,30 @@ repository = "https://github.com/ShabbirHasan1/kiteconnect-mocks/tree/rust"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+abomonation = "0.7.3"
+alkahest = { version = "0.1.5", features = [
+    "alkahest-proc",
+    "derive",
+    "nightly",
+] }
 chrono = { version = "0.4.19", features = ["serde"] }
 csv = "1.1.6"
+rkyv = { version = "0.7.38", features = [
+    "arbitrary_enum_discriminant",
+    "archive_le",
+    "bytecheck",
+    "copy",
+    "copy_unsafe",
+    "indexmap",
+    "rend",
+    "smallvec",
+    "strict",
+    "tinyvec",
+    "tinyvec_alloc",
+    "uuid",
+    "uuid_std",
+    "validation",
+] }
 serde = { version = "1.0.137", features = [
     "derive",
     "alloc",
@@ -26,3 +48,23 @@ serde_json = { version = "1.0.81", features = [
 ] }
 serde_with = { version = "1.14.0", features = ["serde_json", "chrono", "json"] }
 sha2 = "0.10"
+simd-json = { version = "0.5.0", features = [
+    "128bit",
+    "alloc",
+    "allow-non-simd",
+    "beef",
+    "colored",
+    "core_affinity",
+    "getopts",
+    "hints",
+    "known-key",
+    "no-inline",
+    "safe",
+] }
+speedy = { version = "0.8.2", features = [
+    "chrono",
+    "external_doc",
+    "glam",
+    "indexmap",
+    "smallvec",
+] }

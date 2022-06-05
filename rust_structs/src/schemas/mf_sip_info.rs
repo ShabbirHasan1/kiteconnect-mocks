@@ -64,8 +64,8 @@ mod tests {
         let jsonfile = crate::utils::read_json_from_file("../mf_sip_info.json").unwrap();
         let deserialized: MfSipInfo = serde_json::from_reader(jsonfile)?;
         // println!("{:#?}", &deserialized);
-        let mut step_up_val = HashMap::<String, serde_json::Value>::new();
-        step_up_val.insert("15-02".to_string(), serde_json::Number::from(10).into());
+        let mut step_up_val = HashMap::<String, String>::new();
+        step_up_val.insert("15-02".to_string(), "10".to_string());
         assert_eq!(
             deserialized,
             MfSipInfo {

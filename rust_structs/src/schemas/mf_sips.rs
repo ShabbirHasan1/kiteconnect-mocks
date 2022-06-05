@@ -23,12 +23,12 @@ mod tests {
         let jsonfile = crate::utils::read_json_from_file("../mf_sips.json").unwrap();
         let deserialized: MfSips = serde_json::from_reader(jsonfile)?;
         // println!("{:#?}", &deserialized);
-        let mut step_up_1 = HashMap::<String, serde_json::Value>::new();
-        step_up_1.insert("05-05".to_string(), serde_json::Number::from(10).into());
-        let mut step_up_2 = HashMap::<String, serde_json::Value>::new();
-        step_up_2.insert("25-05".to_string(), serde_json::Number::from(10).into());
-        let mut step_up_3 = HashMap::<String, serde_json::Value>::new();
-        step_up_3.insert("20-11".to_string(), serde_json::Number::from(30).into());
+        let mut step_up_1 = HashMap::<String, String>::new();
+        step_up_1.insert("05-05".to_string(), "10".to_string());
+        let mut step_up_2 = HashMap::<String, String>::new();
+        step_up_2.insert("25-05".to_string(), "10".to_string());
+        let mut step_up_3 = HashMap::<String, String>::new();
+        step_up_3.insert("20-11".to_string(), "30".to_string());
         assert_eq!(
             deserialized,
             MfSips {

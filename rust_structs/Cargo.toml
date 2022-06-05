@@ -6,6 +6,10 @@ authors = ["Shabbir Hasan"]
 repository = "https://github.com/ShabbirHasan1/kiteconnect-mocks/tree/rust"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[lib]
+name = "rust_structs"
+# proc-macro = true
+
 [dependencies]
 abomonation = "0.7.3"
 alkahest = { version = "0.1.5", features = [
@@ -51,7 +55,7 @@ sha2 = "0.10"
 simd-json = { version = "0.5.0", features = [
     "128bit",
     "alloc",
-    "allow-non-simd",
+    # "allow-non-simd",
     "beef",
     "colored",
     "core_affinity",
@@ -68,3 +72,6 @@ speedy = { version = "0.8.2", features = [
     "indexmap",
     "smallvec",
 ] }
+proc-macro2 = "1.0"
+quote = "1.0"
+synstructure = "0.12"

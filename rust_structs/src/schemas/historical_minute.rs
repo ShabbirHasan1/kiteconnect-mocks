@@ -3,6 +3,7 @@ use crate::utils::*;
 use chrono::{DateTime, FixedOffset, TimeZone};
 use serde::{Deserialize, Serialize};
 
+
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct HistoricalMinute {
     pub status: Status,
@@ -49,11 +50,12 @@ impl Default for Candle {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::borrow::BorrowMut;
     use chrono::{FixedOffset, TimeZone};
     #[test]
-    fn test_historical_minute_json() -> serde_json::Result<()> {
+    fn test_historical_minute_json() -> std::result::Result<(), simd_json::Error> {
         let jsonfile = crate::utils::read_json_from_file("../historical_minute.json").unwrap();
-        let deserialized: HistoricalMinute = serde_json::from_reader(jsonfile)?;
+        let deserialized: HistoricalMinute = simd_json::from_reader(jsonfile)?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,
@@ -66,7 +68,7 @@ mod tests {
                             open: 1704.5,
                             high: 1705.0,
                             low: 1699.25,
-                            close: 1702.8,
+                            close: 1702.8000000000002,
                             volume: 2499,
                         },
                         Candle {
@@ -89,7 +91,7 @@ mod tests {
                             timestamp: FixedOffset::east(19800).ymd(2017, 12, 15).and_hms(9, 18, 0),
                             open: 1700.0,
                             high: 1700.0,
-                            low: 1698.3,
+                            low: 1698.3000000000002,
                             close: 1699.0,
                             volume: 771,
                         },
@@ -97,13 +99,13 @@ mod tests {
                             timestamp: FixedOffset::east(19800).ymd(2017, 12, 15).and_hms(9, 19, 0),
                             open: 1699.0,
                             high: 1700.0,
-                            low: 1698.1,
-                            close: 1699.8,
+                            low: 1698.1000000000001,
+                            close: 1699.8000000000002,
                             volume: 543,
                         },
                         Candle {
                             timestamp: FixedOffset::east(19800).ymd(2017, 12, 15).and_hms(9, 20, 0),
-                            open: 1699.8,
+                            open: 1699.8000000000002,
                             high: 1700.0,
                             low: 1696.55,
                             close: 1696.9,
@@ -121,10 +123,10 @@ mod tests {
     }
 
     #[test]
-    fn test_historical_minutes_oi_error() -> serde_json::Result<()> {
-        let raw_data =
-            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#;
-        let deserialized: HistoricalMinute = serde_json::from_str(raw_data)?;
+    fn test_historical_minutes_oi_error() -> std::result::Result<(), simd_json::Error> {
+        let mut raw_data =
+            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#.to_owned();
+        let deserialized: HistoricalMinute = simd_json::from_str(raw_data.borrow_mut())?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,

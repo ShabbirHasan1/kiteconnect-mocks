@@ -1,6 +1,7 @@
 use super::common::*;
 use serde::{Deserialize, Serialize};
 
+
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Margins {
     pub status: Status,
@@ -63,10 +64,11 @@ pub struct Utilised {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::borrow::BorrowMut;
     #[test]
-    fn test_margins_json() -> serde_json::Result<()> {
+    fn test_margins_json() -> std::result::Result<(), simd_json::Error> {
         let jsonfile = crate::utils::read_json_from_file("../margins.json").unwrap();
-        let deserialized: Margins = serde_json::from_reader(jsonfile)?;
+        let deserialized: Margins = simd_json::from_reader(jsonfile)?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,
@@ -85,7 +87,7 @@ mod tests {
                             intraday_payin: 0.0,
                         },
                         utilised: Utilised {
-                            debits: 145706.55,
+                            debits: 145706.55000000002,
                             exposure: 38981.25,
                             m2m_realised: 761.7,
                             m2m_unrealised: 0.0,
@@ -101,12 +103,12 @@ mod tests {
                     },
                     commodity: Commodity {
                         enabled: true,
-                        net: 100661.7,
+                        net: 100661.70000000001,
                         available: Available {
                             adhoc_margin: 0.0,
-                            cash: 100661.7,
-                            opening_balance: 100661.7,
-                            live_balance: 100661.7,
+                            cash: 100661.70000000001,
+                            opening_balance: 100661.70000000001,
+                            live_balance: 100661.70000000001,
                             collateral: 0.0,
                             intraday_payin: 0.0,
                         },
@@ -136,10 +138,10 @@ mod tests {
     }
 
     #[test]
-    fn test_margins_error() -> serde_json::Result<()> {
-        let raw_data =
-            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#;
-        let deserialized: Margins = serde_json::from_str(raw_data)?;
+    fn test_margins_error() -> std::result::Result<(), simd_json::Error> {
+        let mut raw_data =
+            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#.to_owned();
+        let deserialized: Margins = simd_json::from_str(raw_data.borrow_mut())?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,

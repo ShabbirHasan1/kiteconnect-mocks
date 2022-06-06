@@ -3,6 +3,7 @@ use crate::utils::*;
 use chrono::NaiveDate;
 use serde::{Deserialize, Serialize};
 
+
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct MfHoldings {
     pub status: Status,
@@ -35,11 +36,12 @@ pub struct MfHoldingsData {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::borrow::BorrowMut;
     use chrono::NaiveDate;
     #[test]
-    fn test_mf_holdings_json() -> serde_json::Result<()> {
+    fn test_mf_holdings_json() -> std::result::Result<(), simd_json::Error> {
         let jsonfile = crate::utils::read_json_from_file("../mf_holdings.json").unwrap();
-        let deserialized: MfHoldings = serde_json::from_reader(jsonfile)?;
+        let deserialized: MfHoldings = simd_json::from_reader(jsonfile)?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,
@@ -74,7 +76,7 @@ mod tests {
                         last_price: 559.081,
                         pnl: 61963.074,
                         last_price_date: None,
-                        quantity: 290.59,
+                        quantity: 290.59000000000003,
                     },
                     MfHoldingsData {
                         folio: Some("91022348426".into(),),
@@ -82,17 +84,17 @@ mod tests {
                         tradingsymbol: "INF846K01131".into(),
                         average_price: 28.779,
                         last_price: 41.3876,
-                        pnl: 44467.717,
+                        pnl: 44467.717000000004,
                         last_price_date: None,
-                        quantity: 3526.834,
+                        quantity: 3526.8340000000003,
                     },
                     MfHoldingsData {
                         folio: Some("488155267386".into(),),
                         fund: "Reliance Money Manager Fund".into(),
                         tradingsymbol: "INF204K01EY0".into(),
                         average_price: 1002.948,
-                        last_price: 1007.5645,
-                        pnl: 2.304,
+                        last_price: 1007.5645000000001,
+                        pnl: 2.3040000000000003,
                         last_price_date: None,
                         quantity: 0.499,
                     },
@@ -107,10 +109,10 @@ mod tests {
     }
 
     #[test]
-    fn test_mf_holdings_error() -> serde_json::Result<()> {
-        let raw_data =
-            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#;
-        let deserialized: MfHoldings = serde_json::from_str(raw_data)?;
+    fn test_mf_holdings_error() -> std::result::Result<(), simd_json::Error> {
+        let mut raw_data =
+            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#.to_owned();
+        let deserialized: MfHoldings = simd_json::from_str(raw_data.borrow_mut())?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,

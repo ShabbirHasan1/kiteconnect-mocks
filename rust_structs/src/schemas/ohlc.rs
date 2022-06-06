@@ -31,10 +31,11 @@ pub struct OhlcInner {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::borrow::BorrowMut;
     #[test]
-    fn test_ohlc_json() -> serde_json::Result<()> {
+    fn test_ohlc_json() -> std::result::Result<(), simd_json::Error> {
         let jsonfile = crate::utils::read_json_from_file("../ohlc.json").unwrap();
-        let deserialized: Ohlc = serde_json::from_reader(jsonfile)?;
+        let deserialized: Ohlc = simd_json::from_reader(jsonfile)?;
         // println!("{:#?}", &deserialized);
         let mut data: HashMap<String, OhlcData> = HashMap::new();
         data.insert(
@@ -65,9 +66,9 @@ mod tests {
     }
 
     #[test]
-    fn test_ohlc_multiple_instruments() -> serde_json::Result<()> {
-        let raw_data = r#"{"status":"success","data":{"NSE:INFY":{"instrument_token":408065,"last_price":1459,"ohlc":{"open":1453,"high":1466.75,"low":1446.7,"close":1455.15}},"NSE:SBIN":{"instrument_token":500112,"last_price":465.5,"ohlc":{"open":454.85,"high":464,"low":454.15,"close":462.4}},"NSE:HDFC":{"instrument_token":500010,"last_price":2209.85,"ohlc":{"open":2165,"high":2212,"low":2152.3,"close":2201.6}}}}"#;
-        let deserialized: Ohlc = serde_json::from_str(raw_data)?;
+    fn test_ohlc_multiple_instruments() -> std::result::Result<(), simd_json::Error> {
+        let mut raw_data = r#"{"status":"success","data":{"NSE:INFY":{"instrument_token":408065,"last_price":1459,"ohlc":{"open":1453,"high":1466.75,"low":1446.7,"close":1455.15}},"NSE:SBIN":{"instrument_token":500112,"last_price":465.5,"ohlc":{"open":454.85,"high":464,"low":454.15,"close":462.4}},"NSE:HDFC":{"instrument_token":500010,"last_price":2209.85,"ohlc":{"open":2165,"high":2212,"low":2152.3,"close":2201.6}}}}"#.to_owned();
+        let deserialized: Ohlc = simd_json::from_str(raw_data.borrow_mut())?;
         // println!("{:#?}", &deserialized);
         let mut data: HashMap<String, OhlcData> = HashMap::new();
         data.extend([
@@ -92,8 +93,8 @@ mod tests {
                     ohlc: OhlcInner {
                         open: 454.85,
                         high: 464.0,
-                        low: 454.15,
-                        close: 462.4,
+                        low: 454.15000000000003,
+                        close: 462.40000000000003,
                     },
                 },
             ),
@@ -126,9 +127,9 @@ mod tests {
     }
 
     #[test]
-    fn test_ohlc_no_instruments() -> serde_json::Result<()> {
-        let raw_data = r#"{"status":"success","data":{}}"#;
-        let deserialized: Ohlc = serde_json::from_str(raw_data)?;
+    fn test_ohlc_no_instruments() -> std::result::Result<(), simd_json::Error> {
+        let mut raw_data = r#"{"status":"success","data":{}}"#.to_owned();
+        let deserialized: Ohlc = simd_json::from_str(raw_data.borrow_mut())?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,
@@ -145,10 +146,10 @@ mod tests {
     }
 
     #[test]
-    fn test_ohlc_error() -> serde_json::Result<()> {
-        let raw_data =
-            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#;
-        let deserialized: Ohlc = serde_json::from_str(raw_data)?;
+    fn test_ohlc_error() -> std::result::Result<(), simd_json::Error> {
+        let mut raw_data =
+            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#.to_owned();
+        let deserialized: Ohlc = simd_json::from_str(raw_data.borrow_mut())?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,

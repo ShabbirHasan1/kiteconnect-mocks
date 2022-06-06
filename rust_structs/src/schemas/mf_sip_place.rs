@@ -20,10 +20,11 @@ pub struct MfSipPlaceOrderData {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::borrow::BorrowMut;
     #[test]
-    fn test_mf_sip_place_order_json() -> serde_json::Result<()> {
+    fn test_mf_sip_place_order_json() -> std::result::Result<(), simd_json::Error> {
         let jsonfile = crate::utils::read_json_from_file("../mf_sip_place.json").unwrap();
-        let deserialized: MfSipPlaceOrder = serde_json::from_reader(jsonfile)?;
+        let deserialized: MfSipPlaceOrder = simd_json::from_reader(jsonfile)?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,
@@ -42,10 +43,10 @@ mod tests {
     }
 
     #[test]
-    fn test_mf_sip_place_order_error() -> serde_json::Result<()> {
-        let raw_data =
-            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#;
-        let deserialized: MfSipPlaceOrder = serde_json::from_str(raw_data)?;
+    fn test_mf_sip_place_order_error() -> std::result::Result<(), simd_json::Error> {
+        let mut raw_data =
+            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#.to_owned();
+        let deserialized: MfSipPlaceOrder = simd_json::from_str(raw_data.borrow_mut())?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,

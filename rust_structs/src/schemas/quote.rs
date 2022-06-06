@@ -60,11 +60,12 @@ pub struct Pqo {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::borrow::BorrowMut;
     use chrono::NaiveDate;
     #[test]
-    fn test_quote_json() -> serde_json::Result<()> {
+    fn test_quote_json() -> std::result::Result<(), simd_json::Error> {
         let jsonfile = crate::utils::read_json_from_file("../quote.json").unwrap();
-        let deserialized: Quote = serde_json::from_reader(jsonfile)?;
+        let deserialized: Quote = simd_json::from_reader(jsonfile)?;
         // println!("{:#?}", &deserialized);
         let mut data: HashMap<String, QuoteData> = HashMap::new();
         data.insert(
@@ -84,7 +85,7 @@ mod tests {
                 oi_day_low: 0.0,
                 net_change: 0.0,
                 lower_circuit_limit: 1250.7,
-                upper_circuit_limit: 1528.6,
+                upper_circuit_limit: 1528.6000000000001,
                 ohlc: crate::schemas::ohlc::OhlcInner {
                     open: 1396.0,
                     high: 1421.75,
@@ -166,9 +167,9 @@ mod tests {
     }
 
     #[test]
-    fn test_quote_no_instruments() -> serde_json::Result<()> {
-        let raw_data = r#"{"status":"success","data":{}}"#;
-        let deserialized: Quote = serde_json::from_str(raw_data)?;
+    fn test_quote_no_instruments() -> std::result::Result<(), simd_json::Error> {
+        let mut raw_data = r#"{"status":"success","data":{}}"#.to_owned();
+        let deserialized: Quote = simd_json::from_str(raw_data.borrow_mut())?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,
@@ -185,10 +186,10 @@ mod tests {
     }
 
     #[test]
-    fn test_quote_error() -> serde_json::Result<()> {
-        let raw_data =
-            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#;
-        let deserialized: Quote = serde_json::from_str(raw_data)?;
+    fn test_quote_error() -> std::result::Result<(), simd_json::Error> {
+        let mut raw_data =
+            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#.to_owned();
+        let deserialized: Quote = simd_json::from_str(raw_data.borrow_mut())?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,

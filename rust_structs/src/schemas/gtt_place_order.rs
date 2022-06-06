@@ -1,6 +1,7 @@
 use super::common::*;
 use serde::{Deserialize, Serialize};
 
+
 #[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct GttPlaceOrder {
     pub status: Status,
@@ -20,10 +21,11 @@ pub struct GttPlaceOrderData {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::borrow::BorrowMut;
     #[test]
-    fn test_gtt_place_order_json() -> serde_json::Result<()> {
+    fn test_gtt_place_order_json() -> std::result::Result<(), simd_json::Error> {
         let jsonfile = crate::utils::read_json_from_file("../gtt_place_order.json").unwrap();
-        let deserialized: GttPlaceOrder = serde_json::from_reader(jsonfile)?;
+        let deserialized: GttPlaceOrder = simd_json::from_reader(jsonfile)?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,
@@ -40,10 +42,10 @@ mod tests {
     }
 
     #[test]
-    fn test_gtt_place_order_error() -> serde_json::Result<()> {
-        let raw_data =
-            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#;
-        let deserialized: GttPlaceOrder = serde_json::from_str(raw_data)?;
+    fn test_gtt_place_order_error() -> std::result::Result<(), simd_json::Error> {
+        let mut raw_data =
+            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#.to_owned();
+        let deserialized: GttPlaceOrder = simd_json::from_str(raw_data.borrow_mut())?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,

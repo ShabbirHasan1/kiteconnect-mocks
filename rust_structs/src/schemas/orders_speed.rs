@@ -75,17 +75,19 @@ pub struct OrdersData {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use chrono::NaiveDate;
+    // use std::borrow::BorrowMut;
+    // use chrono::NaiveDate;
     #[test]
     fn test_orders_json() -> std::result::Result<(), simd_json::Error> {
         let jsonfile = crate::utils::read_json_from_file("orders.json").unwrap();
         // let mut jsonfile = std::fs::read_to_string("../orders.json").unwrap();
-        // let deserialized: Orders = serde_json::from_reader(jsonfile)?;
+        // let deserialized: Orders = simd_json::from_reader(jsonfile)?;
         let deserialized: Orders = simd_json::from_reader(jsonfile)?;
         // let deserialized: Orders = Orders::read_from_file("../orders.json")?;
-        println!("{:#?}", &deserialized);
+        // println!("{:#?}", &deserialized);
         // let serialized = serde_json::to_string(&deserialized).unwrap();
-        // println!("{:#?}", &serialized);
+        let serialized = simd_json::to_string(&deserialized).unwrap();
+        println!("{:#?}", &serialized);
         // assert_eq!(raw_data, serialized);
         Ok(())
     }

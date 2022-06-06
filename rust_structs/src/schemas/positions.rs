@@ -57,10 +57,11 @@ pub struct PositionsDataDetails {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::borrow::BorrowMut;
     #[test]
-    fn test_margins_json() -> serde_json::Result<()> {
+    fn test_margins_json() -> std::result::Result<(), simd_json::Error> {
         let jsonfile = crate::utils::read_json_from_file("../positions.json").unwrap();
-        let deserialized: Positions = serde_json::from_reader(jsonfile)?;
+        let deserialized: Positions = simd_json::from_reader(jsonfile)?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,
@@ -140,7 +141,7 @@ mod tests {
                             multiplier: 1,
                             average_price: 0.0,
                             close_price: 0.0,
-                            last_price: 308.4,
+                            last_price: 308.40000000000003,
                             value: -2.0,
                             pnl: -2.0,
                             mtm: -2.0,
@@ -236,7 +237,7 @@ mod tests {
                             multiplier: 1,
                             average_price: 0.0,
                             close_price: 0.0,
-                            last_price: 308.4,
+                            last_price: 308.40000000000003,
                             value: -2.0,
                             pnl: -2.0,
                             mtm: -2.0,
@@ -270,10 +271,10 @@ mod tests {
     }
 
     #[test]
-    fn test_positions_error() -> serde_json::Result<()> {
-        let raw_data =
-            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#;
-        let deserialized: Positions = serde_json::from_str(raw_data)?;
+    fn test_positions_error() -> std::result::Result<(), simd_json::Error> {
+        let mut raw_data =
+            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#.to_owned();
+        let deserialized: Positions = simd_json::from_str(raw_data.borrow_mut())?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,

@@ -1,6 +1,7 @@
 use super::common::*;
 use serde::{Deserialize, Serialize};
 
+
 #[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Logout {
     pub status: Status,
@@ -15,10 +16,11 @@ pub struct Logout {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::borrow::BorrowMut;
     #[test]
-    fn test_logout_json() -> serde_json::Result<()> {
-        let raw_data = r#"{"status":"success","data":true}"#;
-        let deserialized: Logout = serde_json::from_str(raw_data)?;
+    fn test_logout_json() -> std::result::Result<(), simd_json::Error> {
+        let mut raw_data = r#"{"status":"success","data":true}"#.to_owned();
+        let deserialized: Logout = simd_json::from_str(raw_data.borrow_mut())?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,
@@ -35,10 +37,10 @@ mod tests {
     }
 
     #[test]
-    fn test_logout_error() -> serde_json::Result<()> {
-        let raw_data =
-            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#;
-        let deserialized: Logout = serde_json::from_str(raw_data)?;
+    fn test_logout_error() -> std::result::Result<(), simd_json::Error> {
+        let mut raw_data =
+            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#.to_owned();
+        let deserialized: Logout = simd_json::from_str(raw_data.borrow_mut())?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,

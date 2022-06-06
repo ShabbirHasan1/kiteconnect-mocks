@@ -2,6 +2,7 @@ use super::common::{Exception, Status};
 use super::margin::Equity;
 use serde::{Deserialize, Serialize};
 
+
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct MarginsEquity {
     pub status: Status,
@@ -16,11 +17,12 @@ pub struct MarginsEquity {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::borrow::BorrowMut;
 
     #[test]
-    fn test_margins_equity_json() -> serde_json::Result<()> {
+    fn test_margins_equity_json() -> std::result::Result<(), simd_json::Error> {
         let jsonfile = crate::utils::read_json_from_file("../margins_equity.json").unwrap();
-        let deserialized: MarginsEquity = serde_json::from_reader(jsonfile)?;
+        let deserialized: MarginsEquity = simd_json::from_reader(jsonfile)?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,
@@ -38,7 +40,7 @@ mod tests {
                         intraday_payin: 0.0,
                     },
                     utilised: crate::schemas::margin::Utilised {
-                        debits: 145706.55,
+                        debits: 145706.55000000002,
                         exposure: 38981.25,
                         m2m_realised: 761.7,
                         m2m_unrealised: 0.0,
@@ -62,10 +64,10 @@ mod tests {
     }
 
     #[test]
-    fn test_margins_equity_error() -> serde_json::Result<()> {
-        let raw_data =
-            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#;
-        let deserialized: MarginsEquity = serde_json::from_str(raw_data)?;
+    fn test_margins_equity_error() -> std::result::Result<(), simd_json::Error> {
+        let mut raw_data =
+            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#.to_owned();
+        let deserialized: MarginsEquity = simd_json::from_str(raw_data.borrow_mut())?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,

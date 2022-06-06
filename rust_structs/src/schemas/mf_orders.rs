@@ -60,11 +60,12 @@ pub struct MfOrdersData {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::borrow::BorrowMut;
     use chrono::NaiveDate;
     #[test]
-    fn test_mf_orders_json() -> serde_json::Result<()> {
+    fn test_mf_orders_json() -> std::result::Result<(), simd_json::Error> {
         let jsonfile = crate::utils::read_json_from_file("../mf_orders.json").unwrap();
-        let deserialized: MfOrders = serde_json::from_reader(jsonfile)?;
+        let deserialized: MfOrders = simd_json::from_reader(jsonfile)?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,
@@ -122,7 +123,7 @@ mod tests {
                         order_timestamp: Some(NaiveDate::from_ymd(2021, 6, 29).and_hms(12, 20, 28)),
                         average_price: 0.0,
                         exchange_order_id: None,
-                        last_price: 10.4324,
+                        last_price: 10.432400000000001,
                         tradingsymbol: "INF761K01EE1".into(),
                         settlement_id: None,
                         transaction_type: TransactionType::Buy,
@@ -192,10 +193,10 @@ mod tests {
     }
 
     #[test]
-    fn test_mf_orders_error() -> serde_json::Result<()> {
-        let raw_data =
-            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#;
-        let deserialized: MfOrders = serde_json::from_str(raw_data)?;
+    fn test_mf_orders_error() -> std::result::Result<(), simd_json::Error> {
+        let mut raw_data =
+            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#.to_owned();
+        let deserialized: MfOrders = simd_json::from_str(raw_data.borrow_mut())?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,

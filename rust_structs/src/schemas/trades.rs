@@ -47,11 +47,12 @@ pub struct TradesData {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::borrow::BorrowMut;
     use chrono::{NaiveDate, NaiveTime};
     #[test]
-    fn test_trades_json() -> serde_json::Result<()> {
+    fn test_trades_json() -> std::result::Result<(), simd_json::Error> {
         let jsonfile = crate::utils::read_json_from_file("../trades.json").unwrap();
-        let deserialized: Trades = serde_json::from_reader(jsonfile)?;
+        let deserialized: Trades = simd_json::from_reader(jsonfile)?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,
@@ -65,7 +66,7 @@ mod tests {
                         tradingsymbol: "SBIN".to_owned(),
                         instrument_token: 779521,
                         product: Products::CashAndCarry,
-                        average_price: 420.65,
+                        average_price: 420.65000000000003,
                         quantity: 1,
                         exchange_order_id: Some("300000000000000".to_owned()),
                         transaction_type: TransactionType::Buy,
@@ -137,10 +138,10 @@ mod tests {
     }
 
     #[test]
-    fn test_trades_error() -> serde_json::Result<()> {
-        let raw_data =
-            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#;
-        let deserialized: Trades = serde_json::from_str(raw_data)?;
+    fn test_trades_error() -> std::result::Result<(), simd_json::Error> {
+        let mut raw_data =
+            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#.to_owned();
+        let deserialized: Trades = simd_json::from_str(raw_data.borrow_mut())?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,

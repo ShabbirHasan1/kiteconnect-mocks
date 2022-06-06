@@ -15,10 +15,11 @@ pub struct SessionLogout {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::borrow::BorrowMut;
     #[test]
-    fn test_session_logout_json() -> serde_json::Result<()> {
+    fn test_session_logout_json() -> std::result::Result<(), simd_json::Error> {
         let jsonfile = crate::utils::read_json_from_file("../session_logout.json").unwrap();
-        let deserialized: SessionLogout = serde_json::from_reader(jsonfile)?;
+        let deserialized: SessionLogout = simd_json::from_reader(jsonfile)?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,
@@ -35,10 +36,10 @@ mod tests {
     }
 
     #[test]
-    fn test_session_logout_error() -> serde_json::Result<()> {
-        let raw_data =
-            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#;
-        let deserialized: SessionLogout = serde_json::from_str(raw_data)?;
+    fn test_session_logout_error() -> std::result::Result<(), simd_json::Error> {
+        let mut raw_data =
+            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#.to_owned();
+        let deserialized: SessionLogout = simd_json::from_str(raw_data.borrow_mut())?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,

@@ -60,11 +60,12 @@ pub struct OrderInfoData {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::borrow::BorrowMut;
     use chrono::NaiveDate;
     #[test]
-    fn test_order_info_json() -> serde_json::Result<()> {
+    fn test_order_info_json() -> std::result::Result<(), simd_json::Error> {
         let jsonfile = crate::utils::read_json_from_file("../order_info.json").unwrap();
-        let deserialized: OrderInfo = serde_json::from_reader(jsonfile)?;
+        let deserialized: OrderInfo = simd_json::from_reader(jsonfile)?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,
@@ -316,10 +317,10 @@ mod tests {
     }
 
     #[test]
-    fn test_order_info_error() -> serde_json::Result<()> {
-        let raw_data =
-            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#;
-        let deserialized: OrderInfo = serde_json::from_str(raw_data)?;
+    fn test_order_info_error() -> std::result::Result<(), simd_json::Error> {
+        let mut raw_data =
+            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#.to_owned();
+        let deserialized: OrderInfo = simd_json::from_str(raw_data.borrow_mut())?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,

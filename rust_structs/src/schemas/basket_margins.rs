@@ -1,6 +1,7 @@
 use super::common::*;
 use serde::{Deserialize, Serialize};
 
+
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct BasketMargins {
     pub status: Status,
@@ -46,11 +47,13 @@ pub struct MarginPnl {
 
 #[cfg(test)]
 mod tests {
+    use std::borrow::BorrowMut;
+
     use super::*;
     #[test]
-    fn test_basket_margins_json() -> serde_json::Result<()> {
+    fn test_basket_margins_json() -> std::result::Result<(), simd_json::Error> {
         let jsonfile = crate::utils::read_json_from_file("../basket_margins.json").unwrap();
-        let deserialized: BasketMargins = serde_json::from_reader(jsonfile)?;
+        let deserialized: BasketMargins = simd_json::from_reader(jsonfile)?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,
@@ -78,7 +81,7 @@ mod tests {
                         order_margins_type: OptionalOrderMarginTypes::String("".to_owned()),
                         tradingsymbol: "".to_owned(),
                         exchange: OptionalExchanges::String("".to_owned()),
-                        span: 1.8189894035458565e-12,
+                        span: 1.8189894035458563e-12,
                         exposure: 36475.7085,
                         option_premium: 4591.875,
                         additional: 0.0,
@@ -142,10 +145,9 @@ mod tests {
     }
 
     #[test]
-    fn test_basket_margins_error() -> serde_json::Result<()> {
-        let raw_data =
-            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#;
-        let deserialized: BasketMargins = serde_json::from_str(raw_data)?;
+    fn test_basket_margins_error() -> std::result::Result<(), simd_json::Error> {
+        let mut raw_data = r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#.to_owned();
+        let deserialized: BasketMargins = simd_json::from_str(raw_data.borrow_mut())?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,

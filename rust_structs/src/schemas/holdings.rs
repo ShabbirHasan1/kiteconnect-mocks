@@ -3,6 +3,7 @@ use crate::utils::*;
 use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
 
+
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Holdings {
     pub status: Status,
@@ -51,11 +52,12 @@ pub struct HoldingsData {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::borrow::BorrowMut;
     use chrono::NaiveDate;
     #[test]
-    fn test_holdings_json() -> serde_json::Result<()> {
+    fn test_holdings_json() -> std::result::Result<(), simd_json::Error> {
         let jsonfile = crate::utils::read_json_from_file("../holdings.json").unwrap();
-        let deserialized: Holdings = serde_json::from_reader(jsonfile)?;
+        let deserialized: Holdings = simd_json::from_reader(jsonfile)?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,
@@ -84,7 +86,7 @@ mod tests {
                         close_price: 42.28,
                         pnl: 3.5999999999999943,
                         day_change: 0.18999999999999773,
-                        day_change_percentage: 0.44938505203405327,
+                        day_change_percentage: 0.4493850520340533,
                     },
                     HoldingsData {
                         tradingsymbol: "IDEA".to_owned(),
@@ -105,10 +107,10 @@ mod tests {
                         discrepancy: false,
                         average_price: 8.466,
                         last_price: 10.0,
-                        close_price: 10.1,
+                        close_price: 10.100000000000001,
                         pnl: 7.6700000000000035,
                         day_change: -0.09999999999999964,
-                        day_change_percentage: -0.9900990099009866,
+                        day_change_percentage: -0.9900990099009865,
                     },
                 ]),
                 ..Holdings::default()
@@ -121,10 +123,10 @@ mod tests {
     }
 
     #[test]
-    fn test_holdings_error() -> serde_json::Result<()> {
-        let raw_data =
-            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#;
-        let deserialized: Holdings = serde_json::from_str(raw_data)?;
+    fn test_holdings_error() -> std::result::Result<(), simd_json::Error> {
+        let mut raw_data =
+            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#.to_owned();
+        let deserialized: Holdings = simd_json::from_str(raw_data.borrow_mut())?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,

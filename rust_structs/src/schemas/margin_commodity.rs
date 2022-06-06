@@ -2,6 +2,7 @@ use super::common::{Exception, Status};
 use super::margin::Commodity;
 use serde::{Deserialize, Serialize};
 
+
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct MarginsCommodity {
     pub status: Status,
@@ -16,10 +17,11 @@ pub struct MarginsCommodity {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::borrow::BorrowMut;
     #[test]
-    fn test_margins_commodity_json() -> serde_json::Result<()> {
+    fn test_margins_commodity_json() -> std::result::Result<(), simd_json::Error> {
         let jsonfile = crate::utils::read_json_from_file("../margin_commodity.json").unwrap();
-        let deserialized: MarginsCommodity = serde_json::from_reader(jsonfile)?;
+        let deserialized: MarginsCommodity = simd_json::from_reader(jsonfile)?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,
@@ -37,8 +39,8 @@ mod tests {
                         intraday_payin: 0.0,
                     },
                     utilised: crate::schemas::margin::Utilised {
-                        debits: 871.17,
-                        exposure: 117.35,
+                        debits: 871.1700000000001,
+                        exposure: 117.35000000000001,
                         m2m_realised: 0.0,
                         m2m_unrealised: 0.0,
                         option_premium: 0.0,
@@ -61,10 +63,10 @@ mod tests {
     }
 
     #[test]
-    fn test_margins_commodity_error() -> serde_json::Result<()> {
-        let raw_data =
-            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#;
-        let deserialized: MarginsCommodity = serde_json::from_str(raw_data)?;
+    fn test_margins_commodity_error() -> std::result::Result<(), simd_json::Error> {
+        let mut raw_data =
+            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#.to_owned();
+        let deserialized: MarginsCommodity = simd_json::from_str(raw_data.borrow_mut())?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,

@@ -58,14 +58,15 @@ mod tests {
     use std::collections::HashMap;
 
     use super::*;
+    use std::borrow::BorrowMut;
     use chrono::NaiveDate;
     #[test]
-    fn test_mf_sip_info_json() -> serde_json::Result<()> {
+    fn test_mf_sip_info_json() -> std::result::Result<(), simd_json::Error> {
         let jsonfile = crate::utils::read_json_from_file("../mf_sip_info.json").unwrap();
-        let deserialized: MfSipInfo = serde_json::from_reader(jsonfile)?;
+        let deserialized: MfSipInfo = simd_json::from_reader(jsonfile)?;
         // println!("{:#?}", &deserialized);
-        let mut step_up_val = HashMap::<String, String>::new();
-        step_up_val.insert("15-02".to_string(), "10".to_string());
+        let mut step_up_val = HashMap::<String, serde_json::Value>::new();
+        step_up_val.insert("15-02".to_string(), serde_json::Number::from(10).into());
         assert_eq!(
             deserialized,
             MfSipInfo {
@@ -103,10 +104,10 @@ mod tests {
     }
 
     #[test]
-    fn test_mf_sip_info_error() -> serde_json::Result<()> {
-        let raw_data =
-            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#;
-        let deserialized: MfSipInfo = serde_json::from_str(raw_data)?;
+    fn test_mf_sip_info_error() -> std::result::Result<(), simd_json::Error> {
+        let mut raw_data =
+            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#.to_owned();
+        let deserialized: MfSipInfo = simd_json::from_str(raw_data.borrow_mut())?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,

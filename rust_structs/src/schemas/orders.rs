@@ -84,12 +84,13 @@ pub struct OrdersData<'ser> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::borrow::BorrowMut;
     use chrono::NaiveDate;
     use std::fs::File;
-    use std::io;
+    
     use std::io::prelude::*;
     #[test]
-    fn test_orders_json() -> serde_json::Result<()> {
+    fn test_orders_json() -> std::result::Result<(), simd_json::Error> {
         // Open file handle
         let mut json_file = File::open("../orders.json").unwrap();
         // Read the data into a String, which stores (and thus owns) the data
@@ -104,7 +105,7 @@ mod tests {
         // println!("{:?}", result.username); // Error
 
         // let jsonfile = crate::utils::read_json_from_file("../orders.json").unwrap();
-        // let deserialized: Orders = serde_json::from_reader(jsonfile)?;
+        // let deserialized: Orders = simd_json::from_reader(jsonfile)?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,
@@ -276,10 +277,10 @@ mod tests {
     }
 
     #[test]
-    fn test_orders_error() -> serde_json::Result<()> {
-        let raw_data =
-            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#;
-        let deserialized: Orders = serde_json::from_str(raw_data)?;
+    fn test_orders_error() -> std::result::Result<(), simd_json::Error> {
+        let mut raw_data =
+            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#.to_owned();
+        let deserialized: Orders = simd_json::from_str(raw_data.borrow_mut())?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,

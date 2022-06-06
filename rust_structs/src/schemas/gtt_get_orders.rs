@@ -2,6 +2,7 @@ use super::common::*;
 use super::gtt_get_order::*;
 use serde::{Deserialize, Serialize};
 
+
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct GttGetOrders {
     pub status: Status,
@@ -18,11 +19,12 @@ mod tests {
     use std::collections::HashMap;
 
     use super::*;
+    use std::borrow::BorrowMut;
     use chrono::NaiveDate;
     #[test]
-    fn test_gtt_get_orders_json() -> serde_json::Result<()> {
+    fn test_gtt_get_orders_json() -> std::result::Result<(), simd_json::Error> {
         let jsonfile = crate::utils::read_json_from_file("../gtt_get_orders.json").unwrap();
-        let deserialized: GttGetOrders = serde_json::from_reader(jsonfile)?;
+        let deserialized: GttGetOrders = simd_json::from_reader(jsonfile)?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,
@@ -73,7 +75,7 @@ mod tests {
                             status: GttOrderStatus::Triggered,
                             condition: GttCondition {
                                 exchange: Exchanges::Nse,
-                                last_price: 102.6,
+                                last_price: 102.60000000000001,
                                 tradingsymbol: "RAIN".into(),
                                 trigger_values: vec![
                                     102.0,
@@ -144,10 +146,10 @@ mod tests {
     }
 
     #[test]
-    fn test_gtt_get_orders_error() -> serde_json::Result<()> {
-        let raw_data =
-            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#;
-        let deserialized: GttGetOrders = serde_json::from_str(raw_data)?;
+    fn test_gtt_get_orders_error() -> std::result::Result<(), simd_json::Error> {
+        let mut raw_data =
+            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#.to_owned();
+        let deserialized: GttGetOrders = simd_json::from_str(raw_data.borrow_mut())?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,

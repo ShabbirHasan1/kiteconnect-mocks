@@ -15,20 +15,21 @@ pub struct MfSips {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::borrow::BorrowMut;
     use chrono::NaiveDate;
     use std::collections::HashMap;
 
     #[test]
-    fn test_mf_sips_json() -> serde_json::Result<()> {
+    fn test_mf_sips_json() -> std::result::Result<(), simd_json::Error> {
         let jsonfile = crate::utils::read_json_from_file("../mf_sips.json").unwrap();
-        let deserialized: MfSips = serde_json::from_reader(jsonfile)?;
+        let deserialized: MfSips = simd_json::from_reader(jsonfile)?;
         // println!("{:#?}", &deserialized);
-        let mut step_up_1 = HashMap::<String, String>::new();
-        step_up_1.insert("05-05".to_string(), "10".to_string());
-        let mut step_up_2 = HashMap::<String, String>::new();
-        step_up_2.insert("25-05".to_string(), "10".to_string());
-        let mut step_up_3 = HashMap::<String, String>::new();
-        step_up_3.insert("20-11".to_string(), "30".to_string());
+        let mut step_up_1 = HashMap::<String, serde_json::Value>::new();
+        step_up_1.insert("05-05".to_string(), serde_json::Number::from(10).into());
+        let mut step_up_2 = HashMap::<String, serde_json::Value>::new();
+        step_up_2.insert("25-05".to_string(), serde_json::Number::from(10).into());
+        let mut step_up_3 = HashMap::<String, serde_json::Value>::new();
+        step_up_3.insert("20-11".to_string(), serde_json::Number::from(30).into());
         assert_eq!(
             deserialized,
             MfSips {
@@ -160,10 +161,10 @@ mod tests {
     }
 
     #[test]
-    fn test_mf_sips_error() -> serde_json::Result<()> {
-        let raw_data =
-            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#;
-        let deserialized: MfSips = serde_json::from_str(raw_data)?;
+    fn test_mf_sips_error() -> std::result::Result<(), simd_json::Error> {
+        let mut raw_data =
+            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#.to_owned();
+        let deserialized: MfSips = simd_json::from_str(raw_data.borrow_mut())?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,

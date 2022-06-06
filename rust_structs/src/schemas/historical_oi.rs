@@ -3,6 +3,7 @@ use crate::utils::*;
 use chrono::{DateTime, FixedOffset, TimeZone};
 use serde::{Deserialize, Serialize};
 
+
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct HistoricalOi {
     pub status: Status,
@@ -51,13 +52,14 @@ impl Default for CandleWithOi {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::borrow::BorrowMut;
     use chrono::{FixedOffset, TimeZone};
 
     #[test]
-    fn test_historical_oi_json() -> serde_json::Result<()> {
+    fn test_historical_oi_json() -> std::result::Result<(), simd_json::Error> {
         let jsonfile = crate::utils::read_json_from_file("../historical_oi.json").unwrap();
-        let deserialized: HistoricalOi = serde_json::from_reader(jsonfile)?;
-        println!("{:#?}", &deserialized);
+        let deserialized: HistoricalOi = simd_json::from_reader(jsonfile)?;
+        // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,
             HistoricalOi {
@@ -66,7 +68,7 @@ mod tests {
                     candles: Some(vec![
                         CandleWithOi {
                             timestamp: FixedOffset::east(19800).ymd(2019, 12, 4).and_hms(9, 15, 0),
-                            open: 12009.9,
+                            open: 12009.900000000001,
                             high: 12019.35,
                             low: 12001.25,
                             close: 12001.5,
@@ -87,16 +89,16 @@ mod tests {
                             open: 12001.0,
                             high: 12001.0,
                             low: 11995.1,
-                            close: 11998.55,
+                            close: 11998.550000000001,
                             volume: 48450,
                             open_interest: 13758000,
                         },
                         CandleWithOi {
                             timestamp: FixedOffset::east(19800).ymd(2019, 12, 4).and_hms(9, 18, 0),
-                            open: 11997.8,
+                            open: 11997.800000000001,
                             high: 12002.0,
                             low: 11996.25,
-                            close: 12001.55,
+                            close: 12001.550000000001,
                             volume: 52875,
                             open_interest: 13758000,
                         },
@@ -130,10 +132,10 @@ mod tests {
     }
 
     #[test]
-    fn test_historical_oi_error() -> serde_json::Result<()> {
-        let raw_data =
-            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#;
-        let deserialized: HistoricalOi = serde_json::from_str(raw_data)?;
+    fn test_historical_oi_error() -> std::result::Result<(), simd_json::Error> {
+        let mut raw_data =
+            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#.to_owned();
+        let deserialized: HistoricalOi = simd_json::from_str(raw_data.borrow_mut())?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,

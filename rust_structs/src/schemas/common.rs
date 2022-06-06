@@ -1,13 +1,13 @@
 use serde::{Deserialize, Serialize};
-use speedy::{Endianness, Readable, Writable};
 use std::collections::HashMap;
 
-#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Readable, Writable)]
+
+#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct MetaIceberg {
     pub iceberg: Iceberg,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Readable, Writable)]
+#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Iceberg {
     pub leg: i64,
     pub legs: i64,
@@ -16,11 +16,11 @@ pub struct Iceberg {
     pub remaining_quantity: i64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Readable, Writable)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum Meta {
     MetaIceberg(MetaIceberg),
-    HashMap(HashMap<String, String>),
+    HashMap(HashMap<String, serde_json::Value>),
     String(String),
 }
 
@@ -30,7 +30,7 @@ impl Default for Meta {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Readable, Writable)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum Tags {
     Array([TagsValue; 1]),
@@ -39,7 +39,7 @@ pub enum Tags {
     String(String),
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Readable, Writable)]
+#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum TagsValue {
     #[default]
     #[serde(rename = "icebergord")]
@@ -52,12 +52,12 @@ impl Default for Tags {
     }
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Readable, Writable)]
+#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct StatusCheck {
     status: Status,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Readable, Writable)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum Status {
     Success,
@@ -71,7 +71,7 @@ impl Default for Status {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Readable, Writable)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Exception {
     TokenException,
     UserException,
@@ -82,14 +82,14 @@ pub enum Exception {
     GeneralException,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Readable, Writable)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum UserType {
     Enum(UserTypeEnum),
     String(String),
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Readable, Writable)]
+#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum UserTypeEnum {
     #[default]
@@ -101,14 +101,14 @@ impl Default for UserType {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Readable, Writable)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum Broker {
     Enum(BrokerName),
     String(String),
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Readable, Writable)]
+#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "UPPERCASE")]
 pub enum BrokerName {
     #[default]
@@ -121,7 +121,7 @@ impl Default for Broker {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Readable, Writable)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "UPPERCASE")]
 pub enum Exchanges {
     Nse,
@@ -139,7 +139,7 @@ impl Default for Exchanges {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Readable, Writable)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum OptionalExchanges {
     Enum(Exchanges),
@@ -152,7 +152,7 @@ impl Default for OptionalExchanges {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Readable, Writable)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Products {
     #[serde(rename = "CNC")]
     CashAndCarry, //Cash & Carry for equity
@@ -171,7 +171,7 @@ impl Default for Products {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Readable, Writable)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum OrderTypes {
     #[serde(rename = "MARKET")]
     Market, //Market Order
@@ -188,19 +188,19 @@ impl Default for OrderTypes {
     }
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Readable, Writable)]
+#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct ProfileMeta {
     pub demat_consent: ProfileMetaEnum,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Readable, Writable)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum ProfileMetaEnum {
     Enum(ProfileMetaValueEnum),
     String(String),
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Readable, Writable)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum ProfileMetaValueEnum {
     Empty,
@@ -220,7 +220,7 @@ impl Default for ProfileMetaValueEnum {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Readable, Writable)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "UPPERCASE")]
 pub enum TransactionType {
     Buy,
@@ -233,7 +233,7 @@ impl Default for TransactionType {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Readable, Writable)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Variety {
     #[serde(rename = "regular")]
     Regular, // Regular order
@@ -257,7 +257,7 @@ impl Default for Variety {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Readable, Writable)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "UPPERCASE")]
 pub enum Validity {
     Day, //Regular order
@@ -281,14 +281,14 @@ impl Validity {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Readable, Writable)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum OrderStatus {
     Enum(OrderStatusValue),
     String(String),
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Readable, Writable)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum OrderStatusValue {
     #[serde(rename = "COMPLETE")]
     Complete,
@@ -332,7 +332,7 @@ impl Default for OrderStatusValue {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Readable, Writable)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum OrderMarginTypes {
     Equity,
@@ -345,7 +345,7 @@ impl Default for OrderMarginTypes {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Readable, Writable)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum OptionalOrderMarginTypes {
     Enum(OrderMarginTypes),
@@ -358,7 +358,7 @@ impl Default for OptionalOrderMarginTypes {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Readable, Writable)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum InstrumentType {
     #[serde(rename = "EQ")]
     Equity,
@@ -376,7 +376,7 @@ impl Default for InstrumentType {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Readable, Writable)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Segment {
     #[serde(rename = "BCD-OPT")]
     BcdOptions,
@@ -410,7 +410,7 @@ impl Default for Segment {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Readable, Writable)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum DividendType {
     Growth,
@@ -424,7 +424,7 @@ impl Default for DividendType {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Readable, Writable)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "UPPERCASE")]
 pub enum MfSipStatus {
     Active,
@@ -438,7 +438,7 @@ impl Default for MfSipStatus {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Readable, Writable)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum GttOrderStatus {
     Active,
@@ -456,7 +456,7 @@ impl Default for GttOrderStatus {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Readable, Writable)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum GttOrderType {
     #[serde(rename = "single")]
     Single,
@@ -470,14 +470,14 @@ impl Default for GttOrderType {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Readable, Writable)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum MfPurchaseType {
     Enum(MfPurchaseTypeValue),
     String(String),
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Readable, Writable)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "UPPERCASE")]
 pub enum MfPurchaseTypeValue {
     Fresh,
@@ -496,7 +496,7 @@ impl Default for MfPurchaseTypeValue {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Readable, Writable)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum SipFrequency {
     Daily,
@@ -516,7 +516,7 @@ impl Default for SipFrequency {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Readable, Writable)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum SettlementType {
     #[serde(rename = "T1")]
     Tone,
@@ -540,7 +540,7 @@ impl Default for SettlementType {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Readable, Writable)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum MfPlan {
     Direct,
@@ -553,7 +553,7 @@ impl Default for MfPlan {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Readable, Writable)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum MfScheme {
     Balanced,
@@ -569,14 +569,14 @@ impl Default for MfScheme {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Readable, Writable)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum MfSipTags {
     Enum(MfSipTagsValue),
     String(String),
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Readable, Writable)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum MfSipTagsValue {
     CoinAndroidSip,
@@ -599,10 +599,11 @@ impl Default for MfSipTagsValue {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::borrow::BorrowMut;
     #[test]
-    fn test_status_success_json() -> serde_json::Result<()> {
-        let raw_data = r#"{"status":"success"}"#;
-        let deserialized: StatusCheck = serde_json::from_str(raw_data)?;
+    fn test_status_success_json() -> std::result::Result<(), simd_json::Error> {
+        let mut raw_data = r#"{"status":"success"}"#.to_owned();
+        let deserialized: StatusCheck = simd_json::from_str(raw_data.borrow_mut())?;
         assert_eq!(
             deserialized,
             StatusCheck {
@@ -613,9 +614,9 @@ mod tests {
     }
 
     #[test]
-    fn test_status_error_json() -> serde_json::Result<()> {
-        let raw_data = r#"{"status":"error"}"#;
-        let deserialized: StatusCheck = serde_json::from_str(raw_data)?;
+    fn test_status_error_json() -> std::result::Result<(), simd_json::Error> {
+        let mut raw_data = r#"{"status":"error"}"#.to_owned();
+        let deserialized: StatusCheck = simd_json::from_str(raw_data.borrow_mut())?;
         assert_eq!(
             deserialized,
             StatusCheck {

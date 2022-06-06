@@ -318,11 +318,11 @@ where
 
 #[cfg(test)]
 mod tests {
-    use super::*;
+    use super::*;use std::borrow::BorrowMut;
     use chrono::{DateTime, FixedOffset, NaiveDate, NaiveDateTime, NaiveTime, TimeZone};
     use serde::{Deserialize, Serialize};
     #[test]
-    fn test_optional_naive_date_time_from_str() -> serde_json::Result<()> {
+    fn test_optional_naive_date_time_from_str() -> std::result::Result<(), simd_json::Error> {
         #[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
         pub struct OrdersData {
             #[serde(
@@ -331,8 +331,8 @@ mod tests {
             )]
             pub order_timestamp: Option<NaiveDateTime>,
         }
-        let raw_data = r#"{"order_timestamp":"2017-12-29 11:06:52"}"#;
-        let deserialized: OrdersData = serde_json::from_str(raw_data)?;
+        let mut raw_data = r#"{"order_timestamp":"2017-12-29 11:06:52"}"#.to_owned();
+        let deserialized: OrdersData = simd_json::from_str(raw_data.borrow_mut())?;
         // println!("{:?}", deserialized);
         assert_eq!(
             deserialized,
@@ -346,7 +346,7 @@ mod tests {
         Ok(())
     }
     #[test]
-    fn test_optional_naive_time_from_str() -> serde_json::Result<()> {
+    fn test_optional_naive_time_from_str() -> std::result::Result<(), simd_json::Error> {
         #[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
         pub struct OrdersData {
             #[serde(
@@ -355,8 +355,8 @@ mod tests {
             )]
             pub order_timestamp: Option<NaiveTime>,
         }
-        let raw_data = r#"{"order_timestamp":"11:06:52"}"#;
-        let deserialized: OrdersData = serde_json::from_str(raw_data)?;
+        let mut raw_data = r#"{"order_timestamp":"11:06:52"}"#.to_owned();
+        let deserialized: OrdersData = simd_json::from_str(raw_data.borrow_mut())?;
         // println!("{:?}", deserialized);
         assert_eq!(
             deserialized,
@@ -370,14 +370,14 @@ mod tests {
         Ok(())
     }
     #[test]
-    fn test_naive_date_time_timezone_from_str() -> serde_json::Result<()> {
+    fn test_naive_date_time_timezone_from_str() -> std::result::Result<(), simd_json::Error> {
         #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
         pub struct OrdersData {
             #[serde(with = "naive_date_time_timezone_from_str")]
             pub order_timestamp: DateTime<FixedOffset>,
         }
-        let raw_data = r#"{"order_timestamp":"2017-12-15T09:15:00+0530"}"#;
-        let deserialized: OrdersData = serde_json::from_str(raw_data)?;
+        let mut raw_data = r#"{"order_timestamp":"2017-12-15T09:15:00+0530"}"#.to_owned();
+        let deserialized: OrdersData = simd_json::from_str(raw_data.borrow_mut())?;
         // println!("{:?}", deserialized);
         assert_eq!(
             deserialized,
@@ -391,14 +391,14 @@ mod tests {
         Ok(())
     }
     #[test]
-    fn test_naive_date_from_str() -> serde_json::Result<()> {
+    fn test_naive_date_from_str() -> std::result::Result<(), simd_json::Error> {
         #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
         pub struct OrdersData {
             #[serde(with = "optional_naive_date_from_str")]
             pub order_timestamp: Option<NaiveDate>,
         }
-        let raw_data = r#"{"order_timestamp":"2017-12-15"}"#;
-        let deserialized: OrdersData = serde_json::from_str(raw_data)?;
+        let mut raw_data = r#"{"order_timestamp":"2017-12-15"}"#.to_owned();
+        let deserialized: OrdersData = simd_json::from_str(raw_data.borrow_mut())?;
         // println!("{:?}", deserialized);
         assert_eq!(
             deserialized,

@@ -1,6 +1,7 @@
 use super::common::*;
 use serde::{Deserialize, Serialize};
 
+
 #[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct HoldingsAuth {
     pub status: Status,
@@ -20,10 +21,11 @@ pub struct HoldingsAuthData {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::borrow::BorrowMut;
     #[test]
-    fn test_holdings_auth_json() -> serde_json::Result<()> {
+    fn test_holdings_auth_json() -> std::result::Result<(), simd_json::Error> {
         let jsonfile = crate::utils::read_json_from_file("../holdings_auth.json").unwrap();
-        let deserialized: HoldingsAuth = serde_json::from_reader(jsonfile)?;
+        let deserialized: HoldingsAuth = simd_json::from_reader(jsonfile)?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,
@@ -42,10 +44,10 @@ mod tests {
     }
 
     #[test]
-    fn test_holdings_auth_error() -> serde_json::Result<()> {
-        let raw_data =
-            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#;
-        let deserialized: HoldingsAuth = serde_json::from_str(raw_data)?;
+    fn test_holdings_auth_error() -> std::result::Result<(), simd_json::Error> {
+        let mut raw_data =
+            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#.to_owned();
+        let deserialized: HoldingsAuth = simd_json::from_str(raw_data.borrow_mut())?;
         // println!("{:#?}", &deserialized);
         assert_eq!(
             deserialized,

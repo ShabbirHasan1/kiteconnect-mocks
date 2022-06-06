@@ -77,20 +77,21 @@ impl Postback {
 #[cfg(test)]
 mod tests {
     use super::*;
+    // use std::borrow::BorrowMut;
     use std::str::FromStr;
     #[test]
-    fn test_postback_json_match_checksum() -> serde_json::Result<()> {
+    fn test_postback_json_match_checksum() -> std::result::Result<(), simd_json::Error> {
         let jsonfile = crate::utils::read_json_from_file("../postback.json").unwrap();
-        let deserialized: Postback = serde_json::from_reader(jsonfile)?;
+        let deserialized: Postback = simd_json::from_reader(jsonfile)?;
         // println!("{:#?}", &deserialized);
         assert!(deserialized.match_checksum("0hdv7iw5examplesecret"));
         Ok(())
     }
 
     #[test]
-    fn test_postback_json() -> serde_json::Result<()> {
+    fn test_postback_json() -> std::result::Result<(), simd_json::Error> {
         let jsonfile = crate::utils::read_json_from_file("../postback.json").unwrap();
-        let deserialized: Postback = serde_json::from_reader(jsonfile)?;
+        let deserialized: Postback = simd_json::from_reader(jsonfile)?;
         // println!("{:#?}", &deserialized);
         assert!(deserialized.match_checksum("0hdv7iw5examplesecret"));
         assert_eq!(

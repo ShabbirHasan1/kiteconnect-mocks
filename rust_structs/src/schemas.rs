@@ -14,6 +14,7 @@ pub mod holdings;
 pub mod holdings_auth;
 pub mod instruments;
 pub mod instruments_nse;
+pub mod kite_ticker;
 pub mod logout;
 pub mod ltp;
 pub mod margin;

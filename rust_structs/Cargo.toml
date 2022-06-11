@@ -51,7 +51,7 @@ serde_json = { version = "1.0.81", features = [
     "unbounded_depth",
 ] }
 serde_with = { version = "1.14.0", features = ["serde_json", "chrono", "json"] }
-sha2 = "0.10"
+sha2 = "0.10.2"
 simd-json = { version = "0.5.0", features = [
     "128bit",
     # "allow-non-simd",
@@ -64,6 +64,12 @@ speedy = { version = "0.8.2", features = [
     "indexmap",
     "smallvec",
 ] }
-proc-macro2 = "1.0"
-quote = "1.0"
-synstructure = "0.12"
+proc-macro2 = "1.0.39"
+quote = "1.0.18"
+synstructure = "0.12.6"
+bincode = { git = "https://github.com/bincode-org/bincode.git", branch = "trunk", version = "2.0.0-rc.1", features = [
+    "serde",
+] }
+byteorder = "1.4.3"
+eio = "0.1.2"
+base64 = "*"

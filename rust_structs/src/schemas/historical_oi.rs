@@ -3,7 +3,6 @@ use crate::utils::*;
 use chrono::{DateTime, FixedOffset, TimeZone};
 use serde::{Deserialize, Serialize};
 
-
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct HistoricalOi {
     pub status: Status,
@@ -36,15 +35,13 @@ pub struct CandleWithOi {
 impl Default for CandleWithOi {
     fn default() -> Self {
         Self {
-            timestamp: FixedOffset::east(5 * 30 * 60)
-                .ymd(1947, 1, 1)
-                .and_hms(9, 15, 0),
-            open: 0.0,
-            high: 0.0,
-            low: 0.0,
-            close: 0.0,
-            volume: 0,
-            open_interest: 0,
+            timestamp: FixedOffset::east(19800).ymd(1947, 1, 1).and_hms(9, 15, 0),
+            open: Default::default(),
+            high: Default::default(),
+            low: Default::default(),
+            close: Default::default(),
+            volume: Default::default(),
+            open_interest: Default::default(),
         }
     }
 }
@@ -52,8 +49,8 @@ impl Default for CandleWithOi {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::borrow::BorrowMut;
     use chrono::{FixedOffset, TimeZone};
+    use std::borrow::BorrowMut;
 
     #[test]
     fn test_historical_oi_json() -> std::result::Result<(), simd_json::Error> {
@@ -134,7 +131,8 @@ mod tests {
     #[test]
     fn test_historical_oi_error() -> std::result::Result<(), simd_json::Error> {
         let mut raw_data =
-            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#.to_owned();
+            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#
+                .to_owned();
         let deserialized: HistoricalOi = simd_json::from_str(raw_data.borrow_mut())?;
         // println!("{:#?}", &deserialized);
         assert_eq!(

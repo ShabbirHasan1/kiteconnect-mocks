@@ -4,16 +4,21 @@ use serde::{Deserialize, Serialize};
 struct Instruments<'a> {
     instrument_token: u64,
     exchange_token: u64,
+    #[serde(borrow)]
     tradingsymbol: &'a str,
-    #[serde(deserialize_with = "csv::invalid_option")]
+    #[serde(borrow, deserialize_with = "csv::invalid_option")]
     name: Option<&'a str>,
     last_price: f64,
+    #[serde(borrow)]
     expiry: Option<&'a str>,
     strike: f64,
     tick_size: f64,
     lot_size: u64,
+    #[serde(borrow)]
     instrument_type: &'a str,
+    #[serde(borrow)]
     segment: &'a str,
+    #[serde(borrow)]
     exchange: &'a str,
 }
 

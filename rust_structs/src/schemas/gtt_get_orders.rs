@@ -2,7 +2,6 @@ use super::common::*;
 use super::gtt_get_order::*;
 use serde::{Deserialize, Serialize};
 
-
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct GttGetOrders {
     pub status: Status,
@@ -19,8 +18,8 @@ mod tests {
     use std::collections::HashMap;
 
     use super::*;
-    use std::borrow::BorrowMut;
     use chrono::NaiveDate;
+    use std::borrow::BorrowMut;
     #[test]
     fn test_gtt_get_orders_json() -> std::result::Result<(), simd_json::Error> {
         let jsonfile = crate::utils::read_json_from_file("../gtt_get_orders.json").unwrap();
@@ -148,7 +147,8 @@ mod tests {
     #[test]
     fn test_gtt_get_orders_error() -> std::result::Result<(), simd_json::Error> {
         let mut raw_data =
-            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#.to_owned();
+            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#
+                .to_owned();
         let deserialized: GttGetOrders = simd_json::from_str(raw_data.borrow_mut())?;
         // println!("{:#?}", &deserialized);
         assert_eq!(

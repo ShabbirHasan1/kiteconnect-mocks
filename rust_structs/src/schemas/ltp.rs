@@ -2,7 +2,6 @@ use super::common::*;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
-
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Ltp {
     pub status: Status,
@@ -116,7 +115,8 @@ mod tests {
     #[test]
     fn test_ltp_error() -> std::result::Result<(), simd_json::Error> {
         let mut raw_data =
-            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#.to_owned();
+            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#
+                .to_owned();
         let deserialized: Ltp = simd_json::from_str(raw_data.borrow_mut())?;
         // println!("{:#?}", &deserialized);
         assert_eq!(

@@ -1,7 +1,6 @@
 use super::common::*;
 use serde::{Deserialize, Serialize};
 
-
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct BasketMargins {
     pub status: Status,
@@ -146,7 +145,9 @@ mod tests {
 
     #[test]
     fn test_basket_margins_error() -> std::result::Result<(), simd_json::Error> {
-        let mut raw_data = r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#.to_owned();
+        let mut raw_data =
+            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#
+                .to_owned();
         let deserialized: BasketMargins = simd_json::from_str(raw_data.borrow_mut())?;
         // println!("{:#?}", &deserialized);
         assert_eq!(

@@ -1,7 +1,6 @@
 use super::common::*;
 use serde::{Deserialize, Serialize};
 
-
 #[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Logout {
     pub status: Status,
@@ -39,7 +38,8 @@ mod tests {
     #[test]
     fn test_logout_error() -> std::result::Result<(), simd_json::Error> {
         let mut raw_data =
-            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#.to_owned();
+            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#
+                .to_owned();
         let deserialized: Logout = simd_json::from_str(raw_data.borrow_mut())?;
         // println!("{:#?}", &deserialized);
         assert_eq!(

@@ -1,7 +1,6 @@
 use super::common::*;
 use serde::{Deserialize, Serialize};
 
-
 #[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct GttPlaceOrder {
     pub status: Status,
@@ -44,7 +43,8 @@ mod tests {
     #[test]
     fn test_gtt_place_order_error() -> std::result::Result<(), simd_json::Error> {
         let mut raw_data =
-            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#.to_owned();
+            r#"{"status":"error","message":"Error message","error_type":"GeneralException"}"#
+                .to_owned();
         let deserialized: GttPlaceOrder = simd_json::from_str(raw_data.borrow_mut())?;
         // println!("{:#?}", &deserialized);
         assert_eq!(

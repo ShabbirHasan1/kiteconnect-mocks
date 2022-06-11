@@ -3,7 +3,6 @@ use crate::utils::*;
 use chrono::NaiveDate;
 use serde::{Deserialize, Serialize};
 
-
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 struct MfInstruments {
     tradingsymbol: String,
@@ -30,9 +29,9 @@ struct MfInstruments {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::borrow::BorrowMut;
     use chrono::NaiveDate;
     use csv::Reader;
+    // use std::borrow::BorrowMut;
     #[test]
     fn test_mf_instruments_csv() -> Result<(), Box<dyn std::error::Error>> {
         let csvfile = Reader::from_path("../mf_instruments.csv").unwrap();

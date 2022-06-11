@@ -1,7 +1,10 @@
-use std::error::Error;
-use std::fs::File;
-use std::io::BufReader;
-use std::path::Path;
+// use chrono::{DateTime, FixedOffset, NaiveDateTime};
+// use std::error::Error;
+use std::{
+    fs::File,
+    io::{self, BufRead, BufReader},
+    path::Path,
+};
 
 pub fn read_json_from_file<P: AsRef<Path>>(path: P) -> Result<BufReader<File>, std::io::Error> {
     // Open the file in read-only mode with buffer.
@@ -258,6 +261,33 @@ pub mod naive_date_time_timezone_from_str {
     }
 }
 
+pub mod naive_date_time_timezone_from_timestamp {
+    use chrono::{offset::LocalResult::Single, DateTime, FixedOffset, TimeZone};
+    use serde::{de, ser, Deserialize, Deserializer};
+    pub fn deserialize<'de, D>(deserializer: D) -> Result<DateTime<FixedOffset>, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        let given_timestamp = Deserialize::deserialize(deserializer)?;
+        if let Single(datetimeobject) = FixedOffset::east(19800).timestamp_opt(given_timestamp, 0) {
+            Ok(datetimeobject)
+        } else {
+            Err(de::Error::custom("Invalid timestamp"))
+        }
+    }
+    pub fn serialize<S>(dt: &DateTime<FixedOffset>, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: ser::Serializer,
+    {
+        // serializer
+        //     .serialize_str(&dt.timestamp().to_string())
+        //     .map_err(ser::Error::custom)
+        serializer
+            .serialize_str(&dt.to_rfc3339())
+            .map_err(ser::Error::custom)
+    }
+}
+
 pub mod double_optional_naive_date_from_str {
     use chrono::NaiveDate;
     use serde::{de, ser, Deserialize, Deserializer};
@@ -316,11 +346,24 @@ where
     Option::<T>::deserialize(de).map(|x| x.unwrap_or_else(|| T::default()))
 }
 
+// The output is wrapped in a Result to allow matching on errors
+// Returns an Iterator to the Reader of the lines of the file.
+// This process is more efficient than creating a String in memory especially
+// working with larger files.
+pub fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
+where
+    P: AsRef<Path>,
+{
+    let file = File::open(filename)?;
+    Ok(io::BufReader::new(file).lines())
+}
+
 #[cfg(test)]
 mod tests {
-    use super::*;use std::borrow::BorrowMut;
+    use super::*;
     use chrono::{DateTime, FixedOffset, NaiveDate, NaiveDateTime, NaiveTime, TimeZone};
     use serde::{Deserialize, Serialize};
+    use std::borrow::BorrowMut;
     #[test]
     fn test_optional_naive_date_time_from_str() -> std::result::Result<(), simd_json::Error> {
         #[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -412,3 +455,18 @@ mod tests {
         Ok(())
     }
 }
+
+// use chrono::{Utc, TimeZone, NaiveDateTime, NaiveDate, FixedOffset};
+
+// fn main() {
+//     assert_eq!(Utc.timestamp(1431648000, 0).to_string(), "2015-05-15 00:00:00 UTC");
+//     println!("{}",Utc.timestamp(1654760856, 0).to_string());
+//     println!("{}", NaiveDateTime::from_timestamp(1654760856,0));
+//     let date_1 = FixedOffset::east(19800)
+//                 .ymd(2022, 6, 9)
+//                 .and_hms(13, 17, 36);
+//     println!("{}", date_1.timestamp().to_string());
+//     assert_eq!(1654760856, date_1.timestamp());
+//     println!("{:#?}", FixedOffset::east(19800).timestamp(1654760856,0));
+//     assert_eq!(FixedOffset::east(19800).timestamp(1654760856,0).to_string(), "2022-06-09 13:17:36 +05:30");
+// }

@@ -1,7 +1,6 @@
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
-
 #[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct MetaIceberg {
     pub iceberg: Iceberg,
@@ -596,6 +595,48 @@ impl Default for MfSipTagsValue {
     }
 }
 
+// use bincode::{Decode, Encode};
+
+// #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Decode, Encode)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum TickerStreamingMode {
+    Ltp,
+    Ltpc,
+    Quote,
+    Full,
+}
+
+impl Default for TickerStreamingMode {
+    fn default() -> Self {
+        Self::Ltp
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+#[repr(u8)]
+pub enum ExchangeMap {
+    Nse = 1,
+    Nfo = 2,
+    Cds = 3,
+    Bse = 4,
+    Bfo = 5,
+    Bcd = 6,
+    Mcx = 7,
+    Mcxsx = 8,
+    Indices = 9,
+    // bsecds is replaced with it's official segment name bcd
+    // so,bsecds key will be depreciated in next version
+    // Bsecds = 6,
+}
+
+impl Default for ExchangeMap {
+    fn default() -> Self {
+        Self::Nse
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -623,6 +664,7 @@ mod tests {
                 status: Status::Error
             }
         );
+        // println!("{}", ExchangeMap::default() as u8);
         Ok(())
     }
 }

@@ -31,3 +31,7 @@ Cargo.sublime-workspace
 /tests/configs/running
 /tests/mods
 .DS_Store
+
+*.har
+**/*.har
+**/**/*.har

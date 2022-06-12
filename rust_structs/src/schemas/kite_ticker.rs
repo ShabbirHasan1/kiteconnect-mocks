@@ -225,11 +225,19 @@ mod tests {
     // use byteorder::{BigEndian, ReadBytesExt};
     use chrono::{FixedOffset, TimeZone};
     use eio::ReadExt;
-    use std::io::{Cursor, Seek, SeekFrom};
+    use std::{
+        fs::{File, OpenOptions},
+        io::{Cursor, Seek, SeekFrom},
+    };
 
     #[test]
     fn test_kite_ticker_raw() -> Result<(), Box<dyn std::error::Error>> {
         if let Ok(lines) = read_lines("./custom_mock_files/ws.packet") {
+            let file = OpenOptions::new()
+                .write(true)
+                .append(true)
+                .create(true)
+                .open("kite_ticker.json")?;
             for line in lines {
                 if let Ok(line) = line {
                     // let data = b"AAQAuACfOQIAAABkAAAASwAAARwByROfABZ+NAAFYmsAAAG9AAAB9AAAAFoAAAPUYqGllwBC8qwATzXuADU/QGKhpZgAAGTIAAAAZAAkAAAAAJTtAAAAXwA8AAAAADZlAAAAWgAoAAAAABX5AAAAVQARAAAAADGcAAAAUAAZAAAAABydAAAAaQAoAAAAAFHWAAAAbgA5AAAAABftAAAAcwAWAAAAABnhAAAAeAAVAAAAAA+5AAAAfQAQAAAADAAAAQkAU8ibAFPCYQAMADcfAQAAH3cAAB9FAAgAA/gJADUe/A==";
@@ -524,6 +532,7 @@ mod tests {
                         // println!("{}", serde_json::to_string_pretty(&tick_data).unwrap());
                         println!("{}", serde_json::to_string_pretty(&ticker_data).unwrap());
                         // println!("{:#?}", &ticker_data);
+                        serde_json::to_writer_pretty(&file, &ticker_data)?;
                     }
                 }
             }
@@ -785,6 +794,7 @@ mod tests {
             // println!("{}", serde_json::to_string_pretty(&tick_data).unwrap());
             println!("{}", serde_json::to_string_pretty(&ticker_data).unwrap());
             // println!("{:#?}", &ticker_data);
+            serde_json::to_writer_pretty(&File::create("kite_ticker.json")?, &ticker_data)?;
         }
         Ok(())
     }

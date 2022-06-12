@@ -1,5 +1,6 @@
 // use chrono::{DateTime, FixedOffset, NaiveDateTime};
 // use std::error::Error;
+use serde::{Deserialize, Serialize};
 use std::{
     fs::File,
     io::{self, BufRead, BufReader},
@@ -356,6 +357,101 @@ where
 {
     let file = File::open(filename)?;
     Ok(io::BufReader::new(file).lines())
+}
+
+#[derive(Debug, Clone, PartialEq, Copy, Serialize, Deserialize)]
+pub struct TryFromSliceError(());
+
+// #[stable(feature = "try_from", since = "1.34.0")]
+// impl<'a, T, const N: usize> TryFrom<&'a [T]> for &'a [T; N]
+// where
+//     [T; N]: LengthAtMost32,
+// {
+//     type Error = TryFromSliceError;
+
+//     fn try_from(slice: &[T]) -> Result<&[T; N], TryFromSliceError> {
+//         if slice.len() == N {
+//             let ptr = slice.as_ptr() as *const [T; N];
+//             unsafe { Ok(&*ptr) }
+//         } else {
+//             Err(TryFromSliceError(()))
+//         }
+//     }
+// }
+
+// struct TryFromSliceError(());
+
+pub fn slice_to_array_8<T>(slice: &[T]) -> Result<&[T; 8], TryFromSliceError> {
+    if slice.len() == 8 {
+        let ptr = slice.as_ptr() as *const [T; 8];
+        unsafe { Ok(&*ptr) }
+    } else {
+        Err(TryFromSliceError(()))
+    }
+}
+pub fn slice_to_array_12<T>(slice: &[T]) -> Result<&[T; 12], TryFromSliceError> {
+    if slice.len() == 64 {
+        let ptr = slice.as_ptr() as *const [T; 12];
+        unsafe { Ok(&*ptr) }
+    } else {
+        Err(TryFromSliceError(()))
+    }
+}
+pub fn slice_to_array_28<T>(slice: &[T]) -> Result<&[T; 28], TryFromSliceError> {
+    if slice.len() == 28 {
+        let ptr = slice.as_ptr() as *const [T; 28];
+        unsafe { Ok(&*ptr) }
+    } else {
+        Err(TryFromSliceError(()))
+    }
+}
+pub fn slice_to_array_32<T>(slice: &[T]) -> Result<&[T; 32], TryFromSliceError> {
+    if slice.len() == 32 {
+        let ptr = slice.as_ptr() as *const [T; 32];
+        unsafe { Ok(&*ptr) }
+    } else {
+        Err(TryFromSliceError(()))
+    }
+}
+pub fn slice_to_array_44<T>(slice: &[T]) -> Result<&[T; 44], TryFromSliceError> {
+    if slice.len() == 44 {
+        let ptr = slice.as_ptr() as *const [T; 44];
+        unsafe { Ok(&*ptr) }
+    } else {
+        Err(TryFromSliceError(()))
+    }
+}
+pub fn slice_to_array_64<T>(slice: &[T]) -> Result<&[T; 64], TryFromSliceError> {
+    if slice.len() == 64 {
+        let ptr = slice.as_ptr() as *const [T; 64];
+        unsafe { Ok(&*ptr) }
+    } else {
+        Err(TryFromSliceError(()))
+    }
+}
+pub fn slice_to_array_164<T>(slice: &[T]) -> Result<&[T; 164], TryFromSliceError> {
+    if slice.len() == 164 {
+        let ptr = slice.as_ptr() as *const [T; 164];
+        unsafe { Ok(&*ptr) }
+    } else {
+        Err(TryFromSliceError(()))
+    }
+}
+pub fn slice_to_array_184<T>(slice: &[T]) -> Result<&[T; 184], TryFromSliceError> {
+    if slice.len() == 184 {
+        let ptr = slice.as_ptr() as *const [T; 184];
+        unsafe { Ok(&*ptr) }
+    } else {
+        Err(TryFromSliceError(()))
+    }
+}
+pub fn slice_to_array_492<T>(slice: &[T]) -> Result<&[T; 492], TryFromSliceError> {
+    if slice.len() == 492 {
+        let ptr = slice.as_ptr() as *const [T; 492];
+        unsafe { Ok(&*ptr) }
+    } else {
+        Err(TryFromSliceError(()))
+    }
 }
 
 #[cfg(test)]

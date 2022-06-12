@@ -50,7 +50,7 @@ serde_json = { version = "1.0.81", features = [
     "preserve_order",
     "unbounded_depth",
 ] }
-serde_with = { version = "1.14.0", features = ["serde_json", "chrono", "json"] }
+serde_with = { version = "1.14.0", features = ["serde_json", "chrono", "json", "base64", "indexmap", "hex", "guide", "time_0_3"] }
 sha2 = "0.10.2"
 simd-json = { version = "0.5.0", features = [
     "128bit",
@@ -73,3 +73,4 @@ bincode = { git = "https://github.com/bincode-org/bincode.git", branch = "trunk"
 byteorder = "1.4.3"
 eio = "0.1.2"
 base64 = "*"
+nom = { version = "7.1.1", features = ["docsrs"] }

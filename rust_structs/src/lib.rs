@@ -16,6 +16,7 @@
 // #![allow(clippy::multiple_crate_versions)]
 // #![feature(custom_inner_attributes)]
 // #![clippy::msrv = "1.61.0"]
+#![feature(generic_arg_infer)]
 
 pub mod schemas;
 pub mod utils;

@@ -74,3 +74,8 @@ byteorder = "1.4.3"
 eio = "0.1.2"
 base64 = "*"
 nom = { version = "7.1.1", features = ["docsrs"] }
+bytemuck = { version = "1.9.1", features = ["bytemuck_derive", "derive", "nightly_portable_simd", "extern_crate_alloc", "extern_crate_std", "min_const_generics", "unsound_ptr_pod_impl", "wasm_simd", "zeroable_maybe_uninit", "aarch64_simd"] }
+tungstenite = { version = "0.17.2", features = ["__rustls-tls", "native-tls", "native-tls-crate", "native-tls-vendored", "rustls", "rustls-native-certs", "rustls-tls-native-roots", "rustls-tls-webpki-roots", "webpki", "webpki-roots"] }
+url = { version = "2.2.2", features = ["serde"] }
+tokio-tungstenite = { version = "0.17.1", features = ["__rustls-tls", "native-tls", "native-tls-crate", "native-tls-vendored", "rustls", "rustls-native-certs", "rustls-tls-native-roots", "rustls-tls-webpki-roots", "tokio-native-tls", "tokio-rustls", "webpki", "webpki-roots"] }
+bytes = { version = "1.1.0", features = ["serde"] }

@@ -1,0 +1,5856 @@
+{
+  "265": {
+    "mode": "ltpc",
+    "isTradeable": true,
+    "token": 265,
+    "lastPrice": 52687.66,
+    "closePrice": 52693.57,
+    "change": -0.011215789706402919,
+    "absoluteChange": -5.9099999999962165,
+    "openChange": 0,
+    "openChangePercent": 0,
+    "tickChange": -1
+  },
+  "256265": {
+    "mode": "ltpc",
+    "isTradeable": true,
+    "token": 256265,
+    "lastPrice": 15731.45,
+    "closePrice": 15732.1,
+    "change": -0.004131679813881403,
+    "absoluteChange": -0.6499999999996362,
+    "openChange": 0,
+    "openChangePercent": 0,
+    "tickChange": -1
+  },
+  "260105": {
+    "mode": "ltp",
+    "isTradeable": true,
+    "token": 260105,
+    "lastPrice": 33396.3,
+    "change": 0,
+    "absoluteChange": 0,
+    "tickChange": 0
+  },
+  "14523650": {
+    "mode": "full",
+    "isTradeable": true,
+    "token": 14523650,
+    "lastPrice": 33442,
+    "closePrice": 33377.05,
+    "change": 0.1945947889343039,
+    "absoluteChange": 64.94999999999709,
+    "openChange": 42,
+    "openChangePercent": 0.12574850299401197,
+    "tickChange": 1,
+    "volume": 1206900,
+    "lastQuantity": 25,
+    "totalBuyQuantity": 122150,
+    "totalSellQuantity": 149625,
+    "averagePrice": 33419.12,
+    "openPrice": 33400,
+    "highPrice": 33552.95,
+    "lowPrice": 33301,
+    "depth": {
+      "buy": [
+        {
+          "price": 33442,
+          "orders": 1,
+          "quantity": 25
+        },
+        {
+          "price": 33441.05,
+          "orders": 1,
+          "quantity": 25
+        },
+        {
+          "price": 33440.5,
+          "orders": 1,
+          "quantity": 125
+        },
+        {
+          "price": 33440.3,
+          "orders": 2,
+          "quantity": 50
+        },
+        {
+          "price": 33440.1,
+          "orders": 1,
+          "quantity": 25
+        }
+      ],
+      "sell": [
+        {
+          "price": 33445,
+          "orders": 2,
+          "quantity": 50
+        },
+        {
+          "price": 33446.55,
+          "orders": 1,
+          "quantity": 200
+        },
+        {
+          "price": 33446.6,
+          "orders": 1,
+          "quantity": 225
+        },
+        {
+          "price": 33446.75,
+          "orders": 1,
+          "quantity": 50
+        },
+        {
+          "price": 33446.95,
+          "orders": 1,
+          "quantity": 25
+        }
+      ]
+    },
+    "lastTradedTime": "2022-06-15 11:48:16",
+    "oi": 2728175,
+    "oiDayHigh": 2759225,
+    "oiDayLow": 2719825,
+    "extendedDepth": {
+      "buy": [
+        {
+          "quantity": 25,
+          "price": 33440,
+          "orders": 1
+        },
+        {
+          "quantity": 25,
+          "price": 33439.9,
+          "orders": 1
+        },
+        {
+          "quantity": 50,
+          "price": 33439.85,
+          "orders": 1
+        },
+        {
+          "quantity": 25,
+          "price": 33439.6,
+          "orders": 1
+        },
+        {
+          "quantity": 50,
+          "price": 33439.4,
+          "orders": 1
+        },
+        {
+          "quantity": 50,
+          "price": 33439.3,
+          "orders": 1
+        },
+        {
+          "quantity": 50,
+          "price": 33439.2,
+          "orders": 1
+        },
+        {
+          "quantity": 50,
+          "price": 33439.1,
+          "orders": 1
+        },
+        {
+          "quantity": 25,
+          "price": 33439.05,
+          "orders": 1
+        },
+        {
+          "quantity": 50,
+          "price": 33439,
+          "orders": 1
+        },
+        {
+          "quantity": 25,
+          "price": 33438.75,
+          "orders": 1
+        },
+        {
+          "quantity": 50,
+          "price": 33438.55,
+          "orders": 1
+        },
+        {
+          "quantity": 25,
+          "price": 33438.1,
+          "orders": 1
+        },
+        {
+          "quantity": 25,
+          "price": 33438.05,
+          "orders": 1
+        },
+        {
+          "quantity": 125,
+          "price": 33438,
+          "orders": 1
+        },
+        {
+          "quantity": 175,
+          "price": 33437.75,
+          "orders": 2
+        },
+        {
+          "quantity": 50,
+          "price": 33437.65,
+          "orders": 1
+        },
+        {
+          "quantity": 275,
+          "price": 33437.6,
+          "orders": 4
+        },
+        {
+          "quantity": 100,
+          "price": 33437.5,
+          "orders": 2
+        },
+        {
+          "quantity": 50,
+          "price": 33437.45,
+          "orders": 1
+        }
+      ],
+      "sell": [
+        {
+          "quantity": 75,
+          "price": 33442,
+          "orders": 1
+        },
+        {
+          "quantity": 200,
+          "price": 33444.95,
+          "orders": 1
+        },
+        {
+          "quantity": 50,
+          "price": 33445,
+          "orders": 2
+        },
+        {
+          "quantity": 25,
+          "price": 33445.2,
+          "orders": 1
+        },
+        {
+          "quantity": 125,
+          "price": 33445.95,
+          "orders": 3
+        },
+        {
+          "quantity": 25,
+          "price": 33446,
+          "orders": 1
+        },
+        {
+          "quantity": 50,
+          "price": 33446.6,
+          "orders": 1
+        },
+        {
+          "quantity": 25,
+          "price": 33446.75,
+          "orders": 1
+        },
+        {
+          "quantity": 275,
+          "price": 33446.8,
+          "orders": 3
+        },
+        {
+          "quantity": 25,
+          "price": 33446.85,
+          "orders": 1
+        },
+        {
+          "quantity": 50,
+          "price": 33446.9,
+          "orders": 2
+        },
+        {
+          "quantity": 50,
+          "price": 33446.95,
+          "orders": 2
+        },
+        {
+          "quantity": 50,
+          "price": 33447,
+          "orders": 1
+        },
+        {
+          "quantity": 50,
+          "price": 33447.2,
+          "orders": 1
+        },
+        {
+          "quantity": 25,
+          "price": 33447.4,
+          "orders": 1
+        },
+        {
+          "quantity": 200,
+          "price": 33447.45,
+          "orders": 1
+        },
+        {
+          "quantity": 75,
+          "price": 33447.55,
+          "orders": 2
+        },
+        {
+          "quantity": 50,
+          "price": 33447.75,
+          "orders": 1
+        },
+        {
+          "quantity": 25,
+          "price": 33447.8,
+          "orders": 1
+        },
+        {
+          "quantity": 75,
+          "price": 33447.9,
+          "orders": 2
+        }
+      ]
+    }
+  }
+}
+
+
+{
+  "265": {
+    "mode": "ltpc",
+    "isTradeable": true,
+    "token": 265,
+    "lastPrice": 52709.67,
+    "closePrice": 52693.57,
+    "change": 0.030554012567375003,
+    "absoluteChange": 16.099999999998545,
+    "openChange": 0,
+    "openChangePercent": 0,
+    "tickChange": 1
+  },
+  "256265": {
+    "mode": "ltpc",
+    "isTradeable": true,
+    "token": 256265,
+    "lastPrice": 15740.45,
+    "closePrice": 15732.1,
+    "change": 0.05307619453220081,
+    "absoluteChange": 8.350000000000364,
+    "openChange": 0,
+    "openChangePercent": 0,
+    "tickChange": 1
+  },
+  "260105": {
+    "mode": "ltp",
+    "isTradeable": true,
+    "token": 260105,
+    "lastPrice": 33427.5,
+    "change": 0,
+    "absoluteChange": 0,
+    "tickChange": 0
+  },
+  "14523650": {
+    "mode": "full",
+    "isTradeable": true,
+    "token": 14523650,
+    "lastPrice": 33468.6,
+    "closePrice": 33377.05,
+    "change": 0.2742902683130943,
+    "absoluteChange": 91.54999999999563,
+    "openChange": 68.59999999999854,
+    "openChangePercent": 0.20538922155688186,
+    "tickChange": 1,
+    "volume": 1220875,
+    "lastQuantity": 50,
+    "totalBuyQuantity": 123325,
+    "totalSellQuantity": 148175,
+    "averagePrice": 33419.61,
+    "openPrice": 33400,
+    "highPrice": 33552.95,
+    "lowPrice": 33301,
+    "depth": {
+      "buy": [
+        {
+          "price": 33465,
+          "orders": 4,
+          "quantity": 150
+        },
+        {
+          "price": 33462.1,
+          "orders": 1,
+          "quantity": 200
+        },
+        {
+          "price": 33462.05,
+          "orders": 1,
+          "quantity": 25
+        },
+        {
+          "price": 33461.8,
+          "orders": 1,
+          "quantity": 25
+        },
+        {
+          "price": 33461.6,
+          "orders": 1,
+          "quantity": 50
+        }
+      ],
+      "sell": [
+        {
+          "price": 33468.9,
+          "orders": 2,
+          "quantity": 150
+        },
+        {
+          "price": 33469,
+          "orders": 3,
+          "quantity": 150
+        },
+        {
+          "price": 33469.2,
+          "orders": 1,
+          "quantity": 50
+        },
+        {
+          "price": 33469.6,
+          "orders": 1,
+          "quantity": 50
+        },
+        {
+          "price": 33469.75,
+          "orders": 1,
+          "quantity": 50
+        }
+      ]
+    },
+    "lastTradedTime": "2022-06-15 11:50:14",
+    "oi": 2728175,
+    "oiDayHigh": 2759225,
+    "oiDayLow": 2719825,
+    "extendedDepth": {
+      "buy": [
+        {
+          "quantity": 200,
+          "price": 33469.5,
+          "orders": 1
+        },
+        {
+          "quantity": 125,
+          "price": 33469.45,
+          "orders": 1
+        },
+        {
+          "quantity": 50,
+          "price": 33469.3,
+          "orders": 1
+        },
+        {
+          "quantity": 25,
+          "price": 33469.2,
+          "orders": 1
+        },
+        {
+          "quantity": 25,
+          "price": 33468.2,
+          "orders": 1
+        },
+        {
+          "quantity": 25,
+          "price": 33468.1,
+          "orders": 1
+        },
+        {
+          "quantity": 100,
+          "price": 33468.05,
+          "orders": 2
+        },
+        {
+          "quantity": 50,
+          "price": 33467.9,
+          "orders": 1
+        },
+        {
+          "quantity": 50,
+          "price": 33467.6,
+          "orders": 1
+        },
+        {
+          "quantity": 50,
+          "price": 33467.5,
+          "orders": 1
+        },
+        {
+          "quantity": 50,
+          "price": 33467.4,
+          "orders": 1
+        },
+        {
+          "quantity": 50,
+          "price": 33467.3,
+          "orders": 1
+        },
+        {
+          "quantity": 150,
+          "price": 33467.2,
+          "orders": 3
+        },
+        {
+          "quantity": 75,
+          "price": 33467.15,
+          "orders": 2
+        },
+        {
+          "quantity": 50,
+          "price": 33467.1,
+          "orders": 1
+        },
+        {
+          "quantity": 175,
+          "price": 33467.05,
+          "orders": 3
+        },
+        {
+          "quantity": 50,
+          "price": 33466.95,
+          "orders": 1
+        },
+        {
+          "quantity": 25,
+          "price": 33466.9,
+          "orders": 1
+        },
+        {
+          "quantity": 175,
+          "price": 33466.85,
+          "orders": 2
+        },
+        {
+          "quantity": 50,
+          "price": 33466.8,
+          "orders": 1
+        }
+      ],
+      "sell": [
+        {
+          "quantity": 75,
+          "price": 33474.95,
+          "orders": 2
+        },
+        {
+          "quantity": 25,
+          "price": 33475.75,
+          "orders": 1
+        },
+        {
+          "quantity": 50,
+          "price": 33475.9,
+          "orders": 1
+        },
+        {
+          "quantity": 75,
+          "price": 33475.95,
+          "orders": 1
+        },
+        {
+          "quantity": 25,
+          "price": 33476.65,
+          "orders": 1
+        },
+        {
+          "quantity": 25,
+          "price": 33476.7,
+          "orders": 1
+        },
+        {
+          "quantity": 50,
+          "price": 33476.85,
+          "orders": 1
+        },
+        {
+          "quantity": 125,
+          "price": 33476.9,
+          "orders": 1
+        },
+        {
+          "quantity": 225,
+          "price": 33476.95,
+          "orders": 3
+        },
+        {
+          "quantity": 50,
+          "price": 33477.1,
+          "orders": 1
+        },
+        {
+          "quantity": 25,
+          "price": 33477.15,
+          "orders": 1
+        },
+        {
+          "quantity": 25,
+          "price": 33477.2,
+          "orders": 1
+        },
+        {
+          "quantity": 25,
+          "price": 33477.35,
+          "orders": 1
+        },
+        {
+          "quantity": 300,
+          "price": 33477.4,
+          "orders": 2
+        },
+        {
+          "quantity": 175,
+          "price": 33477.45,
+          "orders": 2
+        },
+        {
+          "quantity": 25,
+          "price": 33477.6,
+          "orders": 1
+        },
+        {
+          "quantity": 75,
+          "price": 33477.65,
+          "orders": 2
+        },
+        {
+          "quantity": 50,
+          "price": 33477.7,
+          "orders": 2
+        },
+        {
+          "quantity": 50,
+          "price": 33477.75,
+          "orders": 2
+        },
+        {
+          "quantity": 50,
+          "price": 33477.85,
+          "orders": 2
+        }
+      ]
+    }
+  }
+}
+
+
+{
+    "265": {
+        "mode": "ltpc",
+        "isTradeable": true,
+        "token": 265,
+        "lastPrice": 52720.76,
+        "closePrice": 52693.57,
+        "change": 0.051600223708513825,
+        "absoluteChange": 27.19000000000233,
+        "openChange": 0,
+        "openChangePercent": 0,
+        "tickChange": 1
+    },
+    "256265": {
+        "mode": "ltpc",
+        "isTradeable": true,
+        "token": 256265,
+        "lastPrice": 15740.05,
+        "closePrice": 15732.1,
+        "change": 0.05053362233903235,
+        "absoluteChange": 7.949999999998909,
+        "openChange": 0,
+        "openChangePercent": 0,
+        "tickChange": 1
+    },
+    "260105": {
+        "mode": "ltp",
+        "isTradeable": true,
+        "token": 260105,
+        "lastPrice": 33418.3,
+        "change": 0,
+        "absoluteChange": 0,
+        "tickChange": 0
+    },
+    "14523650": {
+        "mode": "full",
+        "isTradeable": true,
+        "token": 14523650,
+        "lastPrice": 33457.15,
+        "closePrice": 33377.05,
+        "change": 0.23998525933238118,
+        "absoluteChange": 80.09999999999854,
+        "openChange": 57.150000000001455,
+        "openChangePercent": 0.17110778443114208,
+        "tickChange": 1,
+        "volume": 1221725,
+        "lastQuantity": 25,
+        "totalBuyQuantity": 122700,
+        "totalSellQuantity": 151125,
+        "averagePrice": 33419.64,
+        "openPrice": 33400,
+        "highPrice": 33552.95,
+        "lowPrice": 33301,
+        "depth": {
+            "buy": [
+                {
+                    "price": 33454.15,
+                    "orders": 3,
+                    "quantity": 250
+                },
+                {
+                    "price": 33454.1,
+                    "orders": 3,
+                    "quantity": 125
+                },
+                {
+                    "price": 33454.05,
+                    "orders": 1,
+                    "quantity": 75
+                },
+                {
+                    "price": 33454,
+                    "orders": 1,
+                    "quantity": 50
+                },
+                {
+                    "price": 33453.9,
+                    "orders": 1,
+                    "quantity": 50
+                }
+            ],
+            "sell": [
+                {
+                    "price": 33459.85,
+                    "orders": 1,
+                    "quantity": 25
+                },
+                {
+                    "price": 33459.9,
+                    "orders": 1,
+                    "quantity": 25
+                },
+                {
+                    "price": 33460,
+                    "orders": 3,
+                    "quantity": 2100
+                },
+                {
+                    "price": 33460.65,
+                    "orders": 1,
+                    "quantity": 25
+                },
+                {
+                    "price": 33461.1,
+                    "orders": 1,
+                    "quantity": 25
+                }
+            ]
+        },
+        "lastTradedTime": "2022-06-15 11:50:35",
+        "oi": 2728175,
+        "oiDayHigh": 2759225,
+        "oiDayLow": 2719825,
+        "extendedDepth": {
+            "buy": [
+                {
+                    "quantity": 200,
+                    "price": 33469.5,
+                    "orders": 1
+                },
+                {
+                    "quantity": 125,
+                    "price": 33469.45,
+                    "orders": 1
+                },
+                {
+                    "quantity": 50,
+                    "price": 33469.3,
+                    "orders": 1
+                },
+                {
+                    "quantity": 25,
+                    "price": 33469.2,
+                    "orders": 1
+                },
+                {
+                    "quantity": 25,
+                    "price": 33468.2,
+                    "orders": 1
+                },
+                {
+                    "quantity": 25,
+                    "price": 33468.1,
+                    "orders": 1
+                },
+                {
+                    "quantity": 100,
+                    "price": 33468.05,
+                    "orders": 2
+                },
+                {
+                    "quantity": 50,
+                    "price": 33467.9,
+                    "orders": 1
+                },
+                {
+                    "quantity": 50,
+                    "price": 33467.6,
+                    "orders": 1
+                },
+                {
+                    "quantity": 50,
+                    "price": 33467.5,
+                    "orders": 1
+                },
+                {
+                    "quantity": 50,
+                    "price": 33467.4,
+                    "orders": 1
+                },
+                {
+                    "quantity": 50,
+                    "price": 33467.3,
+                    "orders": 1
+                },
+                {
+                    "quantity": 150,
+                    "price": 33467.2,
+                    "orders": 3
+                },
+                {
+                    "quantity": 75,
+                    "price": 33467.15,
+                    "orders": 2
+                },
+                {
+                    "quantity": 50,
+                    "price": 33467.1,
+                    "orders": 1
+                },
+                {
+                    "quantity": 175,
+                    "price": 33467.05,
+                    "orders": 3
+                },
+                {
+                    "quantity": 50,
+                    "price": 33466.95,
+                    "orders": 1
+                },
+                {
+                    "quantity": 25,
+                    "price": 33466.9,
+                    "orders": 1
+                },
+                {
+                    "quantity": 175,
+                    "price": 33466.85,
+                    "orders": 2
+                },
+                {
+                    "quantity": 50,
+                    "price": 33466.8,
+                    "orders": 1
+                }
+            ],
+            "sell": [
+                {
+                    "quantity": 75,
+                    "price": 33474.95,
+                    "orders": 2
+                },
+                {
+                    "quantity": 25,
+                    "price": 33475.75,
+                    "orders": 1
+                },
+                {
+                    "quantity": 50,
+                    "price": 33475.9,
+                    "orders": 1
+                },
+                {
+                    "quantity": 75,
+                    "price": 33475.95,
+                    "orders": 1
+                },
+                {
+                    "quantity": 25,
+                    "price": 33476.65,
+                    "orders": 1
+                },
+                {
+                    "quantity": 25,
+                    "price": 33476.7,
+                    "orders": 1
+                },
+                {
+                    "quantity": 50,
+                    "price": 33476.85,
+                    "orders": 1
+                },
+                {
+                    "quantity": 125,
+                    "price": 33476.9,
+                    "orders": 1
+                },
+                {
+                    "quantity": 225,
+                    "price": 33476.95,
+                    "orders": 3
+                },
+                {
+                    "quantity": 50,
+                    "price": 33477.1,
+                    "orders": 1
+                },
+                {
+                    "quantity": 25,
+                    "price": 33477.15,
+                    "orders": 1
+                },
+                {
+                    "quantity": 25,
+                    "price": 33477.2,
+                    "orders": 1
+                },
+                {
+                    "quantity": 25,
+                    "price": 33477.35,
+                    "orders": 1
+                },
+                {
+                    "quantity": 300,
+                    "price": 33477.4,
+                    "orders": 2
+                },
+                {
+                    "quantity": 175,
+                    "price": 33477.45,
+                    "orders": 2
+                },
+                {
+                    "quantity": 25,
+                    "price": 33477.6,
+                    "orders": 1
+                },
+                {
+                    "quantity": 75,
+                    "price": 33477.65,
+                    "orders": 2
+                },
+                {
+                    "quantity": 50,
+                    "price": 33477.7,
+                    "orders": 2
+                },
+                {
+                    "quantity": 50,
+                    "price": 33477.75,
+                    "orders": 2
+                },
+                {
+                    "quantity": 50,
+                    "price": 33477.85,
+                    "orders": 2
+                }
+            ]
+        }
+    }
+}
+
+
+{
+    "265": {
+        "mode": "ltpc",
+        "isTradeable": true,
+        "token": 265,
+        "lastPrice": 52719.99,
+        "closePrice": 52693.57,
+        "change": 0.05013894484658803,
+        "absoluteChange": 26.419999999998254,
+        "openChange": 0,
+        "openChangePercent": 0,
+        "tickChange": 1
+    },
+    "256265": {
+        "mode": "ltpc",
+        "isTradeable": true,
+        "token": 256265,
+        "lastPrice": 15739.35,
+        "closePrice": 15732.1,
+        "change": 0.04608412100101067,
+        "absoluteChange": 7.25,
+        "openChange": 0,
+        "openChangePercent": 0,
+        "tickChange": 1
+    },
+    "260105": {
+        "mode": "ltp",
+        "isTradeable": true,
+        "token": 260105,
+        "lastPrice": 33407.2,
+        "change": 0,
+        "absoluteChange": 0,
+        "tickChange": 0
+    },
+    "14523650": {
+        "mode": "full",
+        "isTradeable": true,
+        "token": 14523650,
+        "lastPrice": 33446.1,
+        "closePrice": 33377.05,
+        "change": 0.20687867861298595,
+        "absoluteChange": 69.04999999999563,
+        "openChange": 46.099999999998545,
+        "openChangePercent": 0.13802395209580404,
+        "tickChange": 1,
+        "volume": 1226975,
+        "lastQuantity": 25,
+        "totalBuyQuantity": 122750,
+        "totalSellQuantity": 149350,
+        "averagePrice": 33419.79,
+        "openPrice": 33400,
+        "highPrice": 33552.95,
+        "lowPrice": 33301,
+        "depth": {
+            "buy": [
+                {
+                    "price": 33451,
+                    "orders": 1,
+                    "quantity": 25
+                },
+                {
+                    "price": 33450.95,
+                    "orders": 1,
+                    "quantity": 25
+                },
+                {
+                    "price": 33450.35,
+                    "orders": 1,
+                    "quantity": 25
+                },
+                {
+                    "price": 33450.1,
+                    "orders": 1,
+                    "quantity": 125
+                },
+                {
+                    "price": 33450.05,
+                    "orders": 1,
+                    "quantity": 75
+                }
+            ],
+            "sell": [
+                {
+                    "price": 33455,
+                    "orders": 1,
+                    "quantity": 25
+                },
+                {
+                    "price": 33456,
+                    "orders": 1,
+                    "quantity": 100
+                },
+                {
+                    "price": 33456.25,
+                    "orders": 1,
+                    "quantity": 200
+                },
+                {
+                    "price": 33456.3,
+                    "orders": 1,
+                    "quantity": 25
+                },
+                {
+                    "price": 33456.35,
+                    "orders": 1,
+                    "quantity": 25
+                }
+            ]
+        },
+        "lastTradedTime": "2022-06-15 11:51:48",
+        "oi": 2726300,
+        "oiDayHigh": 2759225,
+        "oiDayLow": 2719825,
+        "extendedDepth": {
+            "buy": [
+                {
+                    "quantity": 200,
+                    "price": 33469.5,
+                    "orders": 1
+                },
+                {
+                    "quantity": 125,
+                    "price": 33469.45,
+                    "orders": 1
+                },
+                {
+                    "quantity": 50,
+                    "price": 33469.3,
+                    "orders": 1
+                },
+                {
+                    "quantity": 25,
+                    "price": 33469.2,
+                    "orders": 1
+                },
+                {
+                    "quantity": 25,
+                    "price": 33468.2,
+                    "orders": 1
+                },
+                {
+                    "quantity": 25,
+                    "price": 33468.1,
+                    "orders": 1
+                },
+                {
+                    "quantity": 100,
+                    "price": 33468.05,
+                    "orders": 2
+                },
+                {
+                    "quantity": 50,
+                    "price": 33467.9,
+                    "orders": 1
+                },
+                {
+                    "quantity": 50,
+                    "price": 33467.6,
+                    "orders": 1
+                },
+                {
+                    "quantity": 50,
+                    "price": 33467.5,
+                    "orders": 1
+                },
+                {
+                    "quantity": 50,
+                    "price": 33467.4,
+                    "orders": 1
+                },
+                {
+                    "quantity": 50,
+                    "price": 33467.3,
+                    "orders": 1
+                },
+                {
+                    "quantity": 150,
+                    "price": 33467.2,
+                    "orders": 3
+                },
+                {
+                    "quantity": 75,
+                    "price": 33467.15,
+                    "orders": 2
+                },
+                {
+                    "quantity": 50,
+                    "price": 33467.1,
+                    "orders": 1
+                },
+                {
+                    "quantity": 175,
+                    "price": 33467.05,
+                    "orders": 3
+                },
+                {
+                    "quantity": 50,
+                    "price": 33466.95,
+                    "orders": 1
+                },
+                {
+                    "quantity": 25,
+                    "price": 33466.9,
+                    "orders": 1
+                },
+                {
+                    "quantity": 175,
+                    "price": 33466.85,
+                    "orders": 2
+                },
+                {
+                    "quantity": 50,
+                    "price": 33466.8,
+                    "orders": 1
+                }
+            ],
+            "sell": [
+                {
+                    "quantity": 75,
+                    "price": 33474.95,
+                    "orders": 2
+                },
+                {
+                    "quantity": 25,
+                    "price": 33475.75,
+                    "orders": 1
+                },
+                {
+                    "quantity": 50,
+                    "price": 33475.9,
+                    "orders": 1
+                },
+                {
+                    "quantity": 75,
+                    "price": 33475.95,
+                    "orders": 1
+                },
+                {
+                    "quantity": 25,
+                    "price": 33476.65,
+                    "orders": 1
+                },
+                {
+                    "quantity": 25,
+                    "price": 33476.7,
+                    "orders": 1
+                },
+                {
+                    "quantity": 50,
+                    "price": 33476.85,
+                    "orders": 1
+                },
+                {
+                    "quantity": 125,
+                    "price": 33476.9,
+                    "orders": 1
+                },
+                {
+                    "quantity": 225,
+                    "price": 33476.95,
+                    "orders": 3
+                },
+                {
+                    "quantity": 50,
+                    "price": 33477.1,
+                    "orders": 1
+                },
+                {
+                    "quantity": 25,
+                    "price": 33477.15,
+                    "orders": 1
+                },
+                {
+                    "quantity": 25,
+                    "price": 33477.2,
+                    "orders": 1
+                },
+                {
+                    "quantity": 25,
+                    "price": 33477.35,
+                    "orders": 1
+                },
+                {
+                    "quantity": 300,
+                    "price": 33477.4,
+                    "orders": 2
+                },
+                {
+                    "quantity": 175,
+                    "price": 33477.45,
+                    "orders": 2
+                },
+                {
+                    "quantity": 25,
+                    "price": 33477.6,
+                    "orders": 1
+                },
+                {
+                    "quantity": 75,
+                    "price": 33477.65,
+                    "orders": 2
+                },
+                {
+                    "quantity": 50,
+                    "price": 33477.7,
+                    "orders": 2
+                },
+                {
+                    "quantity": 50,
+                    "price": 33477.75,
+                    "orders": 2
+                },
+                {
+                    "quantity": 50,
+                    "price": 33477.85,
+                    "orders": 2
+                }
+            ]
+        }
+    },
+    "14523906": {
+        "mode": "full",
+        "isTradeable": true,
+        "token": 14523906,
+        "lastPrice": 15757.25,
+        "closePrice": 15737.45,
+        "change": 0.12581453793339628,
+        "absoluteChange": 19.799999999999272,
+        "openChange": 17.5,
+        "openChangePercent": 0.11118346860655347,
+        "tickChange": 1,
+        "volume": 3432650,
+        "lastQuantity": 100,
+        "totalBuyQuantity": 471950,
+        "totalSellQuantity": 451400,
+        "averagePrice": 15738.5,
+        "openPrice": 15739.75,
+        "highPrice": 15796,
+        "lowPrice": 15701.1,
+        "depth": {
+            "buy": [
+                {
+                    "price": 15755.15,
+                    "orders": 1,
+                    "quantity": 100
+                },
+                {
+                    "price": 15755.1,
+                    "orders": 1,
+                    "quantity": 200
+                },
+                {
+                    "price": 15755.05,
+                    "orders": 1,
+                    "quantity": 50
+                },
+                {
+                    "price": 15755,
+                    "orders": 6,
+                    "quantity": 350
+                },
+                {
+                    "price": 15754.75,
+                    "orders": 1,
+                    "quantity": 50
+                }
+            ],
+            "sell": [
+                {
+                    "price": 15757.85,
+                    "orders": 1,
+                    "quantity": 50
+                },
+                {
+                    "price": 15757.9,
+                    "orders": 1,
+                    "quantity": 50
+                },
+                {
+                    "price": 15757.95,
+                    "orders": 2,
+                    "quantity": 150
+                },
+                {
+                    "price": 15758,
+                    "orders": 2,
+                    "quantity": 150
+                },
+                {
+                    "price": 15758.05,
+                    "orders": 2,
+                    "quantity": 100
+                }
+            ]
+        },
+        "lastTradedTime": "2022-06-15 11:51:53",
+        "oi": 10936750,
+        "oiDayHigh": 11018250,
+        "oiDayLow": 10724850
+    }
+}
+
+
+{
+    "265": {
+        "mode": "ltpc",
+        "isTradeable": true,
+        "token": 265,
+        "lastPrice": 52722.16,
+        "closePrice": 52693.57,
+        "change": 0.054257094366549435,
+        "absoluteChange": 28.590000000003783,
+        "openChange": 0,
+        "openChangePercent": 0,
+        "tickChange": 1
+    },
+    "256265": {
+        "mode": "ltpc",
+        "isTradeable": true,
+        "token": 256265,
+        "lastPrice": 15741.7,
+        "closePrice": 15732.1,
+        "change": 0.06102173263582334,
+        "absoluteChange": 9.600000000000364,
+        "openChange": 0,
+        "openChangePercent": 0,
+        "tickChange": 1
+    },
+    "260105": {
+        "mode": "ltp",
+        "isTradeable": true,
+        "token": 260105,
+        "lastPrice": 33421.3,
+        "change": 0,
+        "absoluteChange": 0,
+        "tickChange": 0
+    },
+    "14523650": {
+        "mode": "full",
+        "isTradeable": true,
+        "token": 14523650,
+        "lastPrice": 33468.5,
+        "closePrice": 33377.05,
+        "change": 0.2739906612477648,
+        "absoluteChange": 91.44999999999709,
+        "openChange": 68.5,
+        "openChangePercent": 0.20508982035928144,
+        "tickChange": 1,
+        "volume": 1228200,
+        "lastQuantity": 25,
+        "totalBuyQuantity": 124000,
+        "totalSellQuantity": 147800,
+        "averagePrice": 33419.83,
+        "openPrice": 33400,
+        "highPrice": 33552.95,
+        "lowPrice": 33301,
+        "depth": {
+            "buy": [
+                {
+                    "price": 33467.55,
+                    "orders": 2,
+                    "quantity": 50
+                },
+                {
+                    "price": 33465,
+                    "orders": 1,
+                    "quantity": 25
+                },
+                {
+                    "price": 33464.1,
+                    "orders": 1,
+                    "quantity": 100
+                },
+                {
+                    "price": 33464.05,
+                    "orders": 1,
+                    "quantity": 75
+                },
+                {
+                    "price": 33463.55,
+                    "orders": 1,
+                    "quantity": 25
+                }
+            ],
+            "sell": [
+                {
+                    "price": 33469.4,
+                    "orders": 1,
+                    "quantity": 25
+                },
+                {
+                    "price": 33469.95,
+                    "orders": 1,
+                    "quantity": 75
+                },
+                {
+                    "price": 33470.05,
+                    "orders": 1,
+                    "quantity": 200
+                },
+                {
+                    "price": 33470.1,
+                    "orders": 1,
+                    "quantity": 125
+                },
+                {
+                    "price": 33470.2,
+                    "orders": 1,
+                    "quantity": 50
+                }
+            ]
+        },
+        "lastTradedTime": "2022-06-15 11:52:13",
+        "oi": 2726300,
+        "oiDayHigh": 2759225,
+        "oiDayLow": 2719825,
+        "extendedDepth": {
+            "buy": [
+                {
+                    "quantity": 200,
+                    "price": 33469.5,
+                    "orders": 1
+                },
+                {
+                    "quantity": 125,
+                    "price": 33469.45,
+                    "orders": 1
+                },
+                {
+                    "quantity": 50,
+                    "price": 33469.3,
+                    "orders": 1
+                },
+                {
+                    "quantity": 25,
+                    "price": 33469.2,
+                    "orders": 1
+                },
+                {
+                    "quantity": 25,
+                    "price": 33468.2,
+                    "orders": 1
+                },
+                {
+                    "quantity": 25,
+                    "price": 33468.1,
+                    "orders": 1
+                },
+                {
+                    "quantity": 100,
+                    "price": 33468.05,
+                    "orders": 2
+                },
+                {
+                    "quantity": 50,
+                    "price": 33467.9,
+                    "orders": 1
+                },
+                {
+                    "quantity": 50,
+                    "price": 33467.6,
+                    "orders": 1
+                },
+                {
+                    "quantity": 50,
+                    "price": 33467.5,
+                    "orders": 1
+                },
+                {
+                    "quantity": 50,
+                    "price": 33467.4,
+                    "orders": 1
+                },
+                {
+                    "quantity": 50,
+                    "price": 33467.3,
+                    "orders": 1
+                },
+                {
+                    "quantity": 150,
+                    "price": 33467.2,
+                    "orders": 3
+                },
+                {
+                    "quantity": 75,
+                    "price": 33467.15,
+                    "orders": 2
+                },
+                {
+                    "quantity": 50,
+                    "price": 33467.1,
+                    "orders": 1
+                },
+                {
+                    "quantity": 175,
+                    "price": 33467.05,
+                    "orders": 3
+                },
+                {
+                    "quantity": 50,
+                    "price": 33466.95,
+                    "orders": 1
+                },
+                {
+                    "quantity": 25,
+                    "price": 33466.9,
+                    "orders": 1
+                },
+                {
+                    "quantity": 175,
+                    "price": 33466.85,
+                    "orders": 2
+                },
+                {
+                    "quantity": 50,
+                    "price": 33466.8,
+                    "orders": 1
+                }
+            ],
+            "sell": [
+                {
+                    "quantity": 75,
+                    "price": 33474.95,
+                    "orders": 2
+                },
+                {
+                    "quantity": 25,
+                    "price": 33475.75,
+                    "orders": 1
+                },
+                {
+                    "quantity": 50,
+                    "price": 33475.9,
+                    "orders": 1
+                },
+                {
+                    "quantity": 75,
+                    "price": 33475.95,
+                    "orders": 1
+                },
+                {
+                    "quantity": 25,
+                    "price": 33476.65,
+                    "orders": 1
+                },
+                {
+                    "quantity": 25,
+                    "price": 33476.7,
+                    "orders": 1
+                },
+                {
+                    "quantity": 50,
+                    "price": 33476.85,
+                    "orders": 1
+                },
+                {
+                    "quantity": 125,
+                    "price": 33476.9,
+                    "orders": 1
+                },
+                {
+                    "quantity": 225,
+                    "price": 33476.95,
+                    "orders": 3
+                },
+                {
+                    "quantity": 50,
+                    "price": 33477.1,
+                    "orders": 1
+                },
+                {
+                    "quantity": 25,
+                    "price": 33477.15,
+                    "orders": 1
+                },
+                {
+                    "quantity": 25,
+                    "price": 33477.2,
+                    "orders": 1
+                },
+                {
+                    "quantity": 25,
+                    "price": 33477.35,
+                    "orders": 1
+                },
+                {
+                    "quantity": 300,
+                    "price": 33477.4,
+                    "orders": 2
+                },
+                {
+                    "quantity": 175,
+                    "price": 33477.45,
+                    "orders": 2
+                },
+                {
+                    "quantity": 25,
+                    "price": 33477.6,
+                    "orders": 1
+                },
+                {
+                    "quantity": 75,
+                    "price": 33477.65,
+                    "orders": 2
+                },
+                {
+                    "quantity": 50,
+                    "price": 33477.7,
+                    "orders": 2
+                },
+                {
+                    "quantity": 50,
+                    "price": 33477.75,
+                    "orders": 2
+                },
+                {
+                    "quantity": 50,
+                    "price": 33477.85,
+                    "orders": 2
+                }
+            ]
+        }
+    },
+    "14523906": {
+        "mode": "full",
+        "isTradeable": true,
+        "token": 14523906,
+        "lastPrice": 15761.8,
+        "closePrice": 15737.45,
+        "change": 0.15472646457970346,
+        "absoluteChange": 24.349999999998545,
+        "openChange": 22.049999999999272,
+        "openChangePercent": 0.14009117044425276,
+        "tickChange": 1,
+        "volume": 3436050,
+        "lastQuantity": 50,
+        "totalBuyQuantity": 478500,
+        "totalSellQuantity": 450000,
+        "averagePrice": 15738.52,
+        "openPrice": 15739.75,
+        "highPrice": 15796,
+        "lowPrice": 15701.1,
+        "depth": {
+            "buy": [
+                {
+                    "price": 15760.95,
+                    "orders": 4,
+                    "quantity": 250
+                },
+                {
+                    "price": 15760.9,
+                    "orders": 4,
+                    "quantity": 250
+                },
+                {
+                    "price": 15760.85,
+                    "orders": 3,
+                    "quantity": 150
+                },
+                {
+                    "price": 15760.8,
+                    "orders": 4,
+                    "quantity": 200
+                },
+                {
+                    "price": 15760.7,
+                    "orders": 2,
+                    "quantity": 150
+                }
+            ],
+            "sell": [
+                {
+                    "price": 15761.8,
+                    "orders": 1,
+                    "quantity": 50
+                },
+                {
+                    "price": 15762.95,
+                    "orders": 1,
+                    "quantity": 100
+                },
+                {
+                    "price": 15763,
+                    "orders": 3,
+                    "quantity": 200
+                },
+                {
+                    "price": 15763.15,
+                    "orders": 1,
+                    "quantity": 50
+                },
+                {
+                    "price": 15763.25,
+                    "orders": 1,
+                    "quantity": 100
+                }
+            ]
+        },
+        "lastTradedTime": "2022-06-15 11:52:13",
+        "oi": 10936750,
+        "oiDayHigh": 11018250,
+        "oiDayLow": 10724850,
+        "extendedDepth": {
+            "buy": [
+                {
+                    "quantity": 100,
+                    "price": 15760.45,
+                    "orders": 2
+                },
+                {
+                    "quantity": 50,
+                    "price": 15760.4,
+                    "orders": 1
+                },
+                {
+                    "quantity": 50,
+                    "price": 15760.35,
+                    "orders": 1
+                },
+                {
+                    "quantity": 50,
+                    "price": 15760.3,
+                    "orders": 1
+                },
+                {
+                    "quantity": 200,
+                    "price": 15760.25,
+                    "orders": 3
+                },
+                {
+                    "quantity": 100,
+                    "price": 15760.2,
+                    "orders": 2
+                },
+                {
+                    "quantity": 50,
+                    "price": 15760.15,
+                    "orders": 1
+                },
+                {
+                    "quantity": 50,
+                    "price": 15760.1,
+                    "orders": 1
+                },
+                {
+                    "quantity": 300,
+                    "price": 15760.05,
+                    "orders": 4
+                },
+                {
+                    "quantity": 100,
+                    "price": 15760,
+                    "orders": 2
+                },
+                {
+                    "quantity": 100,
+                    "price": 15759.95,
+                    "orders": 2
+                },
+                {
+                    "quantity": 50,
+                    "price": 15759.9,
+                    "orders": 1
+                },
+                {
+                    "quantity": 100,
+                    "price": 15759.8,
+                    "orders": 2
+                },
+                {
+                    "quantity": 200,
+                    "price": 15759.75,
+                    "orders": 1
+                },
+                {
+                    "quantity": 100,
+                    "price": 15759.7,
+                    "orders": 2
+                },
+                {
+                    "quantity": 50,
+                    "price": 15759.55,
+                    "orders": 1
+                },
+                {
+                    "quantity": 300,
+                    "price": 15759.5,
+                    "orders": 1
+                },
+                {
+                    "quantity": 50,
+                    "price": 15759.45,
+                    "orders": 1
+                },
+                {
+                    "quantity": 100,
+                    "price": 15759.4,
+                    "orders": 2
+                },
+                {
+                    "quantity": 100,
+                    "price": 15759.35,
+                    "orders": 2
+                }
+            ],
+            "sell": [
+                {
+                    "quantity": 50,
+                    "price": 15761.8,
+                    "orders": 1
+                },
+                {
+                    "quantity": 50,
+                    "price": 15762.7,
+                    "orders": 1
+                },
+                {
+                    "quantity": 50,
+                    "price": 15762.75,
+                    "orders": 1
+                },
+                {
+                    "quantity": 100,
+                    "price": 15762.9,
+                    "orders": 1
+                },
+                {
+                    "quantity": 100,
+                    "price": 15762.95,
+                    "orders": 1
+                },
+                {
+                    "quantity": 350,
+                    "price": 15763,
+                    "orders": 5
+                },
+                {
+                    "quantity": 50,
+                    "price": 15763.2,
+                    "orders": 1
+                },
+                {
+                    "quantity": 150,
+                    "price": 15763.3,
+                    "orders": 2
+                },
+                {
+                    "quantity": 500,
+                    "price": 15763.35,
+                    "orders": 4
+                },
+                {
+                    "quantity": 600,
+                    "price": 15763.4,
+                    "orders": 5
+                },
+                {
+                    "quantity": 500,
+                    "price": 15763.45,
+                    "orders": 4
+                },
+                {
+                    "quantity": 350,
+                    "price": 15763.5,
+                    "orders": 2
+                },
+                {
+                    "quantity": 250,
+                    "price": 15763.55,
+                    "orders": 3
+                },
+                {
+                    "quantity": 350,
+                    "price": 15763.6,
+                    "orders": 3
+                },
+                {
+                    "quantity": 100,
+                    "price": 15763.65,
+                    "orders": 1
+                },
+                {
+                    "quantity": 1100,
+                    "price": 15763.7,
+                    "orders": 10
+                },
+                {
+                    "quantity": 350,
+                    "price": 15763.75,
+                    "orders": 3
+                },
+                {
+                    "quantity": 600,
+                    "price": 15763.8,
+                    "orders": 9
+                },
+                {
+                    "quantity": 500,
+                    "price": 15763.85,
+                    "orders": 4
+                },
+                {
+                    "quantity": 1100,
+                    "price": 15763.9,
+                    "orders": 13
+                }
+            ]
+        }
+    }
+}
+
+
+{
+  "265": {
+    "mode": "ltpc",
+    "isTradeable": true,
+    "token": 265,
+    "lastPrice": 52693.42,
+    "closePrice": 52693.57,
+    "change": -0.000284664713363424,
+    "absoluteChange": -0.1500000000014552,
+    "openChange": 0,
+    "openChangePercent": 0,
+    "tickChange": -1
+  },
+  "256265": {
+    "mode": "ltpc",
+    "isTradeable": true,
+    "token": 256265,
+    "lastPrice": 15736,
+    "closePrice": 15732.1,
+    "change": 0.02479007888329998,
+    "absoluteChange": 3.899999999999636,
+    "openChange": 0,
+    "openChangePercent": 0,
+    "tickChange": 1
+  },
+  "260105": {
+    "mode": "ltp",
+    "isTradeable": true,
+    "token": 260105,
+    "lastPrice": 33420.2,
+    "change": 0,
+    "absoluteChange": 0,
+    "tickChange": 0
+  },
+  "13483522": {
+    "mode": "full",
+    "isTradeable": true,
+    "token": 13483522,
+    "lastPrice": 207.35,
+    "closePrice": 234.6,
+    "change": -11.615515771526002,
+    "absoluteChange": -27.25,
+    "openChange": -32.05000000000001,
+    "openChangePercent": -13.387635756056811,
+    "tickChange": -1,
+    "volume": 33918950,
+    "lastQuantity": 25,
+    "totalBuyQuantity": 439400,
+    "totalSellQuantity": 612425,
+    "averagePrice": 205.19,
+    "openPrice": 239.4,
+    "highPrice": 273.5,
+    "lowPrice": 166.55,
+    "depth": {
+      "buy": [
+        {
+          "price": 207.1,
+          "orders": 2,
+          "quantity": 100
+        },
+        {
+          "price": 207.05,
+          "orders": 1,
+          "quantity": 25
+        },
+        {
+          "price": 207,
+          "orders": 5,
+          "quantity": 200
+        },
+        {
+          "price": 206.95,
+          "orders": 2,
+          "quantity": 425
+        },
+        {
+          "price": 206.9,
+          "orders": 5,
+          "quantity": 250
+        }
+      ],
+      "sell": [
+        {
+          "price": 207.5,
+          "orders": 1,
+          "quantity": 25
+        },
+        {
+          "price": 207.55,
+          "orders": 3,
+          "quantity": 325
+        },
+        {
+          "price": 207.6,
+          "orders": 3,
+          "quantity": 200
+        },
+        {
+          "price": 207.65,
+          "orders": 3,
+          "quantity": 175
+        },
+        {
+          "price": 207.7,
+          "orders": 7,
+          "quantity": 750
+        }
+      ]
+    },
+    "lastTradedTime": "2022-06-15 12:23:02",
+    "oi": 2947600,
+    "oiDayHigh": 3348275,
+    "oiDayLow": 1766500,
+    "extendedDepth": {
+      "buy": [
+        {
+          "quantity": 125,
+          "price": 209,
+          "orders": 2
+        },
+        {
+          "quantity": 75,
+          "price": 208.75,
+          "orders": 3
+        },
+        {
+          "quantity": 450,
+          "price": 208.7,
+          "orders": 2
+        },
+        {
+          "quantity": 575,
+          "price": 208.65,
+          "orders": 4
+        },
+        {
+          "quantity": 175,
+          "price": 208.6,
+          "orders": 2
+        },
+        {
+          "quantity": 100,
+          "price": 208.55,
+          "orders": 2
+        },
+        {
+          "quantity": 200,
+          "price": 208.5,
+          "orders": 4
+        },
+        {
+          "quantity": 50,
+          "price": 208.45,
+          "orders": 1
+        },
+        {
+          "quantity": 225,
+          "price": 208.4,
+          "orders": 3
+        },
+        {
+          "quantity": 400,
+          "price": 208.35,
+          "orders": 6
+        },
+        {
+          "quantity": 50,
+          "price": 208.3,
+          "orders": 1
+        },
+        {
+          "quantity": 575,
+          "price": 208.25,
+          "orders": 8
+        },
+        {
+          "quantity": 175,
+          "price": 208.2,
+          "orders": 3
+        },
+        {
+          "quantity": 125,
+          "price": 208.15,
+          "orders": 4
+        },
+        {
+          "quantity": 200,
+          "price": 208.1,
+          "orders": 3
+        },
+        {
+          "quantity": 400,
+          "price": 208.05,
+          "orders": 6
+        },
+        {
+          "quantity": 725,
+          "price": 208,
+          "orders": 7
+        },
+        {
+          "quantity": 700,
+          "price": 207.95,
+          "orders": 5
+        },
+        {
+          "quantity": 200,
+          "price": 207.9,
+          "orders": 2
+        },
+        {
+          "quantity": 50,
+          "price": 207.85,
+          "orders": 2
+        }
+      ],
+      "sell": [
+        {
+          "quantity": 100,
+          "price": 209.25,
+          "orders": 2
+        },
+        {
+          "quantity": 25,
+          "price": 209.3,
+          "orders": 1
+        },
+        {
+          "quantity": 75,
+          "price": 209.35,
+          "orders": 2
+        },
+        {
+          "quantity": 425,
+          "price": 209.4,
+          "orders": 4
+        },
+        {
+          "quantity": 475,
+          "price": 209.45,
+          "orders": 3
+        },
+        {
+          "quantity": 325,
+          "price": 209.5,
+          "orders": 5
+        },
+        {
+          "quantity": 300,
+          "price": 209.55,
+          "orders": 6
+        },
+        {
+          "quantity": 300,
+          "price": 209.6,
+          "orders": 4
+        },
+        {
+          "quantity": 350,
+          "price": 209.65,
+          "orders": 6
+        },
+        {
+          "quantity": 450,
+          "price": 209.7,
+          "orders": 5
+        },
+        {
+          "quantity": 350,
+          "price": 209.75,
+          "orders": 5
+        },
+        {
+          "quantity": 375,
+          "price": 209.8,
+          "orders": 6
+        },
+        {
+          "quantity": 175,
+          "price": 209.85,
+          "orders": 4
+        },
+        {
+          "quantity": 175,
+          "price": 209.9,
+          "orders": 2
+        },
+        {
+          "quantity": 400,
+          "price": 209.95,
+          "orders": 5
+        },
+        {
+          "quantity": 475,
+          "price": 210,
+          "orders": 5
+        },
+        {
+          "quantity": 50,
+          "price": 210.05,
+          "orders": 2
+        },
+        {
+          "quantity": 150,
+          "price": 210.1,
+          "orders": 4
+        },
+        {
+          "quantity": 100,
+          "price": 210.15,
+          "orders": 3
+        },
+        {
+          "quantity": 275,
+          "price": 210.2,
+          "orders": 3
+        }
+      ]
+    }
+  },
+  "13483778": {
+    "mode": "full",
+    "isTradeable": true,
+    "token": 13483778,
+    "lastPrice": 296.35,
+    "closePrice": 394.5,
+    "change": -24.879594423320654,
+    "absoluteChange": -98.14999999999998,
+    "openChange": -59.049999999999955,
+    "openChangePercent": -16.6150815981992,
+    "tickChange": -1,
+    "volume": 19680425,
+    "lastQuantity": 25,
+    "totalBuyQuantity": 1143325,
+    "totalSellQuantity": 413825,
+    "averagePrice": 325.23,
+    "openPrice": 355.4,
+    "highPrice": 402.7,
+    "lowPrice": 245.55,
+    "depth": {
+      "buy": [
+        {
+          "price": 295,
+          "orders": 1,
+          "quantity": 25
+        },
+        {
+          "price": 294.95,
+          "orders": 1,
+          "quantity": 50
+        },
+        {
+          "price": 294.9,
+          "orders": 4,
+          "quantity": 100
+        },
+        {
+          "price": 294.85,
+          "orders": 3,
+          "quantity": 175
+        },
+        {
+          "price": 294.8,
+          "orders": 2,
+          "quantity": 200
+        }
+      ],
+      "sell": [
+        {
+          "price": 295.65,
+          "orders": 2,
+          "quantity": 100
+        },
+        {
+          "price": 295.7,
+          "orders": 2,
+          "quantity": 50
+        },
+        {
+          "price": 295.8,
+          "orders": 3,
+          "quantity": 400
+        },
+        {
+          "price": 295.85,
+          "orders": 4,
+          "quantity": 475
+        },
+        {
+          "price": 295.9,
+          "orders": 3,
+          "quantity": 300
+        }
+      ]
+    },
+    "lastTradedTime": "2022-06-15 12:23:02",
+    "oi": 1752750,
+    "oiDayHigh": 1752750,
+    "oiDayLow": 979700,
+    "extendedDepth": {
+      "buy": [
+        {
+          "quantity": 100,
+          "price": 294.6,
+          "orders": 2
+        },
+        {
+          "quantity": 50,
+          "price": 294.55,
+          "orders": 1
+        },
+        {
+          "quantity": 50,
+          "price": 294.5,
+          "orders": 1
+        },
+        {
+          "quantity": 50,
+          "price": 294.45,
+          "orders": 1
+        },
+        {
+          "quantity": 75,
+          "price": 294.4,
+          "orders": 2
+        },
+        {
+          "quantity": 100,
+          "price": 294.35,
+          "orders": 3
+        },
+        {
+          "quantity": 225,
+          "price": 294.3,
+          "orders": 4
+        },
+        {
+          "quantity": 50,
+          "price": 294.2,
+          "orders": 1
+        },
+        {
+          "quantity": 100,
+          "price": 294.15,
+          "orders": 1
+        },
+        {
+          "quantity": 50,
+          "price": 294.1,
+          "orders": 1
+        },
+        {
+          "quantity": 200,
+          "price": 294.05,
+          "orders": 2
+        },
+        {
+          "quantity": 575,
+          "price": 294,
+          "orders": 5
+        },
+        {
+          "quantity": 50,
+          "price": 293.95,
+          "orders": 1
+        },
+        {
+          "quantity": 50,
+          "price": 293.9,
+          "orders": 1
+        },
+        {
+          "quantity": 150,
+          "price": 293.85,
+          "orders": 2
+        },
+        {
+          "quantity": 175,
+          "price": 293.75,
+          "orders": 3
+        },
+        {
+          "quantity": 300,
+          "price": 293.7,
+          "orders": 6
+        },
+        {
+          "quantity": 50,
+          "price": 293.55,
+          "orders": 1
+        },
+        {
+          "quantity": 300,
+          "price": 293.45,
+          "orders": 3
+        },
+        {
+          "quantity": 450,
+          "price": 293.4,
+          "orders": 4
+        }
+      ],
+      "sell": [
+        {
+          "quantity": 125,
+          "price": 294.9,
+          "orders": 1
+        },
+        {
+          "quantity": 400,
+          "price": 295.1,
+          "orders": 1
+        },
+        {
+          "quantity": 75,
+          "price": 295.15,
+          "orders": 2
+        },
+        {
+          "quantity": 350,
+          "price": 295.2,
+          "orders": 4
+        },
+        {
+          "quantity": 25,
+          "price": 295.25,
+          "orders": 1
+        },
+        {
+          "quantity": 125,
+          "price": 295.3,
+          "orders": 1
+        },
+        {
+          "quantity": 200,
+          "price": 295.35,
+          "orders": 2
+        },
+        {
+          "quantity": 150,
+          "price": 295.4,
+          "orders": 2
+        },
+        {
+          "quantity": 50,
+          "price": 295.45,
+          "orders": 1
+        },
+        {
+          "quantity": 175,
+          "price": 295.5,
+          "orders": 3
+        },
+        {
+          "quantity": 75,
+          "price": 295.55,
+          "orders": 2
+        },
+        {
+          "quantity": 25,
+          "price": 295.6,
+          "orders": 1
+        },
+        {
+          "quantity": 500,
+          "price": 295.65,
+          "orders": 5
+        },
+        {
+          "quantity": 75,
+          "price": 295.7,
+          "orders": 2
+        },
+        {
+          "quantity": 25,
+          "price": 295.75,
+          "orders": 1
+        },
+        {
+          "quantity": 175,
+          "price": 295.8,
+          "orders": 3
+        },
+        {
+          "quantity": 100,
+          "price": 295.85,
+          "orders": 2
+        },
+        {
+          "quantity": 100,
+          "price": 295.9,
+          "orders": 1
+        },
+        {
+          "quantity": 25,
+          "price": 295.95,
+          "orders": 1
+        },
+        {
+          "quantity": 150,
+          "price": 296,
+          "orders": 2
+        }
+      ]
+    }
+  },
+  "14523650": {
+    "mode": "full",
+    "isTradeable": true,
+    "token": 14523650,
+    "lastPrice": 33451,
+    "closePrice": 33377.05,
+    "change": 0.22155942481434723,
+    "absoluteChange": 73.94999999999709,
+    "openChange": 51,
+    "openChangePercent": 0.15269461077844312,
+    "tickChange": 1,
+    "volume": 1374225,
+    "lastQuantity": 25,
+    "totalBuyQuantity": 120925,
+    "totalSellQuantity": 149925,
+    "averagePrice": 33424.69,
+    "openPrice": 33400,
+    "highPrice": 33552.95,
+    "lowPrice": 33301,
+    "depth": {
+      "buy": [
+        {
+          "price": 33451.35,
+          "orders": 1,
+          "quantity": 25
+        },
+        {
+          "price": 33451,
+          "orders": 1,
+          "quantity": 25
+        },
+        {
+          "price": 33450,
+          "orders": 1,
+          "quantity": 50
+        },
+        {
+          "price": 33449.3,
+          "orders": 1,
+          "quantity": 200
+        },
+        {
+          "price": 33449.25,
+          "orders": 1,
+          "quantity": 125
+        }
+      ],
+      "sell": [
+        {
+          "price": 33455.3,
+          "orders": 3,
+          "quantity": 100
+        },
+        {
+          "price": 33455.45,
+          "orders": 1,
+          "quantity": 25
+        },
+        {
+          "price": 33455.8,
+          "orders": 1,
+          "quantity": 200
+        },
+        {
+          "price": 33455.85,
+          "orders": 2,
+          "quantity": 150
+        },
+        {
+          "price": 33455.9,
+          "orders": 1,
+          "quantity": 25
+        }
+      ]
+    },
+    "lastTradedTime": "2022-06-15 12:22:54",
+    "oi": 2730350,
+    "oiDayHigh": 2759225,
+    "oiDayLow": 2719825,
+    "extendedDepth": {
+      "buy": [
+        {
+          "quantity": 75,
+          "price": 33455.2,
+          "orders": 1
+        },
+        {
+          "quantity": 200,
+          "price": 33453.1,
+          "orders": 1
+        },
+        {
+          "quantity": 25,
+          "price": 33453.05,
+          "orders": 1
+        },
+        {
+          "quantity": 25,
+          "price": 33452.75,
+          "orders": 1
+        },
+        {
+          "quantity": 25,
+          "price": 33452.25,
+          "orders": 1
+        },
+        {
+          "quantity": 150,
+          "price": 33452.2,
+          "orders": 2
+        },
+        {
+          "quantity": 25,
+          "price": 33452.05,
+          "orders": 1
+        },
+        {
+          "quantity": 25,
+          "price": 33452,
+          "orders": 1
+        },
+        {
+          "quantity": 125,
+          "price": 33451.9,
+          "orders": 1
+        },
+        {
+          "quantity": 100,
+          "price": 33451.85,
+          "orders": 2
+        },
+        {
+          "quantity": 50,
+          "price": 33451.8,
+          "orders": 1
+        },
+        {
+          "quantity": 50,
+          "price": 33451.5,
+          "orders": 1
+        },
+        {
+          "quantity": 50,
+          "price": 33451.45,
+          "orders": 1
+        },
+        {
+          "quantity": 50,
+          "price": 33451.4,
+          "orders": 1
+        },
+        {
+          "quantity": 75,
+          "price": 33451.35,
+          "orders": 2
+        },
+        {
+          "quantity": 50,
+          "price": 33451.25,
+          "orders": 1
+        },
+        {
+          "quantity": 50,
+          "price": 33451.2,
+          "orders": 1
+        },
+        {
+          "quantity": 25,
+          "price": 33451.15,
+          "orders": 1
+        },
+        {
+          "quantity": 100,
+          "price": 33451.1,
+          "orders": 1
+        },
+        {
+          "quantity": 125,
+          "price": 33451.05,
+          "orders": 3
+        }
+      ],
+      "sell": [
+        {
+          "quantity": 25,
+          "price": 33458.45,
+          "orders": 1
+        },
+        {
+          "quantity": 25,
+          "price": 33458.75,
+          "orders": 1
+        },
+        {
+          "quantity": 25,
+          "price": 33458.85,
+          "orders": 1
+        },
+        {
+          "quantity": 75,
+          "price": 33458.95,
+          "orders": 1
+        },
+        {
+          "quantity": 200,
+          "price": 33459.2,
+          "orders": 1
+        },
+        {
+          "quantity": 25,
+          "price": 33459.25,
+          "orders": 1
+        },
+        {
+          "quantity": 125,
+          "price": 33459.5,
+          "orders": 1
+        },
+        {
+          "quantity": 50,
+          "price": 33459.55,
+          "orders": 2
+        },
+        {
+          "quantity": 25,
+          "price": 33459.6,
+          "orders": 1
+        },
+        {
+          "quantity": 25,
+          "price": 33459.7,
+          "orders": 1
+        },
+        {
+          "quantity": 25,
+          "price": 33459.75,
+          "orders": 1
+        },
+        {
+          "quantity": 75,
+          "price": 33459.95,
+          "orders": 1
+        },
+        {
+          "quantity": 25,
+          "price": 33460.1,
+          "orders": 1
+        },
+        {
+          "quantity": 100,
+          "price": 33460.3,
+          "orders": 2
+        },
+        {
+          "quantity": 25,
+          "price": 33460.35,
+          "orders": 1
+        },
+        {
+          "quantity": 100,
+          "price": 33460.6,
+          "orders": 2
+        },
+        {
+          "quantity": 125,
+          "price": 33460.65,
+          "orders": 3
+        },
+        {
+          "quantity": 25,
+          "price": 33460.7,
+          "orders": 1
+        },
+        {
+          "quantity": 75,
+          "price": 33460.75,
+          "orders": 2
+        },
+        {
+          "quantity": 25,
+          "price": 33460.8,
+          "orders": 1
+        }
+      ]
+    }
+  },
+  "14523906": {
+    "mode": "full",
+    "isTradeable": true,
+    "token": 14523906,
+    "lastPrice": 15748.15,
+    "closePrice": 15737.45,
+    "change": 0.06799068464077032,
+    "absoluteChange": 10.699999999998909,
+    "openChange": 8.399999999999636,
+    "openChangePercent": 0.05336806493114336,
+    "tickChange": 1,
+    "volume": 3813700,
+    "lastQuantity": 50,
+    "totalBuyQuantity": 469250,
+    "totalSellQuantity": 452250,
+    "averagePrice": 15740.18,
+    "openPrice": 15739.75,
+    "highPrice": 15796,
+    "lowPrice": 15701.1,
+    "depth": {
+      "buy": [
+        {
+          "price": 15747.3,
+          "orders": 2,
+          "quantity": 100
+        },
+        {
+          "price": 15747.25,
+          "orders": 2,
+          "quantity": 200
+        },
+        {
+          "price": 15747.2,
+          "orders": 1,
+          "quantity": 50
+        },
+        {
+          "price": 15747.1,
+          "orders": 2,
+          "quantity": 300
+        },
+        {
+          "price": 15747.05,
+          "orders": 2,
+          "quantity": 250
+        }
+      ],
+      "sell": [
+        {
+          "price": 15749.9,
+          "orders": 3,
+          "quantity": 450
+        },
+        {
+          "price": 15749.95,
+          "orders": 1,
+          "quantity": 150
+        },
+        {
+          "price": 15750,
+          "orders": 3,
+          "quantity": 150
+        },
+        {
+          "price": 15750.4,
+          "orders": 2,
+          "quantity": 100
+        },
+        {
+          "price": 15750.55,
+          "orders": 1,
+          "quantity": 50
+        }
+      ]
+    },
+    "lastTradedTime": "2022-06-15 12:22:55",
+    "oi": 10949350,
+    "oiDayHigh": 11018250,
+    "oiDayLow": 10724850,
+    "extendedDepth": {
+      "buy": [
+        {
+          "quantity": 50,
+          "price": 15748.4,
+          "orders": 1
+        },
+        {
+          "quantity": 50,
+          "price": 15748.3,
+          "orders": 1
+        },
+        {
+          "quantity": 100,
+          "price": 15748.25,
+          "orders": 2
+        },
+        {
+          "quantity": 150,
+          "price": 15748.2,
+          "orders": 2
+        },
+        {
+          "quantity": 100,
+          "price": 15748.15,
+          "orders": 1
+        },
+        {
+          "quantity": 50,
+          "price": 15748.05,
+          "orders": 1
+        },
+        {
+          "quantity": 350,
+          "price": 15748,
+          "orders": 3
+        },
+        {
+          "quantity": 150,
+          "price": 15747.95,
+          "orders": 1
+        },
+        {
+          "quantity": 50,
+          "price": 15747.9,
+          "orders": 1
+        },
+        {
+          "quantity": 200,
+          "price": 15747.85,
+          "orders": 1
+        },
+        {
+          "quantity": 150,
+          "price": 15747.8,
+          "orders": 1
+        },
+        {
+          "quantity": 50,
+          "price": 15747.75,
+          "orders": 1
+        },
+        {
+          "quantity": 150,
+          "price": 15747.7,
+          "orders": 1
+        },
+        {
+          "quantity": 500,
+          "price": 15747.6,
+          "orders": 4
+        },
+        {
+          "quantity": 750,
+          "price": 15747.55,
+          "orders": 6
+        },
+        {
+          "quantity": 150,
+          "price": 15747.5,
+          "orders": 1
+        },
+        {
+          "quantity": 250,
+          "price": 15747.45,
+          "orders": 1
+        },
+        {
+          "quantity": 800,
+          "price": 15747.4,
+          "orders": 7
+        },
+        {
+          "quantity": 600,
+          "price": 15747.35,
+          "orders": 2
+        },
+        {
+          "quantity": 350,
+          "price": 15747.3,
+          "orders": 2
+        }
+      ],
+      "sell": [
+        {
+          "quantity": 100,
+          "price": 15750,
+          "orders": 2
+        },
+        {
+          "quantity": 450,
+          "price": 15750.4,
+          "orders": 2
+        },
+        {
+          "quantity": 50,
+          "price": 15751,
+          "orders": 1
+        },
+        {
+          "quantity": 50,
+          "price": 15751.5,
+          "orders": 1
+        },
+        {
+          "quantity": 50,
+          "price": 15751.55,
+          "orders": 1
+        },
+        {
+          "quantity": 150,
+          "price": 15751.6,
+          "orders": 2
+        },
+        {
+          "quantity": 100,
+          "price": 15751.65,
+          "orders": 1
+        },
+        {
+          "quantity": 100,
+          "price": 15751.9,
+          "orders": 2
+        },
+        {
+          "quantity": 200,
+          "price": 15751.95,
+          "orders": 2
+        },
+        {
+          "quantity": 450,
+          "price": 15752,
+          "orders": 3
+        },
+        {
+          "quantity": 100,
+          "price": 15752.05,
+          "orders": 1
+        },
+        {
+          "quantity": 50,
+          "price": 15752.1,
+          "orders": 1
+        },
+        {
+          "quantity": 100,
+          "price": 15752.15,
+          "orders": 2
+        },
+        {
+          "quantity": 200,
+          "price": 15752.2,
+          "orders": 2
+        },
+        {
+          "quantity": 200,
+          "price": 15752.25,
+          "orders": 2
+        },
+        {
+          "quantity": 100,
+          "price": 15752.3,
+          "orders": 1
+        },
+        {
+          "quantity": 350,
+          "price": 15752.35,
+          "orders": 4
+        },
+        {
+          "quantity": 150,
+          "price": 15752.4,
+          "orders": 2
+        },
+        {
+          "quantity": 50,
+          "price": 15752.45,
+          "orders": 1
+        },
+        {
+          "quantity": 250,
+          "price": 15752.5,
+          "orders": 3
+        }
+      ]
+    }
+  }
+}
+
+
+{
+  "265": {
+    "mode": "ltpc",
+    "isTradeable": true,
+    "token": 265,
+    "lastPrice": 52707.61,
+    "closePrice": 52693.57,
+    "change": 0.02664461717055966,
+    "absoluteChange": 14.040000000000873,
+    "openChange": 0,
+    "openChangePercent": 0,
+    "tickChange": 1
+  },
+  "256265": {
+    "mode": "ltpc",
+    "isTradeable": true,
+    "token": 256265,
+    "lastPrice": 15739.1,
+    "closePrice": 15732.1,
+    "change": 0.044495013380286164,
+    "absoluteChange": 7,
+    "openChange": 0,
+    "openChangePercent": 0,
+    "tickChange": 1
+  },
+  "260105": {
+    "mode": "ltp",
+    "isTradeable": true,
+    "token": 260105,
+    "lastPrice": 33434.65,
+    "change": 0,
+    "absoluteChange": 0,
+    "tickChange": 0
+  },
+  "13483522": {
+    "mode": "ltpc",
+    "isTradeable": true,
+    "token": 13483522,
+    "lastPrice": 210.35,
+    "closePrice": 234.6,
+    "change": -10.336743393009378,
+    "absoluteChange": -24.25,
+    "openChange": 0,
+    "openChangePercent": 0,
+    "tickChange": -1,
+    "volume": 33952025,
+    "lastQuantity": 25,
+    "totalBuyQuantity": 450925,
+    "totalSellQuantity": 610925,
+    "averagePrice": 205.19,
+    "openPrice": 239.4,
+    "highPrice": 273.5,
+    "lowPrice": 166.55,
+    "depth": {
+      "buy": [
+        {
+          "price": 210.05,
+          "orders": 1,
+          "quantity": 75
+        },
+        {
+          "price": 210,
+          "orders": 2,
+          "quantity": 225
+        },
+        {
+          "price": 209.95,
+          "orders": 2,
+          "quantity": 75
+        },
+        {
+          "price": 209.9,
+          "orders": 2,
+          "quantity": 75
+        },
+        {
+          "price": 209.85,
+          "orders": 1,
+          "quantity": 25
+        }
+      ],
+      "sell": [
+        {
+          "price": 210.35,
+          "orders": 1,
+          "quantity": 125
+        },
+        {
+          "price": 210.4,
+          "orders": 1,
+          "quantity": 250
+        },
+        {
+          "price": 210.45,
+          "orders": 1,
+          "quantity": 50
+        },
+        {
+          "price": 210.5,
+          "orders": 2,
+          "quantity": 50
+        },
+        {
+          "price": 210.55,
+          "orders": 5,
+          "quantity": 600
+        }
+      ]
+    },
+    "lastTradedTime": "2022-06-15 12:23:32",
+    "oi": 2947600,
+    "oiDayHigh": 3348275,
+    "oiDayLow": 1766500,
+    "extendedDepth": {
+      "buy": [
+        {
+          "quantity": 25,
+          "price": 208.3,
+          "orders": 1
+        },
+        {
+          "quantity": 50,
+          "price": 207.95,
+          "orders": 1
+        },
+        {
+          "quantity": 350,
+          "price": 207.9,
+          "orders": 5
+        },
+        {
+          "quantity": 100,
+          "price": 207.85,
+          "orders": 2
+        },
+        {
+          "quantity": 125,
+          "price": 207.8,
+          "orders": 3
+        },
+        {
+          "quantity": 200,
+          "price": 207.75,
+          "orders": 3
+        },
+        {
+          "quantity": 525,
+          "price": 207.7,
+          "orders": 5
+        },
+        {
+          "quantity": 150,
+          "price": 207.65,
+          "orders": 4
+        },
+        {
+          "quantity": 300,
+          "price": 207.6,
+          "orders": 4
+        },
+        {
+          "quantity": 350,
+          "price": 207.55,
+          "orders": 7
+        },
+        {
+          "quantity": 250,
+          "price": 207.5,
+          "orders": 4
+        },
+        {
+          "quantity": 325,
+          "price": 207.45,
+          "orders": 5
+        },
+        {
+          "quantity": 175,
+          "price": 207.4,
+          "orders": 2
+        },
+        {
+          "quantity": 350,
+          "price": 207.35,
+          "orders": 4
+        },
+        {
+          "quantity": 625,
+          "price": 207.3,
+          "orders": 6
+        },
+        {
+          "quantity": 525,
+          "price": 207.25,
+          "orders": 8
+        },
+        {
+          "quantity": 75,
+          "price": 207.2,
+          "orders": 2
+        },
+        {
+          "quantity": 175,
+          "price": 207.15,
+          "orders": 2
+        },
+        {
+          "quantity": 200,
+          "price": 207.1,
+          "orders": 4
+        },
+        {
+          "quantity": 50,
+          "price": 207.05,
+          "orders": 1
+        }
+      ],
+      "sell": [
+        {
+          "quantity": 25,
+          "price": 208.35,
+          "orders": 1
+        },
+        {
+          "quantity": 250,
+          "price": 208.4,
+          "orders": 2
+        },
+        {
+          "quantity": 275,
+          "price": 208.45,
+          "orders": 2
+        },
+        {
+          "quantity": 400,
+          "price": 208.5,
+          "orders": 4
+        },
+        {
+          "quantity": 25,
+          "price": 208.55,
+          "orders": 1
+        },
+        {
+          "quantity": 500,
+          "price": 208.6,
+          "orders": 4
+        },
+        {
+          "quantity": 300,
+          "price": 208.65,
+          "orders": 3
+        },
+        {
+          "quantity": 325,
+          "price": 208.7,
+          "orders": 4
+        },
+        {
+          "quantity": 675,
+          "price": 208.75,
+          "orders": 12
+        },
+        {
+          "quantity": 175,
+          "price": 208.8,
+          "orders": 2
+        },
+        {
+          "quantity": 400,
+          "price": 208.85,
+          "orders": 5
+        },
+        {
+          "quantity": 225,
+          "price": 208.9,
+          "orders": 3
+        },
+        {
+          "quantity": 150,
+          "price": 208.95,
+          "orders": 2
+        },
+        {
+          "quantity": 400,
+          "price": 209,
+          "orders": 6
+        },
+        {
+          "quantity": 50,
+          "price": 209.05,
+          "orders": 2
+        },
+        {
+          "quantity": 200,
+          "price": 209.15,
+          "orders": 1
+        },
+        {
+          "quantity": 50,
+          "price": 209.2,
+          "orders": 2
+        },
+        {
+          "quantity": 400,
+          "price": 209.3,
+          "orders": 2
+        },
+        {
+          "quantity": 225,
+          "price": 209.4,
+          "orders": 2
+        },
+        {
+          "quantity": 125,
+          "price": 209.45,
+          "orders": 1
+        }
+      ]
+    }
+  },
+  "13483778": {
+    "mode": "ltpc",
+    "isTradeable": true,
+    "token": 13483778,
+    "lastPrice": 290.25,
+    "closePrice": 394.5,
+    "change": -26.425855513307983,
+    "absoluteChange": -104.25,
+    "openChange": 0,
+    "openChangePercent": 0,
+    "tickChange": -1,
+    "volume": 19712500,
+    "lastQuantity": 50,
+    "totalBuyQuantity": 1146375,
+    "totalSellQuantity": 419000,
+    "averagePrice": 325.18,
+    "openPrice": 355.4,
+    "highPrice": 402.7,
+    "lowPrice": 245.55,
+    "depth": {
+      "buy": [
+        {
+          "price": 290.15,
+          "orders": 1,
+          "quantity": 25
+        },
+        {
+          "price": 290.1,
+          "orders": 1,
+          "quantity": 50
+        },
+        {
+          "price": 290.05,
+          "orders": 1,
+          "quantity": 25
+        },
+        {
+          "price": 290,
+          "orders": 14,
+          "quantity": 2550
+        },
+        {
+          "price": 289.95,
+          "orders": 1,
+          "quantity": 50
+        }
+      ],
+      "sell": [
+        {
+          "price": 290.8,
+          "orders": 2,
+          "quantity": 75
+        },
+        {
+          "price": 290.85,
+          "orders": 3,
+          "quantity": 150
+        },
+        {
+          "price": 290.9,
+          "orders": 1,
+          "quantity": 25
+        },
+        {
+          "price": 290.95,
+          "orders": 2,
+          "quantity": 250
+        },
+        {
+          "price": 291,
+          "orders": 7,
+          "quantity": 450
+        }
+      ]
+    },
+    "lastTradedTime": "2022-06-15 12:23:33",
+    "oi": 1752750,
+    "oiDayHigh": 1752750,
+    "oiDayLow": 979700,
+    "extendedDepth": {
+      "buy": [
+        {
+          "quantity": 75,
+          "price": 294.35,
+          "orders": 2
+        },
+        {
+          "quantity": 75,
+          "price": 294.3,
+          "orders": 1
+        },
+        {
+          "quantity": 225,
+          "price": 294.25,
+          "orders": 3
+        },
+        {
+          "quantity": 275,
+          "price": 294.2,
+          "orders": 2
+        },
+        {
+          "quantity": 500,
+          "price": 294.15,
+          "orders": 3
+        },
+        {
+          "quantity": 100,
+          "price": 294.1,
+          "orders": 2
+        },
+        {
+          "quantity": 100,
+          "price": 294.05,
+          "orders": 2
+        },
+        {
+          "quantity": 325,
+          "price": 294,
+          "orders": 7
+        },
+        {
+          "quantity": 150,
+          "price": 293.95,
+          "orders": 3
+        },
+        {
+          "quantity": 150,
+          "price": 293.9,
+          "orders": 2
+        },
+        {
+          "quantity": 125,
+          "price": 293.85,
+          "orders": 3
+        },
+        {
+          "quantity": 50,
+          "price": 293.75,
+          "orders": 1
+        },
+        {
+          "quantity": 350,
+          "price": 293.7,
+          "orders": 2
+        },
+        {
+          "quantity": 150,
+          "price": 293.65,
+          "orders": 3
+        },
+        {
+          "quantity": 125,
+          "price": 293.55,
+          "orders": 2
+        },
+        {
+          "quantity": 25,
+          "price": 293.5,
+          "orders": 1
+        },
+        {
+          "quantity": 100,
+          "price": 293.45,
+          "orders": 4
+        },
+        {
+          "quantity": 350,
+          "price": 293.4,
+          "orders": 2
+        },
+        {
+          "quantity": 75,
+          "price": 293.35,
+          "orders": 3
+        },
+        {
+          "quantity": 125,
+          "price": 293.2,
+          "orders": 2
+        }
+      ],
+      "sell": [
+        {
+          "quantity": 50,
+          "price": 294.8,
+          "orders": 1
+        },
+        {
+          "quantity": 50,
+          "price": 294.85,
+          "orders": 2
+        },
+        {
+          "quantity": 75,
+          "price": 294.95,
+          "orders": 1
+        },
+        {
+          "quantity": 100,
+          "price": 295,
+          "orders": 3
+        },
+        {
+          "quantity": 50,
+          "price": 295.05,
+          "orders": 2
+        },
+        {
+          "quantity": 50,
+          "price": 295.1,
+          "orders": 1
+        },
+        {
+          "quantity": 50,
+          "price": 295.15,
+          "orders": 1
+        },
+        {
+          "quantity": 500,
+          "price": 295.2,
+          "orders": 3
+        },
+        {
+          "quantity": 475,
+          "price": 295.25,
+          "orders": 5
+        },
+        {
+          "quantity": 100,
+          "price": 295.3,
+          "orders": 3
+        },
+        {
+          "quantity": 300,
+          "price": 295.35,
+          "orders": 6
+        },
+        {
+          "quantity": 125,
+          "price": 295.4,
+          "orders": 3
+        },
+        {
+          "quantity": 100,
+          "price": 295.45,
+          "orders": 3
+        },
+        {
+          "quantity": 175,
+          "price": 295.5,
+          "orders": 3
+        },
+        {
+          "quantity": 150,
+          "price": 295.55,
+          "orders": 5
+        },
+        {
+          "quantity": 50,
+          "price": 295.6,
+          "orders": 1
+        },
+        {
+          "quantity": 250,
+          "price": 295.65,
+          "orders": 4
+        },
+        {
+          "quantity": 300,
+          "price": 295.7,
+          "orders": 2
+        },
+        {
+          "quantity": 275,
+          "price": 295.75,
+          "orders": 2
+        },
+        {
+          "quantity": 375,
+          "price": 295.8,
+          "orders": 4
+        }
+      ]
+    }
+  },
+  "14523650": {
+    "mode": "ltpc",
+    "isTradeable": true,
+    "token": 14523650,
+    "lastPrice": 33465.2,
+    "closePrice": 33377.05,
+    "change": 0.2641036280917402,
+    "absoluteChange": 88.14999999999418,
+    "openChange": 0,
+    "openChangePercent": 0,
+    "tickChange": 1,
+    "volume": 1375150,
+    "lastQuantity": 25,
+    "totalBuyQuantity": 116600,
+    "totalSellQuantity": 147900,
+    "averagePrice": 33424.71,
+    "openPrice": 33400,
+    "highPrice": 33552.95,
+    "lowPrice": 33301,
+    "depth": {
+      "buy": [
+        {
+          "price": 33456.85,
+          "orders": 1,
+          "quantity": 100
+        },
+        {
+          "price": 33456.5,
+          "orders": 1,
+          "quantity": 25
+        },
+        {
+          "price": 33456.1,
+          "orders": 1,
+          "quantity": 175
+        },
+        {
+          "price": 33456.05,
+          "orders": 1,
+          "quantity": 75
+        },
+        {
+          "price": 33455.25,
+          "orders": 1,
+          "quantity": 25
+        }
+      ],
+      "sell": [
+        {
+          "price": 33460,
+          "orders": 1,
+          "quantity": 25
+        },
+        {
+          "price": 33461,
+          "orders": 1,
+          "quantity": 25
+        },
+        {
+          "price": 33461.95,
+          "orders": 1,
+          "quantity": 75
+        },
+        {
+          "price": 33462.35,
+          "orders": 1,
+          "quantity": 200
+        },
+        {
+          "price": 33462.4,
+          "orders": 1,
+          "quantity": 25
+        }
+      ]
+    },
+    "lastTradedTime": "2022-06-15 12:23:31",
+    "oi": 2730350,
+    "oiDayHigh": 2759225,
+    "oiDayLow": 2719825,
+    "extendedDepth": {
+      "buy": [
+        {
+          "quantity": 75,
+          "price": 33455.2,
+          "orders": 1
+        },
+        {
+          "quantity": 200,
+          "price": 33453.1,
+          "orders": 1
+        },
+        {
+          "quantity": 25,
+          "price": 33453.05,
+          "orders": 1
+        },
+        {
+          "quantity": 25,
+          "price": 33452.75,
+          "orders": 1
+        },
+        {
+          "quantity": 25,
+          "price": 33452.25,
+          "orders": 1
+        },
+        {
+          "quantity": 150,
+          "price": 33452.2,
+          "orders": 2
+        },
+        {
+          "quantity": 25,
+          "price": 33452.05,
+          "orders": 1
+        },
+        {
+          "quantity": 25,
+          "price": 33452,
+          "orders": 1
+        },
+        {
+          "quantity": 125,
+          "price": 33451.9,
+          "orders": 1
+        },
+        {
+          "quantity": 100,
+          "price": 33451.85,
+          "orders": 2
+        },
+        {
+          "quantity": 50,
+          "price": 33451.8,
+          "orders": 1
+        },
+        {
+          "quantity": 50,
+          "price": 33451.5,
+          "orders": 1
+        },
+        {
+          "quantity": 50,
+          "price": 33451.45,
+          "orders": 1
+        },
+        {
+          "quantity": 50,
+          "price": 33451.4,
+          "orders": 1
+        },
+        {
+          "quantity": 75,
+          "price": 33451.35,
+          "orders": 2
+        },
+        {
+          "quantity": 50,
+          "price": 33451.25,
+          "orders": 1
+        },
+        {
+          "quantity": 50,
+          "price": 33451.2,
+          "orders": 1
+        },
+        {
+          "quantity": 25,
+          "price": 33451.15,
+          "orders": 1
+        },
+        {
+          "quantity": 100,
+          "price": 33451.1,
+          "orders": 1
+        },
+        {
+          "quantity": 125,
+          "price": 33451.05,
+          "orders": 3
+        }
+      ],
+      "sell": [
+        {
+          "quantity": 25,
+          "price": 33458.45,
+          "orders": 1
+        },
+        {
+          "quantity": 25,
+          "price": 33458.75,
+          "orders": 1
+        },
+        {
+          "quantity": 25,
+          "price": 33458.85,
+          "orders": 1
+        },
+        {
+          "quantity": 75,
+          "price": 33458.95,
+          "orders": 1
+        },
+        {
+          "quantity": 200,
+          "price": 33459.2,
+          "orders": 1
+        },
+        {
+          "quantity": 25,
+          "price": 33459.25,
+          "orders": 1
+        },
+        {
+          "quantity": 125,
+          "price": 33459.5,
+          "orders": 1
+        },
+        {
+          "quantity": 50,
+          "price": 33459.55,
+          "orders": 2
+        },
+        {
+          "quantity": 25,
+          "price": 33459.6,
+          "orders": 1
+        },
+        {
+          "quantity": 25,
+          "price": 33459.7,
+          "orders": 1
+        },
+        {
+          "quantity": 25,
+          "price": 33459.75,
+          "orders": 1
+        },
+        {
+          "quantity": 75,
+          "price": 33459.95,
+          "orders": 1
+        },
+        {
+          "quantity": 25,
+          "price": 33460.1,
+          "orders": 1
+        },
+        {
+          "quantity": 100,
+          "price": 33460.3,
+          "orders": 2
+        },
+        {
+          "quantity": 25,
+          "price": 33460.35,
+          "orders": 1
+        },
+        {
+          "quantity": 100,
+          "price": 33460.6,
+          "orders": 2
+        },
+        {
+          "quantity": 125,
+          "price": 33460.65,
+          "orders": 3
+        },
+        {
+          "quantity": 25,
+          "price": 33460.7,
+          "orders": 1
+        },
+        {
+          "quantity": 75,
+          "price": 33460.75,
+          "orders": 2
+        },
+        {
+          "quantity": 25,
+          "price": 33460.8,
+          "orders": 1
+        }
+      ]
+    }
+  },
+  "14523906": {
+    "mode": "ltpc",
+    "isTradeable": true,
+    "token": 14523906,
+    "lastPrice": 15755,
+    "closePrice": 15737.45,
+    "change": 0.11151743135005526,
+    "absoluteChange": 17.549999999999272,
+    "openChange": 0,
+    "openChangePercent": 0,
+    "tickChange": 1,
+    "volume": 3822050,
+    "lastQuantity": 100,
+    "totalBuyQuantity": 468400,
+    "totalSellQuantity": 448100,
+    "averagePrice": 15740.2,
+    "openPrice": 15739.75,
+    "highPrice": 15796,
+    "lowPrice": 15701.1,
+    "depth": {
+      "buy": [
+        {
+          "price": 15752.3,
+          "orders": 1,
+          "quantity": 50
+        },
+        {
+          "price": 15752.25,
+          "orders": 1,
+          "quantity": 50
+        },
+        {
+          "price": 15752.05,
+          "orders": 2,
+          "quantity": 200
+        },
+        {
+          "price": 15752,
+          "orders": 2,
+          "quantity": 900
+        },
+        {
+          "price": 15751.95,
+          "orders": 1,
+          "quantity": 50
+        }
+      ],
+      "sell": [
+        {
+          "price": 15754,
+          "orders": 3,
+          "quantity": 150
+        },
+        {
+          "price": 15754.25,
+          "orders": 1,
+          "quantity": 50
+        },
+        {
+          "price": 15754.4,
+          "orders": 1,
+          "quantity": 300
+        },
+        {
+          "price": 15754.9,
+          "orders": 1,
+          "quantity": 50
+        },
+        {
+          "price": 15754.95,
+          "orders": 1,
+          "quantity": 100
+        }
+      ]
+    },
+    "lastTradedTime": "2022-06-15 12:23:36",
+    "oi": 10949350,
+    "oiDayHigh": 11018250,
+    "oiDayLow": 10724850,
+    "extendedDepth": {
+      "buy": [
+        {
+          "quantity": 50,
+          "price": 15748.4,
+          "orders": 1
+        },
+        {
+          "quantity": 50,
+          "price": 15748.3,
+          "orders": 1
+        },
+        {
+          "quantity": 100,
+          "price": 15748.25,
+          "orders": 2
+        },
+        {
+          "quantity": 150,
+          "price": 15748.2,
+          "orders": 2
+        },
+        {
+          "quantity": 100,
+          "price": 15748.15,
+          "orders": 1
+        },
+        {
+          "quantity": 50,
+          "price": 15748.05,
+          "orders": 1
+        },
+        {
+          "quantity": 350,
+          "price": 15748,
+          "orders": 3
+        },
+        {
+          "quantity": 150,
+          "price": 15747.95,
+          "orders": 1
+        },
+        {
+          "quantity": 50,
+          "price": 15747.9,
+          "orders": 1
+        },
+        {
+          "quantity": 200,
+          "price": 15747.85,
+          "orders": 1
+        },
+        {
+          "quantity": 150,
+          "price": 15747.8,
+          "orders": 1
+        },
+        {
+          "quantity": 50,
+          "price": 15747.75,
+          "orders": 1
+        },
+        {
+          "quantity": 150,
+          "price": 15747.7,
+          "orders": 1
+        },
+        {
+          "quantity": 500,
+          "price": 15747.6,
+          "orders": 4
+        },
+        {
+          "quantity": 750,
+          "price": 15747.55,
+          "orders": 6
+        },
+        {
+          "quantity": 150,
+          "price": 15747.5,
+          "orders": 1
+        },
+        {
+          "quantity": 250,
+          "price": 15747.45,
+          "orders": 1
+        },
+        {
+          "quantity": 800,
+          "price": 15747.4,
+          "orders": 7
+        },
+        {
+          "quantity": 600,
+          "price": 15747.35,
+          "orders": 2
+        },
+        {
+          "quantity": 350,
+          "price": 15747.3,
+          "orders": 2
+        }
+      ],
+      "sell": [
+        {
+          "quantity": 100,
+          "price": 15750,
+          "orders": 2
+        },
+        {
+          "quantity": 450,
+          "price": 15750.4,
+          "orders": 2
+        },
+        {
+          "quantity": 50,
+          "price": 15751,
+          "orders": 1
+        },
+        {
+          "quantity": 50,
+          "price": 15751.5,
+          "orders": 1
+        },
+        {
+          "quantity": 50,
+          "price": 15751.55,
+          "orders": 1
+        },
+        {
+          "quantity": 150,
+          "price": 15751.6,
+          "orders": 2
+        },
+        {
+          "quantity": 100,
+          "price": 15751.65,
+          "orders": 1
+        },
+        {
+          "quantity": 100,
+          "price": 15751.9,
+          "orders": 2
+        },
+        {
+          "quantity": 200,
+          "price": 15751.95,
+          "orders": 2
+        },
+        {
+          "quantity": 450,
+          "price": 15752,
+          "orders": 3
+        },
+        {
+          "quantity": 100,
+          "price": 15752.05,
+          "orders": 1
+        },
+        {
+          "quantity": 50,
+          "price": 15752.1,
+          "orders": 1
+        },
+        {
+          "quantity": 100,
+          "price": 15752.15,
+          "orders": 2
+        },
+        {
+          "quantity": 200,
+          "price": 15752.2,
+          "orders": 2
+        },
+        {
+          "quantity": 200,
+          "price": 15752.25,
+          "orders": 2
+        },
+        {
+          "quantity": 100,
+          "price": 15752.3,
+          "orders": 1
+        },
+        {
+          "quantity": 350,
+          "price": 15752.35,
+          "orders": 4
+        },
+        {
+          "quantity": 150,
+          "price": 15752.4,
+          "orders": 2
+        },
+        {
+          "quantity": 50,
+          "price": 15752.45,
+          "orders": 1
+        },
+        {
+          "quantity": 250,
+          "price": 15752.5,
+          "orders": 3
+        }
+      ]
+    }
+  }
+}
+
+
+{
+    "265": {
+        "mode": "ltpc",
+        "isTradeable": true,
+        "token": 265,
+        "lastPrice": 52709.35,
+        "closePrice": 52693.57,
+        "change": 0.029946727845539478,
+        "absoluteChange": 15.779999999998836,
+        "openChange": 0,
+        "openChangePercent": 0,
+        "tickChange": 1
+    },
+    "256265": {
+        "mode": "ltpc",
+        "isTradeable": true,
+        "token": 256265,
+        "lastPrice": 15742.8,
+        "closePrice": 15732.1,
+        "change": 0.06801380616700192,
+        "absoluteChange": 10.699999999998909,
+        "openChange": 0,
+        "openChangePercent": 0,
+        "tickChange": 1
+    },
+    "260105": {
+        "mode": "ltp",
+        "isTradeable": true,
+        "token": 260105,
+        "lastPrice": 33444.15,
+        "change": 0,
+        "absoluteChange": 0,
+        "tickChange": 0
+    },
+    "13483522": {
+        "mode": "ltpc",
+        "isTradeable": true,
+        "token": 13483522,
+        "lastPrice": 210.35,
+        "closePrice": 234.6,
+        "change": -10.336743393009378,
+        "absoluteChange": -24.25,
+        "openChange": 0,
+        "openChangePercent": 0,
+        "tickChange": -1,
+        "volume": 33952025,
+        "lastQuantity": 25,
+        "totalBuyQuantity": 450925,
+        "totalSellQuantity": 610925,
+        "averagePrice": 205.19,
+        "openPrice": 239.4,
+        "highPrice": 273.5,
+        "lowPrice": 166.55,
+        "depth": {
+            "buy": [
+                {
+                    "price": 210.05,
+                    "orders": 1,
+                    "quantity": 75
+                },
+                {
+                    "price": 210,
+                    "orders": 2,
+                    "quantity": 225
+                },
+                {
+                    "price": 209.95,
+                    "orders": 2,
+                    "quantity": 75
+                },
+                {
+                    "price": 209.9,
+                    "orders": 2,
+                    "quantity": 75
+                },
+                {
+                    "price": 209.85,
+                    "orders": 1,
+                    "quantity": 25
+                }
+            ],
+            "sell": [
+                {
+                    "price": 210.35,
+                    "orders": 1,
+                    "quantity": 125
+                },
+                {
+                    "price": 210.4,
+                    "orders": 1,
+                    "quantity": 250
+                },
+                {
+                    "price": 210.45,
+                    "orders": 1,
+                    "quantity": 50
+                },
+                {
+                    "price": 210.5,
+                    "orders": 2,
+                    "quantity": 50
+                },
+                {
+                    "price": 210.55,
+                    "orders": 5,
+                    "quantity": 600
+                }
+            ]
+        },
+        "lastTradedTime": "2022-06-15 12:23:32",
+        "oi": 2947600,
+        "oiDayHigh": 3348275,
+        "oiDayLow": 1766500,
+        "extendedDepth": {
+            "buy": [
+                {
+                    "quantity": 25,
+                    "price": 208.3,
+                    "orders": 1
+                },
+                {
+                    "quantity": 50,
+                    "price": 207.95,
+                    "orders": 1
+                },
+                {
+                    "quantity": 350,
+                    "price": 207.9,
+                    "orders": 5
+                },
+                {
+                    "quantity": 100,
+                    "price": 207.85,
+                    "orders": 2
+                },
+                {
+                    "quantity": 125,
+                    "price": 207.8,
+                    "orders": 3
+                },
+                {
+                    "quantity": 200,
+                    "price": 207.75,
+                    "orders": 3
+                },
+                {
+                    "quantity": 525,
+                    "price": 207.7,
+                    "orders": 5
+                },
+                {
+                    "quantity": 150,
+                    "price": 207.65,
+                    "orders": 4
+                },
+                {
+                    "quantity": 300,
+                    "price": 207.6,
+                    "orders": 4
+                },
+                {
+                    "quantity": 350,
+                    "price": 207.55,
+                    "orders": 7
+                },
+                {
+                    "quantity": 250,
+                    "price": 207.5,
+                    "orders": 4
+                },
+                {
+                    "quantity": 325,
+                    "price": 207.45,
+                    "orders": 5
+                },
+                {
+                    "quantity": 175,
+                    "price": 207.4,
+                    "orders": 2
+                },
+                {
+                    "quantity": 350,
+                    "price": 207.35,
+                    "orders": 4
+                },
+                {
+                    "quantity": 625,
+                    "price": 207.3,
+                    "orders": 6
+                },
+                {
+                    "quantity": 525,
+                    "price": 207.25,
+                    "orders": 8
+                },
+                {
+                    "quantity": 75,
+                    "price": 207.2,
+                    "orders": 2
+                },
+                {
+                    "quantity": 175,
+                    "price": 207.15,
+                    "orders": 2
+                },
+                {
+                    "quantity": 200,
+                    "price": 207.1,
+                    "orders": 4
+                },
+                {
+                    "quantity": 50,
+                    "price": 207.05,
+                    "orders": 1
+                }
+            ],
+            "sell": [
+                {
+                    "quantity": 25,
+                    "price": 208.35,
+                    "orders": 1
+                },
+                {
+                    "quantity": 250,
+                    "price": 208.4,
+                    "orders": 2
+                },
+                {
+                    "quantity": 275,
+                    "price": 208.45,
+                    "orders": 2
+                },
+                {
+                    "quantity": 400,
+                    "price": 208.5,
+                    "orders": 4
+                },
+                {
+                    "quantity": 25,
+                    "price": 208.55,
+                    "orders": 1
+                },
+                {
+                    "quantity": 500,
+                    "price": 208.6,
+                    "orders": 4
+                },
+                {
+                    "quantity": 300,
+                    "price": 208.65,
+                    "orders": 3
+                },
+                {
+                    "quantity": 325,
+                    "price": 208.7,
+                    "orders": 4
+                },
+                {
+                    "quantity": 675,
+                    "price": 208.75,
+                    "orders": 12
+                },
+                {
+                    "quantity": 175,
+                    "price": 208.8,
+                    "orders": 2
+                },
+                {
+                    "quantity": 400,
+                    "price": 208.85,
+                    "orders": 5
+                },
+                {
+                    "quantity": 225,
+                    "price": 208.9,
+                    "orders": 3
+                },
+                {
+                    "quantity": 150,
+                    "price": 208.95,
+                    "orders": 2
+                },
+                {
+                    "quantity": 400,
+                    "price": 209,
+                    "orders": 6
+                },
+                {
+                    "quantity": 50,
+                    "price": 209.05,
+                    "orders": 2
+                },
+                {
+                    "quantity": 200,
+                    "price": 209.15,
+                    "orders": 1
+                },
+                {
+                    "quantity": 50,
+                    "price": 209.2,
+                    "orders": 2
+                },
+                {
+                    "quantity": 400,
+                    "price": 209.3,
+                    "orders": 2
+                },
+                {
+                    "quantity": 225,
+                    "price": 209.4,
+                    "orders": 2
+                },
+                {
+                    "quantity": 125,
+                    "price": 209.45,
+                    "orders": 1
+                }
+            ]
+        }
+    },
+    "13483778": {
+        "mode": "ltpc",
+        "isTradeable": true,
+        "token": 13483778,
+        "lastPrice": 290.25,
+        "closePrice": 394.5,
+        "change": -26.425855513307983,
+        "absoluteChange": -104.25,
+        "openChange": 0,
+        "openChangePercent": 0,
+        "tickChange": -1,
+        "volume": 19712500,
+        "lastQuantity": 50,
+        "totalBuyQuantity": 1146375,
+        "totalSellQuantity": 419000,
+        "averagePrice": 325.18,
+        "openPrice": 355.4,
+        "highPrice": 402.7,
+        "lowPrice": 245.55,
+        "depth": {
+            "buy": [
+                {
+                    "price": 290.15,
+                    "orders": 1,
+                    "quantity": 25
+                },
+                {
+                    "price": 290.1,
+                    "orders": 1,
+                    "quantity": 50
+                },
+                {
+                    "price": 290.05,
+                    "orders": 1,
+                    "quantity": 25
+                },
+                {
+                    "price": 290,
+                    "orders": 14,
+                    "quantity": 2550
+                },
+                {
+                    "price": 289.95,
+                    "orders": 1,
+                    "quantity": 50
+                }
+            ],
+            "sell": [
+                {
+                    "price": 290.8,
+                    "orders": 2,
+                    "quantity": 75
+                },
+                {
+                    "price": 290.85,
+                    "orders": 3,
+                    "quantity": 150
+                },
+                {
+                    "price": 290.9,
+                    "orders": 1,
+                    "quantity": 25
+                },
+                {
+                    "price": 290.95,
+                    "orders": 2,
+                    "quantity": 250
+                },
+                {
+                    "price": 291,
+                    "orders": 7,
+                    "quantity": 450
+                }
+            ]
+        },
+        "lastTradedTime": "2022-06-15 12:23:33",
+        "oi": 1752750,
+        "oiDayHigh": 1752750,
+        "oiDayLow": 979700,
+        "extendedDepth": {
+            "buy": [
+                {
+                    "quantity": 75,
+                    "price": 294.35,
+                    "orders": 2
+                },
+                {
+                    "quantity": 75,
+                    "price": 294.3,
+                    "orders": 1
+                },
+                {
+                    "quantity": 225,
+                    "price": 294.25,
+                    "orders": 3
+                },
+                {
+                    "quantity": 275,
+                    "price": 294.2,
+                    "orders": 2
+                },
+                {
+                    "quantity": 500,
+                    "price": 294.15,
+                    "orders": 3
+                },
+                {
+                    "quantity": 100,
+                    "price": 294.1,
+                    "orders": 2
+                },
+                {
+                    "quantity": 100,
+                    "price": 294.05,
+                    "orders": 2
+                },
+                {
+                    "quantity": 325,
+                    "price": 294,
+                    "orders": 7
+                },
+                {
+                    "quantity": 150,
+                    "price": 293.95,
+                    "orders": 3
+                },
+                {
+                    "quantity": 150,
+                    "price": 293.9,
+                    "orders": 2
+                },
+                {
+                    "quantity": 125,
+                    "price": 293.85,
+                    "orders": 3
+                },
+                {
+                    "quantity": 50,
+                    "price": 293.75,
+                    "orders": 1
+                },
+                {
+                    "quantity": 350,
+                    "price": 293.7,
+                    "orders": 2
+                },
+                {
+                    "quantity": 150,
+                    "price": 293.65,
+                    "orders": 3
+                },
+                {
+                    "quantity": 125,
+                    "price": 293.55,
+                    "orders": 2
+                },
+                {
+                    "quantity": 25,
+                    "price": 293.5,
+                    "orders": 1
+                },
+                {
+                    "quantity": 100,
+                    "price": 293.45,
+                    "orders": 4
+                },
+                {
+                    "quantity": 350,
+                    "price": 293.4,
+                    "orders": 2
+                },
+                {
+                    "quantity": 75,
+                    "price": 293.35,
+                    "orders": 3
+                },
+                {
+                    "quantity": 125,
+                    "price": 293.2,
+                    "orders": 2
+                }
+            ],
+            "sell": [
+                {
+                    "quantity": 50,
+                    "price": 294.8,
+                    "orders": 1
+                },
+                {
+                    "quantity": 50,
+                    "price": 294.85,
+                    "orders": 2
+                },
+                {
+                    "quantity": 75,
+                    "price": 294.95,
+                    "orders": 1
+                },
+                {
+                    "quantity": 100,
+                    "price": 295,
+                    "orders": 3
+                },
+                {
+                    "quantity": 50,
+                    "price": 295.05,
+                    "orders": 2
+                },
+                {
+                    "quantity": 50,
+                    "price": 295.1,
+                    "orders": 1
+                },
+                {
+                    "quantity": 50,
+                    "price": 295.15,
+                    "orders": 1
+                },
+                {
+                    "quantity": 500,
+                    "price": 295.2,
+                    "orders": 3
+                },
+                {
+                    "quantity": 475,
+                    "price": 295.25,
+                    "orders": 5
+                },
+                {
+                    "quantity": 100,
+                    "price": 295.3,
+                    "orders": 3
+                },
+                {
+                    "quantity": 300,
+                    "price": 295.35,
+                    "orders": 6
+                },
+                {
+                    "quantity": 125,
+                    "price": 295.4,
+                    "orders": 3
+                },
+                {
+                    "quantity": 100,
+                    "price": 295.45,
+                    "orders": 3
+                },
+                {
+                    "quantity": 175,
+                    "price": 295.5,
+                    "orders": 3
+                },
+                {
+                    "quantity": 150,
+                    "price": 295.55,
+                    "orders": 5
+                },
+                {
+                    "quantity": 50,
+                    "price": 295.6,
+                    "orders": 1
+                },
+                {
+                    "quantity": 250,
+                    "price": 295.65,
+                    "orders": 4
+                },
+                {
+                    "quantity": 300,
+                    "price": 295.7,
+                    "orders": 2
+                },
+                {
+                    "quantity": 275,
+                    "price": 295.75,
+                    "orders": 2
+                },
+                {
+                    "quantity": 375,
+                    "price": 295.8,
+                    "orders": 4
+                }
+            ]
+        }
+    },
+    "14523650": {
+        "mode": "ltpc",
+        "isTradeable": true,
+        "token": 14523650,
+        "lastPrice": 33474.4,
+        "closePrice": 33377.05,
+        "change": 0.29166747810246424,
+        "absoluteChange": 97.34999999999854,
+        "openChange": 0,
+        "openChangePercent": 0,
+        "tickChange": 1,
+        "volume": 1375150,
+        "lastQuantity": 25,
+        "totalBuyQuantity": 116600,
+        "totalSellQuantity": 147900,
+        "averagePrice": 33424.71,
+        "openPrice": 33400,
+        "highPrice": 33552.95,
+        "lowPrice": 33301,
+        "depth": {
+            "buy": [
+                {
+                    "price": 33456.85,
+                    "orders": 1,
+                    "quantity": 100
+                },
+                {
+                    "price": 33456.5,
+                    "orders": 1,
+                    "quantity": 25
+                },
+                {
+                    "price": 33456.1,
+                    "orders": 1,
+                    "quantity": 175
+                },
+                {
+                    "price": 33456.05,
+                    "orders": 1,
+                    "quantity": 75
+                },
+                {
+                    "price": 33455.25,
+                    "orders": 1,
+                    "quantity": 25
+                }
+            ],
+            "sell": [
+                {
+                    "price": 33460,
+                    "orders": 1,
+                    "quantity": 25
+                },
+                {
+                    "price": 33461,
+                    "orders": 1,
+                    "quantity": 25
+                },
+                {
+                    "price": 33461.95,
+                    "orders": 1,
+                    "quantity": 75
+                },
+                {
+                    "price": 33462.35,
+                    "orders": 1,
+                    "quantity": 200
+                },
+                {
+                    "price": 33462.4,
+                    "orders": 1,
+                    "quantity": 25
+                }
+            ]
+        },
+        "lastTradedTime": "2022-06-15 12:23:31",
+        "oi": 2730350,
+        "oiDayHigh": 2759225,
+        "oiDayLow": 2719825,
+        "extendedDepth": {
+            "buy": [
+                {
+                    "quantity": 75,
+                    "price": 33455.2,
+                    "orders": 1
+                },
+                {
+                    "quantity": 200,
+                    "price": 33453.1,
+                    "orders": 1
+                },
+                {
+                    "quantity": 25,
+                    "price": 33453.05,
+                    "orders": 1
+                },
+                {
+                    "quantity": 25,
+                    "price": 33452.75,
+                    "orders": 1
+                },
+                {
+                    "quantity": 25,
+                    "price": 33452.25,
+                    "orders": 1
+                },
+                {
+                    "quantity": 150,
+                    "price": 33452.2,
+                    "orders": 2
+                },
+                {
+                    "quantity": 25,
+                    "price": 33452.05,
+                    "orders": 1
+                },
+                {
+                    "quantity": 25,
+                    "price": 33452,
+                    "orders": 1
+                },
+                {
+                    "quantity": 125,
+                    "price": 33451.9,
+                    "orders": 1
+                },
+                {
+                    "quantity": 100,
+                    "price": 33451.85,
+                    "orders": 2
+                },
+                {
+                    "quantity": 50,
+                    "price": 33451.8,
+                    "orders": 1
+                },
+                {
+                    "quantity": 50,
+                    "price": 33451.5,
+                    "orders": 1
+                },
+                {
+                    "quantity": 50,
+                    "price": 33451.45,
+                    "orders": 1
+                },
+                {
+                    "quantity": 50,
+                    "price": 33451.4,
+                    "orders": 1
+                },
+                {
+                    "quantity": 75,
+                    "price": 33451.35,
+                    "orders": 2
+                },
+                {
+                    "quantity": 50,
+                    "price": 33451.25,
+                    "orders": 1
+                },
+                {
+                    "quantity": 50,
+                    "price": 33451.2,
+                    "orders": 1
+                },
+                {
+                    "quantity": 25,
+                    "price": 33451.15,
+                    "orders": 1
+                },
+                {
+                    "quantity": 100,
+                    "price": 33451.1,
+                    "orders": 1
+                },
+                {
+                    "quantity": 125,
+                    "price": 33451.05,
+                    "orders": 3
+                }
+            ],
+            "sell": [
+                {
+                    "quantity": 25,
+                    "price": 33458.45,
+                    "orders": 1
+                },
+                {
+                    "quantity": 25,
+                    "price": 33458.75,
+                    "orders": 1
+                },
+                {
+                    "quantity": 25,
+                    "price": 33458.85,
+                    "orders": 1
+                },
+                {
+                    "quantity": 75,
+                    "price": 33458.95,
+                    "orders": 1
+                },
+                {
+                    "quantity": 200,
+                    "price": 33459.2,
+                    "orders": 1
+                },
+                {
+                    "quantity": 25,
+                    "price": 33459.25,
+                    "orders": 1
+                },
+                {
+                    "quantity": 125,
+                    "price": 33459.5,
+                    "orders": 1
+                },
+                {
+                    "quantity": 50,
+                    "price": 33459.55,
+                    "orders": 2
+                },
+                {
+                    "quantity": 25,
+                    "price": 33459.6,
+                    "orders": 1
+                },
+                {
+                    "quantity": 25,
+                    "price": 33459.7,
+                    "orders": 1
+                },
+                {
+                    "quantity": 25,
+                    "price": 33459.75,
+                    "orders": 1
+                },
+                {
+                    "quantity": 75,
+                    "price": 33459.95,
+                    "orders": 1
+                },
+                {
+                    "quantity": 25,
+                    "price": 33460.1,
+                    "orders": 1
+                },
+                {
+                    "quantity": 100,
+                    "price": 33460.3,
+                    "orders": 2
+                },
+                {
+                    "quantity": 25,
+                    "price": 33460.35,
+                    "orders": 1
+                },
+                {
+                    "quantity": 100,
+                    "price": 33460.6,
+                    "orders": 2
+                },
+                {
+                    "quantity": 125,
+                    "price": 33460.65,
+                    "orders": 3
+                },
+                {
+                    "quantity": 25,
+                    "price": 33460.7,
+                    "orders": 1
+                },
+                {
+                    "quantity": 75,
+                    "price": 33460.75,
+                    "orders": 2
+                },
+                {
+                    "quantity": 25,
+                    "price": 33460.8,
+                    "orders": 1
+                }
+            ]
+        }
+    },
+    "14523906": {
+        "mode": "ltpc",
+        "isTradeable": true,
+        "token": 14523906,
+        "lastPrice": 15759.25,
+        "closePrice": 15737.45,
+        "change": 0.13852307711858827,
+        "absoluteChange": 21.799999999999272,
+        "openChange": 0,
+        "openChangePercent": 0,
+        "tickChange": 1,
+        "volume": 3822050,
+        "lastQuantity": 100,
+        "totalBuyQuantity": 468400,
+        "totalSellQuantity": 448100,
+        "averagePrice": 15740.2,
+        "openPrice": 15739.75,
+        "highPrice": 15796,
+        "lowPrice": 15701.1,
+        "depth": {
+            "buy": [
+                {
+                    "price": 15752.3,
+                    "orders": 1,
+                    "quantity": 50
+                },
+                {
+                    "price": 15752.25,
+                    "orders": 1,
+                    "quantity": 50
+                },
+                {
+                    "price": 15752.05,
+                    "orders": 2,
+                    "quantity": 200
+                },
+                {
+                    "price": 15752,
+                    "orders": 2,
+                    "quantity": 900
+                },
+                {
+                    "price": 15751.95,
+                    "orders": 1,
+                    "quantity": 50
+                }
+            ],
+            "sell": [
+                {
+                    "price": 15754,
+                    "orders": 3,
+                    "quantity": 150
+                },
+                {
+                    "price": 15754.25,
+                    "orders": 1,
+                    "quantity": 50
+                },
+                {
+                    "price": 15754.4,
+                    "orders": 1,
+                    "quantity": 300
+                },
+                {
+                    "price": 15754.9,
+                    "orders": 1,
+                    "quantity": 50
+                },
+                {
+                    "price": 15754.95,
+                    "orders": 1,
+                    "quantity": 100
+                }
+            ]
+        },
+        "lastTradedTime": "2022-06-15 12:23:36",
+        "oi": 10949350,
+        "oiDayHigh": 11018250,
+        "oiDayLow": 10724850,
+        "extendedDepth": {
+            "buy": [
+                {
+                    "quantity": 50,
+                    "price": 15748.4,
+                    "orders": 1
+                },
+                {
+                    "quantity": 50,
+                    "price": 15748.3,
+                    "orders": 1
+                },
+                {
+                    "quantity": 100,
+                    "price": 15748.25,
+                    "orders": 2
+                },
+                {
+                    "quantity": 150,
+                    "price": 15748.2,
+                    "orders": 2
+                },
+                {
+                    "quantity": 100,
+                    "price": 15748.15,
+                    "orders": 1
+                },
+                {
+                    "quantity": 50,
+                    "price": 15748.05,
+                    "orders": 1
+                },
+                {
+                    "quantity": 350,
+                    "price": 15748,
+                    "orders": 3
+                },
+                {
+                    "quantity": 150,
+                    "price": 15747.95,
+                    "orders": 1
+                },
+                {
+                    "quantity": 50,
+                    "price": 15747.9,
+                    "orders": 1
+                },
+                {
+                    "quantity": 200,
+                    "price": 15747.85,
+                    "orders": 1
+                },
+                {
+                    "quantity": 150,
+                    "price": 15747.8,
+                    "orders": 1
+                },
+                {
+                    "quantity": 50,
+                    "price": 15747.75,
+                    "orders": 1
+                },
+                {
+                    "quantity": 150,
+                    "price": 15747.7,
+                    "orders": 1
+                },
+                {
+                    "quantity": 500,
+                    "price": 15747.6,
+                    "orders": 4
+                },
+                {
+                    "quantity": 750,
+                    "price": 15747.55,
+                    "orders": 6
+                },
+                {
+                    "quantity": 150,
+                    "price": 15747.5,
+                    "orders": 1
+                },
+                {
+                    "quantity": 250,
+                    "price": 15747.45,
+                    "orders": 1
+                },
+                {
+                    "quantity": 800,
+                    "price": 15747.4,
+                    "orders": 7
+                },
+                {
+                    "quantity": 600,
+                    "price": 15747.35,
+                    "orders": 2
+                },
+                {
+                    "quantity": 350,
+                    "price": 15747.3,
+                    "orders": 2
+                }
+            ],
+            "sell": [
+                {
+                    "quantity": 100,
+                    "price": 15750,
+                    "orders": 2
+                },
+                {
+                    "quantity": 450,
+                    "price": 15750.4,
+                    "orders": 2
+                },
+                {
+                    "quantity": 50,
+                    "price": 15751,
+                    "orders": 1
+                },
+                {
+                    "quantity": 50,
+                    "price": 15751.5,
+                    "orders": 1
+                },
+                {
+                    "quantity": 50,
+                    "price": 15751.55,
+                    "orders": 1
+                },
+                {
+                    "quantity": 150,
+                    "price": 15751.6,
+                    "orders": 2
+                },
+                {
+                    "quantity": 100,
+                    "price": 15751.65,
+                    "orders": 1
+                },
+                {
+                    "quantity": 100,
+                    "price": 15751.9,
+                    "orders": 2
+                },
+                {
+                    "quantity": 200,
+                    "price": 15751.95,
+                    "orders": 2
+                },
+                {
+                    "quantity": 450,
+                    "price": 15752,
+                    "orders": 3
+                },
+                {
+                    "quantity": 100,
+                    "price": 15752.05,
+                    "orders": 1
+                },
+                {
+                    "quantity": 50,
+                    "price": 15752.1,
+                    "orders": 1
+                },
+                {
+                    "quantity": 100,
+                    "price": 15752.15,
+                    "orders": 2
+                },
+                {
+                    "quantity": 200,
+                    "price": 15752.2,
+                    "orders": 2
+                },
+                {
+                    "quantity": 200,
+                    "price": 15752.25,
+                    "orders": 2
+                },
+                {
+                    "quantity": 100,
+                    "price": 15752.3,
+                    "orders": 1
+                },
+                {
+                    "quantity": 350,
+                    "price": 15752.35,
+                    "orders": 4
+                },
+                {
+                    "quantity": 150,
+                    "price": 15752.4,
+                    "orders": 2
+                },
+                {
+                    "quantity": 50,
+                    "price": 15752.45,
+                    "orders": 1
+                },
+                {
+                    "quantity": 250,
+                    "price": 15752.5,
+                    "orders": 3
+                }
+            ]
+        }
+    }
+}
+
+
+{
+  "mode": "ltpc",
+  "isTradeable": true,
+  "token": 265,
+  "lastPrice": 52711.08,
+  "closePrice": 52693.57,
+  "change": 0.03322986087297186,
+  "absoluteChange": 17.510000000002037,
+  "openChange": 0,
+  "openChangePercent": 0,
+  "tickChange": 1
+}
+
+{
+  "mode": "ltpc",
+  "isTradeable": true,
+  "token": 256265,
+  "lastPrice": 15750.95,
+  "closePrice": 15732.1,
+  "change": 0.11981871460263006,
+  "absoluteChange": 18.850000000000364,
+  "openChange": 0,
+  "openChangePercent": 0,
+  "tickChange": 1
+}
+
+{
+  "mode": "ltp",
+  "isTradeable": true,
+  "token": 260105,
+  "lastPrice": 33479,
+  "change": 0,
+  "absoluteChange": 0,
+  "tickChange": 0
+}
+
+{
+  "mode": "ltp",
+  "isTradeable": true,
+  "token": 260105,
+  "lastPrice": 33477.2,
+  "change": 0,
+  "absoluteChange": 0,
+  "tickChange": 0
+}
+
+{
+  "mode": "ltpc",
+  "isTradeable": true,
+  "token": 13483522,
+  "lastPrice": 210.35,
+  "closePrice": 234.6,
+  "change": -10.336743393009378,
+  "absoluteChange": -24.25,
+  "openChange": 0,
+  "openChangePercent": 0,
+  "tickChange": -1,
+  "volume": 33952025,
+  "lastQuantity": 25,
+  "totalBuyQuantity": 450925,
+  "totalSellQuantity": 610925,
+  "averagePrice": 205.19,
+  "openPrice": 239.4,
+  "highPrice": 273.5,
+  "lowPrice": 166.55,
+  "depth": {
+    "buy": [
+      {
+        "price": 210.05,
+        "orders": 1,
+        "quantity": 75
+      },
+      {
+        "price": 210,
+        "orders": 2,
+        "quantity": 225
+      },
+      {
+        "price": 209.95,
+        "orders": 2,
+        "quantity": 75
+      },
+      {
+        "price": 209.9,
+        "orders": 2,
+        "quantity": 75
+      },
+      {
+        "price": 209.85,
+        "orders": 1,
+        "quantity": 25
+      }
+    ],
+    "sell": [
+      {
+        "price": 210.35,
+        "orders": 1,
+        "quantity": 125
+      },
+      {
+        "price": 210.4,
+        "orders": 1,
+        "quantity": 250
+      },
+      {
+        "price": 210.45,
+        "orders": 1,
+        "quantity": 50
+      },
+      {
+        "price": 210.5,
+        "orders": 2,
+        "quantity": 50
+      },
+      {
+        "price": 210.55,
+        "orders": 5,
+        "quantity": 600
+      }
+    ]
+  },
+  "lastTradedTime": "2022-06-15 12:23:32",
+  "oi": 2947600,
+  "oiDayHigh": 3348275,
+  "oiDayLow": 1766500,
+  "extendedDepth": {
+    "buy": [
+      {
+        "quantity": 25,
+        "price": 208.3,
+        "orders": 1
+      },
+      {
+        "quantity": 50,
+        "price": 207.95,
+        "orders": 1
+      },
+      {
+        "quantity": 350,
+        "price": 207.9,
+        "orders": 5
+      },
+      {
+        "quantity": 100,
+        "price": 207.85,
+        "orders": 2
+      },
+      {
+        "quantity": 125,
+        "price": 207.8,
+        "orders": 3
+      },
+      {
+        "quantity": 200,
+        "price": 207.75,
+        "orders": 3
+      },
+      {
+        "quantity": 525,
+        "price": 207.7,
+        "orders": 5
+      },
+      {
+        "quantity": 150,
+        "price": 207.65,
+        "orders": 4
+      },
+      {
+        "quantity": 300,
+        "price": 207.6,
+        "orders": 4
+      },
+      {
+        "quantity": 350,
+        "price": 207.55,
+        "orders": 7
+      },
+      {
+        "quantity": 250,
+        "price": 207.5,
+        "orders": 4
+      },
+      {
+        "quantity": 325,
+        "price": 207.45,
+        "orders": 5
+      },
+      {
+        "quantity": 175,
+        "price": 207.4,
+        "orders": 2
+      },
+      {
+        "quantity": 350,
+        "price": 207.35,
+        "orders": 4
+      },
+      {
+        "quantity": 625,
+        "price": 207.3,
+        "orders": 6
+      },
+      {
+        "quantity": 525,
+        "price": 207.25,
+        "orders": 8
+      },
+      {
+        "quantity": 75,
+        "price": 207.2,
+        "orders": 2
+      },
+      {
+        "quantity": 175,
+        "price": 207.15,
+        "orders": 2
+      },
+      {
+        "quantity": 200,
+        "price": 207.1,
+        "orders": 4
+      },
+      {
+        "quantity": 50,
+        "price": 207.05,
+        "orders": 1
+      }
+    ],
+    "sell": [
+      {
+        "quantity": 25,
+        "price": 208.35,
+        "orders": 1
+      },
+      {
+        "quantity": 250,
+        "price": 208.4,
+        "orders": 2
+      },
+      {
+        "quantity": 275,
+        "price": 208.45,
+        "orders": 2
+      },
+      {
+        "quantity": 400,
+        "price": 208.5,
+        "orders": 4
+      },
+      {
+        "quantity": 25,
+        "price": 208.55,
+        "orders": 1
+      },
+      {
+        "quantity": 500,
+        "price": 208.6,
+        "orders": 4
+      },
+      {
+        "quantity": 300,
+        "price": 208.65,
+        "orders": 3
+      },
+      {
+        "quantity": 325,
+        "price": 208.7,
+        "orders": 4
+      },
+      {
+        "quantity": 675,
+        "price": 208.75,
+        "orders": 12
+      },
+      {
+        "quantity": 175,
+        "price": 208.8,
+        "orders": 2
+      },
+      {
+        "quantity": 400,
+        "price": 208.85,
+        "orders": 5
+      },
+      {
+        "quantity": 225,
+        "price": 208.9,
+        "orders": 3
+      },
+      {
+        "quantity": 150,
+        "price": 208.95,
+        "orders": 2
+      },
+      {
+        "quantity": 400,
+        "price": 209,
+        "orders": 6
+      },
+      {
+        "quantity": 50,
+        "price": 209.05,
+        "orders": 2
+      },
+      {
+        "quantity": 200,
+        "price": 209.15,
+        "orders": 1
+      },
+      {
+        "quantity": 50,
+        "price": 209.2,
+        "orders": 2
+      },
+      {
+        "quantity": 400,
+        "price": 209.3,
+        "orders": 2
+      },
+      {
+        "quantity": 225,
+        "price": 209.4,
+        "orders": 2
+      },
+      {
+        "quantity": 125,
+        "price": 209.45,
+        "orders": 1
+      }
+    ]
+  }
+}

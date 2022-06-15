@@ -1,8 +1,14 @@
-use super::common::*;
+// use super::common::*;
 use super::ticker_structs::*;
 use crate::utils::*;
 // use bincode::{Decode, Encode};
-use chrono::{DateTime, FixedOffset, TimeZone};
+use eio::ReadExt;
+use std::{
+    fs::{File, OpenOptions},
+    io::{Cursor, Read, Seek, SeekFrom},
+};
+
+use bytes::{Buf, BufMut, Bytes, BytesMut};
 use serde::{Deserialize, Serialize};
 
 // Refer https://kite.trade/docs/connect/v3/websocket/
@@ -10,21 +16,21 @@ use serde::{Deserialize, Serialize};
 #[derive(Default, Debug, Clone, PartialEq, Copy, Serialize, Deserialize)]
 #[repr(C, packed)]
 pub struct LtpBin {
-    pub instrument_token: [u8; 4],
+    pub token: [u8; 4],
     pub last_price: [u8; 4],
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Copy, Serialize, Deserialize)]
 #[repr(C, packed)]
 pub struct LtpcBin {
-    pub instrument_token: [u8; 4],
+    pub token: [u8; 4],
     pub last_price: [u8; 4],
     pub close_price: [u8; 4],
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Copy, Serialize, Deserialize)]
 pub struct QuoteIndexBin {
-    pub instrument_token: [u8; 4],
+    pub token: [u8; 4],
     pub last_price: [u8; 4],
     pub ohlc: IndexTickerOhlc,
     pub change: [u8; 4],
@@ -33,7 +39,7 @@ pub struct QuoteIndexBin {
 #[derive(Default, Debug, Clone, PartialEq, Copy, Serialize, Deserialize)]
 #[repr(C, packed)]
 pub struct FullIndexBin {
-    pub instrument_token: [u8; 4],
+    pub token: [u8; 4],
     pub last_price: [u8; 4],
     pub ohlc: IndexTickerOhlc,
     pub change: [u8; 4],
@@ -61,11 +67,11 @@ pub struct TickerOhlc {
 #[derive(Default, Debug, Clone, PartialEq, Copy, Serialize, Deserialize)]
 #[repr(C, packed)]
 pub struct QuoteBin {
-    pub instrument_token: [u8; 4],
+    pub token: [u8; 4],
     pub last_price: [u8; 4],
-    pub last_traded_quantity: [u8; 4],
-    pub average_traded_price: [u8; 4],
-    pub volume_traded: [u8; 4],
+    pub last_quantity: [u8; 4],
+    pub average_price: [u8; 4],
+    pub volume: [u8; 4],
     pub total_buy_quantity: [u8; 4],
     pub total_sell_quantity: [u8; 4],
     pub ohlc: TickerOhlc,
@@ -74,15 +80,15 @@ pub struct QuoteBin {
 #[derive(Default, Debug, Clone, PartialEq, Copy, Serialize, Deserialize)]
 #[repr(C, packed)]
 pub struct FullBin {
-    pub instrument_token: [u8; 4],
+    pub token: [u8; 4],
     pub last_price: [u8; 4],
-    pub last_traded_quantity: [u8; 4],
-    pub average_traded_price: [u8; 4],
-    pub volume_traded: [u8; 4],
+    pub last_quantity: [u8; 4],
+    pub average_price: [u8; 4],
+    pub volume: [u8; 4],
     pub total_buy_quantity: [u8; 4],
     pub total_sell_quantity: [u8; 4],
     pub ohlc: TickerOhlc,
-    pub last_trade_time: [u8; 4],
+    pub last_traded_time: [u8; 4],
     pub oi: [u8; 4],
     pub oi_day_low: [u8; 4],
     pub oi_day_high: [u8; 4],
@@ -93,11 +99,11 @@ pub struct FullBin {
 #[derive(Default, Debug, Clone, PartialEq, Copy, Serialize, Deserialize)]
 #[repr(C, packed)]
 pub struct CompactFullBin {
-    pub instrument_token: [u8; 4],
+    pub token: [u8; 4],
     pub last_price: [u8; 4],
-    pub last_traded_quantity: [u8; 4],
-    pub average_traded_price: [u8; 4],
-    pub volume_traded: [u8; 4],
+    pub last_quantity: [u8; 4],
+    pub average_price: [u8; 4],
+    pub volume: [u8; 4],
     pub total_buy_quantity: [u8; 4],
     pub total_sell_quantity: [u8; 4],
     pub ohlc: TickerOhlc,
@@ -107,9 +113,10 @@ pub struct CompactFullBin {
 #[derive(Default, Debug, Clone, PartialEq, Copy, Serialize, Deserialize)]
 #[repr(C, packed)]
 pub struct ExtendedDepthBin {
-    pub instrument_token: [u8; 4],
-    pub padding: i64,
-    pub depth: ExtendedMarketDepthBin,
+    pub token: [u8; 4],
+    pub last_price: [u8; 4],
+    pub last_traded_time: [u8; 4],
+    pub extended_depth: ExtendedMarketDepthBin,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Copy, Serialize, Deserialize)]
@@ -227,7 +234,7 @@ impl Default for PacketSchemaTypeData {
 }
 
 impl PacketSchemaTypeData {
-    fn from(packet_schema_type: PacketSchemaType, packet_data: &[u8]) -> Self {
+    fn from_transmute_method(packet_schema_type: PacketSchemaType, packet_data: &[u8]) -> Self {
         match packet_schema_type {
             PacketSchemaType::LTP => {
                 assert_eq!(
@@ -369,7 +376,7 @@ impl PacketSchemaTypeData {
         }
     }
 
-    fn from1(packet_schema_type: PacketSchemaType, packet_data: &[u8]) -> Self {
+    fn from_align_method(packet_schema_type: PacketSchemaType, packet_data: &[u8]) -> Self {
         match packet_schema_type {
             PacketSchemaType::LTP => {
                 assert_eq!(
@@ -455,7 +462,7 @@ impl PacketSchemaTypeData {
         }
     }
 
-    fn from2(packet_schema_type: PacketSchemaType, packet_data: &[u8]) -> Self {
+    fn from_mut_ptr_method(packet_schema_type: PacketSchemaType, packet_data: &[u8]) -> Self {
         match packet_schema_type {
             PacketSchemaType::LTP => {
                 assert_eq!(
@@ -602,24 +609,66 @@ impl PacketSchemaTypeData {
 
 impl BinaryKiteTickerMessage {
     // fn from(input: Vec<u8>) -> BinaryKiteTickerMessage {
-    fn from(input: Vec<u8>) -> Vec<TickerSchemaTypeData> {
-        let (int_bytes, rest) = input.split_at(std::mem::size_of::<i16>());
+    fn from_splits(input: Vec<u8>) -> Vec<TickerSchemaTypeData> {
         // let mut ticker_data: Vec<BinaryKiteTickerMessageDecoder> = Vec::new();
-        let mut ticker_data_print: Vec<TickerSchemaTypeData> = Vec::new();
-        let packet_size = i16::from_be_bytes(int_bytes.try_into().unwrap());
+        let packet_size = i16::from_be_bytes(input[..2].try_into().unwrap());
+        let mut ticker_data_print: Vec<TickerSchemaTypeData> =
+            Vec::with_capacity(packet_size.try_into().unwrap());
+        let mut pos: usize = 2;
+        // println!("{packet_size}");
         for _ in 0..packet_size {
-            let (int_bytes, rest) = rest.split_at(std::mem::size_of::<i16>());
-            let packet_length = i16::from_be_bytes(int_bytes.try_into().unwrap());
-            println!("packet_length: {}", packet_length);
-            let (packet_data, rest) = rest.split_at(packet_length as usize);
+            let packet_length = i16::from_be_bytes(input[pos..pos + 2].try_into().unwrap());
+            // println!("packet_length: {packet_length}");
+            let packet_data = &input[pos + 2..pos + 2 + packet_length as usize];
+            // println!("{packet_data:#?}");
             let packet_schema_type = PacketSchemaType::from(packet_length).unwrap();
             let packet_schema_type_data =
-                PacketSchemaTypeData::from2(packet_schema_type, packet_data);
+                PacketSchemaTypeData::from_align_method(packet_schema_type, packet_data);
             // ticker_data.push(BinaryKiteTickerMessageDecoder {
             //     packet_length,
             //     packet_schema_type_data,
             // });
             ticker_data_print.push(TickerSchemaTypeData::from_bin(packet_schema_type_data));
+            pos += 2 + packet_length as usize;
+        }
+        // BinaryKiteTickerMessage {
+        //     packet_size,
+        //     ticker_data,
+        // }
+        ticker_data_print
+    }
+
+    fn from_cursor(input: Vec<u8>) -> Vec<TickerSchemaTypeData> {
+        let mut reader = Cursor::new(input);
+        let packet_size: i16 = reader.read_be().unwrap();
+        // println!("{packet_size}");
+        // let mut ticker_data: Vec<BinaryKiteTickerMessageDecoder> = Vec::new();
+        let mut ticker_data_print: Vec<TickerSchemaTypeData> =
+            Vec::with_capacity(packet_size.try_into().unwrap());
+        let mut packet_length: i16;
+        let mut pos: usize = 2;
+        for _ in 0..packet_size {
+            packet_length = reader.read_be().unwrap();
+            // println!("packet_length: {packet_length}");
+            let packet_schema_type = PacketSchemaType::from(packet_length).unwrap();
+            // let mut packet_data_buffer: Vec<u8> = Vec::with_capacity(packet_length.try_into().unwrap());
+            let packet_data_buffer = &mut vec![0_u8; packet_length.try_into().unwrap()][..];
+            reader.read_exact(packet_data_buffer).unwrap();
+            // let n = reader.read(packet_data_buffer).unwrap();
+            // println!("{:?}", &packet_data_buffer);
+            // assert_eq!(n, packet_data_buffer.len());
+            // println!("{packet_data:#?}");
+            let packet_schema_type_data = PacketSchemaTypeData::from_transmute_method(
+                packet_schema_type,
+                &packet_data_buffer,
+            );
+            // ticker_data.push(BinaryKiteTickerMessageDecoder {
+            //     packet_length,
+            //     packet_schema_type_data,
+            // });
+            ticker_data_print.push(TickerSchemaTypeData::from_bin(packet_schema_type_data));
+            pos += 2 + packet_length as usize;
+            reader.seek(SeekFrom::Start(pos as u64)).unwrap();
         }
         // BinaryKiteTickerMessage {
         //     packet_size,
@@ -638,6 +687,11 @@ mod tests {
     // };
     #[test]
     fn test_kite_ticker_raw() -> Result<(), Box<dyn std::error::Error>> {
+        let file = OpenOptions::new()
+            .write(true)
+            .append(true)
+            .create(true)
+            .open("kite_ticker.json")?;
         if let Ok(lines) = read_lines("./custom_mock_files/ws.packet") {
             for line in lines {
                 if let Ok(line) = line {
@@ -645,18 +699,18 @@ mod tests {
                     let data = base64::decode(line.as_bytes()).unwrap();
                     // println!("{}", data.len());
                     // println!("{:?}", &data);
-                    if data.len() > 2 {
+                    if data.len() >= 2 {
                         // println!("{}", serde_json::to_string_pretty(&tick_data).unwrap());
-                        println!(
-                            "{}",
-                            serde_json::to_string_pretty(&BinaryKiteTickerMessage::from(data))
-                                .unwrap()
-                        );
+                        // println!(
+                        //     "{}",
+                        //     serde_json::to_string_pretty(&BinaryKiteTickerMessage::from1(data))
+                        //         .unwrap()
+                        // );
                         // println!("{:#?}", &ticker_data);
-                        // serde_json::to_writer_pretty(
-                        //     &File::create("kite_ticker.json")?,
-                        //     &ticker_data,
-                        // )?;
+                        serde_json::to_writer_pretty(
+                            &file,
+                            &BinaryKiteTickerMessage::from_cursor(data),
+                        )?;
                     }
                 }
             }
@@ -666,9 +720,8 @@ mod tests {
 
     #[test]
     fn test_kite_ticker_raw_single() -> Result<(), Box<dyn std::error::Error>> {
-        // let data = b"AAQAuACfOQIAAABkAAAASwAAARwByROfABZ+NAAFYmsAAAG9AAAB9AAAAFoAAAPUYqGllwBC8qwATzXuADU/QGKhpZgAAGTIAAAAZAAkAAAAAJTtAAAAXwA8AAAAADZlAAAAWgAoAAAAABX5AAAAVQARAAAAADGcAAAAUAAZAAAAABydAAAAaQAoAAAAAFHWAAAAbgA5AAAAABftAAAAcwAWAAAAABnhAAAAeAAVAAAAAA+5AAAAfQAQAAAADAAAAQkAU8ibAFPCYQAMADcfAQAAH3cAAB9FAAgAA/gJADUe/A==";
         let data =
-            b"AAUADAAJDwEAABhRAAAYVgAMAJ86AgAB1VYAAZZoAAwAnzkCAAAAZAAAA9QADAAD6QkAGPTPABj1KQAMAAABCQBTyJsAU8Jh";
+            b"AAQACAAD+AkANR9gALgAnzoCAAHViAAAABkAAdQLAANHjQAEGD4AAHxRAAHFAgACDWQAAY7ZAAGWaGKhpZkAA37sAAOgtgADTQVioaWbAAAAGQAB1ZIAAQAAAAAAfQAB1Y0AAQAAAAAAGQAB1YgAAQAAAAAAMgAB1YMAAQAAAAAASwAB1X4AAgAAAAAAGQAB1q8AAQAAAAAAGQAB1tcAAQAAAAAAMgAB1uEAAQAAAAAAyAAB1uYAAgAAAAAAGQAB1usAAQAAALgAnzkCAAAAaQAAABkAAAEcAckZrQAWhBAABWLoAAABvQAAAfQAAABaAAAD1GKhpZwAQvKsAE817gA1P0BioaWcAABhwQAAAGQAJgAAAACQ7AAAAF8AOQAAAAA2MwAAAFoAJwAAAAAbJgAAAFUAFwAAAAA0PwAAAFAAHAAAAAAhAgAAAGkALgAAAABOhAAAAG4AOQAAAAAZlgAAAHMAGgAAAAAZ4QAAAHgAFQAAAAAPuQAAAH0AEAAAAAwANx8BAAAffAAAH0U=";
         let data = base64::decode(data).unwrap();
         // println!("{}", data.len());
         // println!("{:?}", &data);
@@ -676,11 +729,121 @@ mod tests {
             // println!("{}", serde_json::to_string_pretty(&tick_data).unwrap());
             println!(
                 "{}",
-                serde_json::to_string_pretty(&BinaryKiteTickerMessage::from(data)).unwrap()
+                serde_json::to_string_pretty(&BinaryKiteTickerMessage::from_cursor(data)).unwrap()
             );
             // println!("{:#?}", &BinaryKiteTickerMessage::from(data));
             // println!("{:#?}", &ticker_data);
             // serde_json::to_writer_pretty(&File::create("kite_ticker.json")?, &ticker_data)?;
+        }
+        Ok(())
+    }
+    #[test]
+    fn test_kite_ticker_three_thousand_quote_message() -> Result<(), Box<dyn std::error::Error>> {
+        let file = OpenOptions::new()
+            .write(true)
+            .append(true)
+            .create(true)
+            .open("kite_ticker_three_thousand_quote_message.json")?;
+        if let Ok(lines) = read_lines("./custom_mock_files/ws_three_thousand_quote_message.packet")
+        {
+            for line in lines {
+                if let Ok(line) = line {
+                    // let data = &base64::decode(data).unwrap()[..];
+                    let data = base64::decode(line.as_bytes()).unwrap();
+                    // println!("{}", data.len());
+                    // println!("{:?}", &data);
+                    if data.len() >= 2 {
+                        let ticker_data = BinaryKiteTickerMessage::from_splits(data);
+                        // println!("{}", serde_json::to_string_pretty(&ticker_data).unwrap());
+                        // println!("{:#?}", &ticker_data);
+                        // serde_json::to_writer_pretty(
+                        //     &file,
+                        //     &ticker_data,
+                        // )?;
+                    }
+                }
+            }
+        }
+        Ok(())
+    }
+    #[test]
+    fn test_kite_ticker_extended_depth() -> Result<(), Box<dyn std::error::Error>> {
+        let file = OpenOptions::new()
+            .write(true)
+            .append(true)
+            .create(true)
+            .open("kite_ticker_extended_depth.json")?;
+        if let Ok(lines) = read_lines("./custom_mock_files/ws_extended_depth.packet") {
+            for line in lines {
+                if let Ok(line) = line {
+                    // let data = &base64::decode(data).unwrap()[..];
+                    let data = base64::decode(line.as_bytes()).unwrap();
+                    // println!("{}", data.len());
+                    // println!("{:?}", &data);
+                    if data.len() >= 2 {
+                        let ticker_data = BinaryKiteTickerMessage::from_cursor(data);
+                        // println!("{}", serde_json::to_string_pretty(&ticker_data).unwrap());
+                        // println!("{:#?}", &ticker_data);
+                        serde_json::to_writer_pretty(&file, &ticker_data)?;
+                    }
+                }
+            }
+        }
+        Ok(())
+    }
+    #[test]
+    fn test_kite_ticker_extended_depth_one() -> Result<(), Box<dyn std::error::Error>> {
+        let file = OpenOptions::new()
+            .write(true)
+            .append(true)
+            .create(true)
+            .open("kite_ticker_extended_depth_one.json")?;
+        if let Ok(lines) = read_lines("./custom_mock_files/ws_extended_depth_20.packet") {
+            for line in lines {
+                if let Ok(line) = line {
+                    // let data = &base64::decode(data).unwrap()[..];
+                    let data = base64::decode(line.as_bytes()).unwrap();
+                    // println!("{}", data.len());
+                    // println!("{:?}", &data);
+                    if data.len() >= 2 {
+                        let ticker_data = BinaryKiteTickerMessage::from_cursor(data);
+                        println!("{}", serde_json::to_string(&ticker_data).unwrap());
+                        // println!("{:#?}", &ticker_data);
+                        // serde_json::to_writer_pretty(&file, &ticker_data)?;
+                    }
+                }
+            }
+        }
+        Ok(())
+    }
+    #[test]
+    fn test_kite_ticker_three_thousand_extended_quote_message(
+    ) -> Result<(), Box<dyn std::error::Error>> {
+        let file = OpenOptions::new()
+            .write(true)
+            .append(true)
+            .create(true)
+            .open("kite_ticker_three_thousand_extended_quote_message.json")?;
+        if let Ok(lines) =
+            read_lines("./custom_mock_files/ws_three_thousand_extended_quote_message.packet")
+        {
+            for line in lines {
+                if let Ok(line) = line {
+                    // let data = &base64::decode(data).unwrap()[..];
+                    let data = base64::decode(line.as_bytes()).unwrap();
+                    // println!("{}", data.len());
+                    // println!("{:?}", &data);
+                    if data.len() >= 2 {
+                        let ticker_data = BinaryKiteTickerMessage::from_cursor(data);
+                        // println!("{}", serde_json::to_string_pretty(&ticker_data).unwrap());
+                        // println!("{:#?}", &ticker_data);
+                        // serde_json::to_writer_pretty(
+                        //     &file,
+                        //     &ticker_data,
+                        // )?;
+                    }
+                }
+            }
         }
         Ok(())
     }

@@ -245,7 +245,7 @@ mod tests {
                     let data = &base64::decode(line.as_bytes()).unwrap()[..];
                     // println!("{}", data.len());
                     // println!("{:?}", &data);
-                    if data.len() > 2 {
+                    if data.len() >= 2 {
                         let mut reader = Cursor::new(data);
                         // let number_of_packets = reader.read_i16::<BigEndian>().unwrap();
                         let number_of_packets: i16 = reader.read_be().unwrap();
@@ -542,11 +542,11 @@ mod tests {
 
     #[test]
     fn test_kite_ticker_raw_single() -> Result<(), Box<dyn std::error::Error>> {
-        let data = b"AAQAuACfOQIAAABkAAAASwAAARwByROfABZ+NAAFYmsAAAG9AAAB9AAAAFoAAAPUYqGllwBC8qwATzXuADU/QGKhpZgAAGTIAAAAZAAkAAAAAJTtAAAAXwA8AAAAADZlAAAAWgAoAAAAABX5AAAAVQARAAAAADGcAAAAUAAZAAAAABydAAAAaQAoAAAAAFHWAAAAbgA5AAAAABftAAAAcwAWAAAAABnhAAAAeAAVAAAAAA+5AAAAfQAQAAAADAAAAQkAU8ibAFPCYQAMADcfAQAAH3cAAB9FAAgAA/gJADUe/A==";
+        let data = b"AAQACAAD+AkANR9gALgAnzoCAAHViAAAABkAAdQLAANHjQAEGD4AAHxRAAHFAgACDWQAAY7ZAAGWaGKhpZkAA37sAAOgtgADTQVioaWbAAAAGQAB1ZIAAQAAAAAAfQAB1Y0AAQAAAAAAGQAB1YgAAQAAAAAAMgAB1YMAAQAAAAAASwAB1X4AAgAAAAAAGQAB1q8AAQAAAAAAGQAB1tcAAQAAAAAAMgAB1uEAAQAAAAAAyAAB1uYAAgAAAAAAGQAB1usAAQAAALgAnzkCAAAAaQAAABkAAAEcAckZrQAWhBAABWLoAAABvQAAAfQAAABaAAAD1GKhpZwAQvKsAE817gA1P0BioaWcAABhwQAAAGQAJgAAAACQ7AAAAF8AOQAAAAA2MwAAAFoAJwAAAAAbJgAAAFUAFwAAAAA0PwAAAFAAHAAAAAAhAgAAAGkALgAAAABOhAAAAG4AOQAAAAAZlgAAAHMAGgAAAAAZ4QAAAHgAFQAAAAAPuQAAAH0AEAAAAAwANx8BAAAffAAAH0U=";
         let data = &base64::decode(data).unwrap()[..];
         // println!("{}", data.len());
         // println!("{:?}", &data);
-        if data.len() > 2 {
+        if data.len() >= 2 {
             let mut reader = Cursor::new(data);
             // let number_of_packets = reader.read_i16::<BigEndian>().unwrap();
             let number_of_packets: i16 = reader.read_be().unwrap();
@@ -799,3 +799,14 @@ mod tests {
         Ok(())
     }
 }
+
+
+// fn main() {
+//     let array: [u8; 4] = [0, 1, 2, 3];
+
+//     let [chunk_0, chunk_1]: [[u8; 2]; 2] =
+//         unsafe { std::mem::transmute::<[u8; 4], [[u8; 2]; 2]>(array) };
+
+//     assert_eq!([0, 1], chunk_0);
+//     assert_eq!([2, 3], chunk_1);
+// }

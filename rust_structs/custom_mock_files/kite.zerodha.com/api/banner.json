@@ -1,0 +1,20 @@
+{
+  "status": "success",
+  "data": {
+    "image": "https://zerodha.com/z-connect/wp-content/uploads/2022/04/Gift_kite_banner_light.png",
+    "action_url": "https://zrd.sh/gift",
+    "action_label": "",
+    "image_click": true,
+    "action_button_background_color": "#4184f3",
+    "action_button_text_color": "#FFFFFF",
+    "action_button_alignment": "",
+    "action_position_bottom": 33,
+    "action_position_top": 0,
+    "action_position_left": 150,
+    "action_position_right": 0,
+    "border_color": "transparent",
+    "dark": {
+      "image": "https://zerodha.com/z-connect/wp-content/uploads/2022/04/Gift_kite_banner_dark.png"
+    }
+  }
+}

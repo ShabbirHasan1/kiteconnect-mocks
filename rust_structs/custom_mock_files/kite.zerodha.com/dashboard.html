@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang=en data-theme=default>
+
+<head>
+    <base href=/>
+    <meta charset=utf-8>
+    <meta http-equiv=x-ua-compatible content="ie=edge">
+    <meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1">
+    <meta name=description content="HTML5 trading app built with speed, simplicity, and ease of use in mind">
+    <meta name=keywords content="Kite, Zerodha, web based trading platform, html5 trading platform, best trading platform, best web trading platform, Zerodha kite, Rainmatter">
+    <title>Kite - Zerodha's fast and elegant flagship trading platform</title>
+    <link rel=apple-touch-icon-precomposed sizes=57x57 href=/static/images/browser-icons/apple-touch-icon-57x57.png>
+    <link rel=apple-touch-icon-precomposed sizes=114x114 href=/static/images/browser-icons/apple-touch-icon-114x114.png>
+    <link rel=apple-touch-icon-precomposed sizes=72x72 href=/static/images/browser-icons/apple-touch-icon-72x72.png>
+    <link rel=apple-touch-icon-precomposed sizes=144x144 href=/static/images/browser-icons/apple-touch-icon-144x144.png>
+    <link rel=apple-touch-icon-precomposed sizes=60x60 href=/static/images/browser-icons/apple-touch-icon-60x60.png>
+    <link rel=apple-touch-icon-precomposed sizes=120x120 href=/static/images/browser-icons/apple-touch-icon-120x120.png>
+    <link rel=apple-touch-icon-precomposed sizes=76x76 href=/static/images/browser-icons/apple-touch-icon-76x76.png>
+    <link rel=apple-touch-icon-precomposed sizes=152x152 href=/static/images/browser-icons/apple-touch-icon-152x152.png>
+    <link rel=icon type=image/png href=/static/images/browser-icons/favicon-196x196.png sizes=196x196>
+    <link rel=icon type=image/png href=/static/images/browser-icons/favicon-96x96.png sizes=96x96>
+    <link rel=icon type=image/png href=/static/images/browser-icons/favicon-32x32.png sizes=32x32>
+    <link rel=icon type=image/png href=/static/images/browser-icons/favicon-16x16.png sizes=16x16>
+    <link rel=icon type=image/png href=/static/images/browser-icons/favicon-128.png sizes=128x128>
+    <meta name=application-name content=&nbsp;>
+    <meta name=msapplication-TileColor content=#FFFFFF>
+    <meta name=msapplication-TileImage content=/static/images/browser-icons/mstile-144x144.png>
+    <meta name=msapplication-square70x70logo content=/static/images/browser-icons/mstile-70x70.png>
+    <meta name=msapplication-square150x150logo content=/static/images/browser-icons/mstile-150x150.png>
+    <meta name=msapplication-wide310x150logo content=/static/images/browser-icons/mstile-310x150.png>
+    <meta name=msapplication-square310x310logo content=/static/images/browser-icons/mstile-310x310.png>
+    <!--[if IE]><link rel="shortcut icon" href="/static/images/browser-icons/favicon.ico"><![endif]-->
+    <link rel=icon href=/static/images/browser-icons/favicon-32x32.png>
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600" rel=stylesheet type=text/css>
+    <style>
+        [data-theme="dark"] body {
+            background-color: #111111;
+        }
+    </style>
+    <link href=/static/css/chartiq.f8030126.css rel=prefetch>
+    <link href=/static/css/main-tradingview.2d680389.css rel=prefetch>
+    <link href=/static/css/main.9ffc3366.css rel=prefetch>
+    <link href=/static/css/outer.7abae0d6.css rel=prefetch>
+    <link href=/static/css/tradingview.f8030126.css rel=prefetch>
+    <link href=/static/js/chartiq.1ab52481.js rel=prefetch>
+    <link href=/static/js/chartiq~connect~main~main-chartiq~main-tradingview~tradingview.917aed52.js rel=prefetch>
+    <link href=/static/js/chartiq~connect~main~main-chartiq~tradingview.ccf7a4f3.js rel=prefetch>
+    <link href=/static/js/chartiq~connect~main~tradingview.818bafa5.js rel=prefetch>
+    <link href=/static/js/chartiq~main~main-chartiq~outer~tradingview.4d6aa12a.js rel=prefetch>
+    <link href=/static/js/chunk-2d22c101.cb0b4346.js rel=prefetch>
+    <link href=/static/js/connect.c986c30a.js rel=prefetch>
+    <link href=/static/js/holdings-auth.c1e84ece.js rel=prefetch>
+    <link href=/static/js/main-chartiq.0487907e.js rel=prefetch>
+    <link href=/static/js/main-tradingview.89fc5217.js rel=prefetch>
+    <link href=/static/js/main.7d89fc0f.js rel=prefetch>
+    <link href=/static/js/outer.5efb959a.js rel=prefetch>
+    <link href=/static/js/tradingview.feec5532.js rel=prefetch>
+    <link href=/static/css/app.faf0599f.css rel=preload as=style>
+    <link href=/static/js/app.4a5b882e.js rel=modulepreload as=script>
+    <link href=/static/js/chunk-vendors.ea6114a1.js rel=modulepreload as=script>
+    <link href=/static/css/app.faf0599f.css rel=stylesheet>
+</head>
+
+<body><noscript><strong>We're sorry but kite doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript>
+    <div id=app></div>
+    <script async>
+        try {
+            var theme = JSON.parse(localStorage.__storejs_kite_theme);
+            if (theme) {
+                document.documentElement.setAttribute("data-theme", theme);
+            }
+        } catch (_) {}
+    </script>
+    <script type=module src=/static/js/chunk-vendors.ea6114a1.js></script>
+    <script type=module src=/static/js/app.4a5b882e.js></script>
+    <script>
+        ! function() {
+            var e = document,
+                t = e.createElement("script");
+            if (!("noModule" in t) && "onbeforeload" in t) {
+                var n = !1;
+                e.addEventListener("beforeload", function(e) {
+                    if (e.target === t) n = !0;
+                    else if (!e.target.hasAttribute("nomodule") || !n) return;
+                    e.preventDefault()
+                }, !0), t.type = "module", t.src = ".", e.head.appendChild(t), t.remove()
+            }
+        }();
+    </script>
+    <script src=/static/js/chunk-vendors-legacy.ea6114a1.js nomodule></script>
+    <script src=/static/js/app-legacy.ce35e9d5.js nomodule></script>
+</body>
+
+</html>

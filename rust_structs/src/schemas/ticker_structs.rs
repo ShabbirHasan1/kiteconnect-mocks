@@ -5,43 +5,48 @@ use chrono::{DateTime, FixedOffset, TimeZone};
 use serde::{Deserialize, Serialize};
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Ltp {
-    pub tradable: bool,
     pub mode: TickerStreamingMode,
-    pub instrument_token: i32,
+    pub is_tradable: bool,
+    pub token: i32,
     pub last_price: f64,
 }
 
 impl From<LtpBin> for Ltp {
     fn from(ltp_bin: LtpBin) -> Self {
-        let instrument_token = i32::from_be_bytes(ltp_bin.instrument_token.try_into().unwrap());
-        let segment = segment(instrument_token);
+        let token = i32::from_be_bytes(ltp_bin.token.try_into().unwrap());
+        let segment = segment(token);
         let last_price = convert_price(
             segment,
             i32::from_be_bytes(ltp_bin.last_price.try_into().unwrap()),
         );
         Self {
-            tradable: tradable(segment),
             mode: TickerStreamingMode::Ltp,
-            instrument_token,
+            is_tradable: is_tradable(segment),
+            token,
             last_price,
         }
     }
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Ltpc {
-    pub tradable: bool,
     pub mode: TickerStreamingMode,
-    pub instrument_token: i32,
+    pub is_tradable: bool,
+    pub token: i32,
     pub last_price: f64,
     pub close_price: f64,
+    pub change: f64,
+    pub absolute_change: f64,
+    pub tick_change: i8,
 }
 
 impl From<LtpcBin> for Ltpc {
     fn from(ltpc_bin: LtpcBin) -> Self {
-        let instrument_token = i32::from_be_bytes(ltpc_bin.instrument_token.try_into().unwrap());
-        let segment = segment(instrument_token);
+        let token = i32::from_be_bytes(ltpc_bin.token.try_into().unwrap());
+        let segment = segment(token);
         let last_price = convert_price(
             segment,
             i32::from_be_bytes(ltpc_bin.last_price.try_into().unwrap()),
@@ -50,121 +55,173 @@ impl From<LtpcBin> for Ltpc {
             segment,
             i32::from_be_bytes(ltpc_bin.close_price.try_into().unwrap()),
         );
+        let price_change: PriceChange =
+            PriceChange::calculate_close_price_change(last_price, close_price);
+        let (change, absolute_change, tick_change) = (
+            price_change.change,
+            price_change.absolute_change,
+            price_change.tick_change,
+        );
         Self {
-            tradable: tradable(segment),
             mode: TickerStreamingMode::Ltpc,
-            instrument_token,
+            is_tradable: is_tradable(segment),
+            token,
             last_price,
             close_price,
+            change,
+            absolute_change,
+            tick_change,
         }
     }
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct QuoteIndex {
-    pub tradable: bool,
     pub mode: TickerStreamingMode,
-    pub instrument_token: i32,
+    pub is_tradable: bool,
+    pub token: i32,
     pub last_price: f64,
-    pub ohlc: TickerOhlc,
+    pub close_price: f64,
     pub change: f64,
-    pub price_change: PriceChange,
+    pub absolute_change: f64,
+    pub open_change: f64,
+    pub open_change_percent: f64,
+    pub tick_change: i8,
+    pub open_price: f64,
+    pub high_price: f64,
+    pub low_price: f64,
+    pub change_from_tick_packet: f64,
 }
 
 impl From<QuoteIndexBin> for QuoteIndex {
     fn from(quote_index_bin: QuoteIndexBin) -> Self {
-        let instrument_token =
-            i32::from_be_bytes(quote_index_bin.instrument_token.try_into().unwrap());
-        let segment = segment(instrument_token);
+        let token = i32::from_be_bytes(quote_index_bin.token.try_into().unwrap());
+        let segment = segment(token);
         let last_price = convert_price(
             segment,
             i32::from_be_bytes(quote_index_bin.last_price.try_into().unwrap()),
         );
-        let ohlc = TickerOhlc {
-            open: convert_price(
-                segment,
-                i32::from_be_bytes(quote_index_bin.ohlc.open.try_into().unwrap()),
-            ),
-            high: convert_price(
-                segment,
-                i32::from_be_bytes(quote_index_bin.ohlc.high.try_into().unwrap()),
-            ),
-            low: convert_price(
-                segment,
-                i32::from_be_bytes(quote_index_bin.ohlc.low.try_into().unwrap()),
-            ),
-            close: convert_price(
-                segment,
-                i32::from_be_bytes(quote_index_bin.ohlc.close.try_into().unwrap()),
-            ),
-        };
-        let change = i32::from_be_bytes(quote_index_bin.change.try_into().unwrap()) as f64;
-        let price_change = calculate_change(last_price, ohlc.open, ohlc.close);
+        let open_price = convert_price(
+            segment,
+            i32::from_be_bytes(quote_index_bin.ohlc.open.try_into().unwrap()),
+        );
+        let high_price = convert_price(
+            segment,
+            i32::from_be_bytes(quote_index_bin.ohlc.high.try_into().unwrap()),
+        );
+        let low_price = convert_price(
+            segment,
+            i32::from_be_bytes(quote_index_bin.ohlc.low.try_into().unwrap()),
+        );
+        let close_price = convert_price(
+            segment,
+            i32::from_be_bytes(quote_index_bin.ohlc.close.try_into().unwrap()),
+        );
+        let change_from_tick_packet =
+            i32::from_be_bytes(quote_index_bin.change.try_into().unwrap()) as f64;
+        let price_change: PriceChange =
+            PriceChange::calculate_price_change(last_price, open_price, close_price);
+        let (change, absolute_change, open_change, open_change_percent, tick_change) = (
+            price_change.change,
+            price_change.absolute_change,
+            price_change.open_change,
+            price_change.open_change_percent,
+            price_change.tick_change,
+        );
         Self {
-            tradable: tradable(segment),
             mode: TickerStreamingMode::Quote,
-            instrument_token,
+            is_tradable: is_tradable(segment),
+            token,
             last_price,
-            ohlc,
+            close_price,
             change,
-            price_change,
+            absolute_change,
+            open_change,
+            open_change_percent,
+            tick_change,
+            open_price,
+            high_price,
+            low_price,
+            change_from_tick_packet,
         }
     }
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct FullIndex {
-    pub tradable: bool,
     pub mode: TickerStreamingMode,
-    pub instrument_token: i32,
+    pub is_tradable: bool,
+    pub token: i32,
     pub last_price: f64,
-    pub ohlc: TickerOhlc,
+    pub close_price: f64,
     pub change: f64,
-    pub price_change: PriceChange,
+    pub absolute_change: f64,
+    pub open_change: f64,
+    pub open_change_percent: f64,
+    pub tick_change: i8,
+    pub open_price: f64,
+    pub high_price: f64,
+    pub low_price: f64,
     #[serde(with = "naive_date_time_timezone_from_timestamp")]
     pub exchange_timestamp: DateTime<FixedOffset>,
+    pub change_from_tick_packet: f64,
 }
 
 impl From<FullIndexBin> for FullIndex {
     fn from(full_index_bin: FullIndexBin) -> Self {
-        let instrument_token =
-            i32::from_be_bytes(full_index_bin.instrument_token.try_into().unwrap());
-        let segment = segment(instrument_token);
+        let token = i32::from_be_bytes(full_index_bin.token.try_into().unwrap());
+        let segment = segment(token);
         let last_price = convert_price(
             segment,
             i32::from_be_bytes(full_index_bin.last_price.try_into().unwrap()),
         );
-        let ohlc = TickerOhlc {
-            open: convert_price(
-                segment,
-                i32::from_be_bytes(full_index_bin.ohlc.open.try_into().unwrap()),
-            ),
-            high: convert_price(
-                segment,
-                i32::from_be_bytes(full_index_bin.ohlc.high.try_into().unwrap()),
-            ),
-            low: convert_price(
-                segment,
-                i32::from_be_bytes(full_index_bin.ohlc.low.try_into().unwrap()),
-            ),
-            close: convert_price(
-                segment,
-                i32::from_be_bytes(full_index_bin.ohlc.close.try_into().unwrap()),
-            ),
-        };
-        let change = i32::from_be_bytes(full_index_bin.change.try_into().unwrap()) as f64;
-        let price_change = calculate_change(last_price, ohlc.open, ohlc.close);
+        let open_price = convert_price(
+            segment,
+            i32::from_be_bytes(full_index_bin.ohlc.open.try_into().unwrap()),
+        );
+        let high_price = convert_price(
+            segment,
+            i32::from_be_bytes(full_index_bin.ohlc.high.try_into().unwrap()),
+        );
+        let low_price = convert_price(
+            segment,
+            i32::from_be_bytes(full_index_bin.ohlc.low.try_into().unwrap()),
+        );
+        let close_price = convert_price(
+            segment,
+            i32::from_be_bytes(full_index_bin.ohlc.close.try_into().unwrap()),
+        );
+        let change_from_tick_packet =
+            i32::from_be_bytes(full_index_bin.change.try_into().unwrap()) as f64;
+        let price_change: PriceChange =
+            PriceChange::calculate_price_change(last_price, open_price, close_price);
+        let (change, absolute_change, open_change, open_change_percent, tick_change) = (
+            price_change.change,
+            price_change.absolute_change,
+            price_change.open_change,
+            price_change.open_change_percent,
+            price_change.tick_change,
+        );
         let exchange_timestamp =
             i32::from_be_bytes(full_index_bin.exchange_timestamp.try_into().unwrap()) as i64;
         Self {
-            tradable: tradable(segment),
             mode: TickerStreamingMode::Full,
-            instrument_token,
+            is_tradable: is_tradable(segment),
+            token,
             last_price,
-            ohlc,
+            close_price,
             change,
-            price_change,
+            absolute_change,
+            open_change,
+            open_change_percent,
+            tick_change,
+            open_price,
+            high_price,
+            low_price,
             exchange_timestamp: FixedOffset::east(19800).timestamp(exchange_timestamp, 0),
+            change_from_tick_packet,
         }
     }
 }
@@ -172,158 +229,190 @@ impl From<FullIndexBin> for FullIndex {
 impl Default for FullIndex {
     fn default() -> Self {
         Self {
-            tradable: Default::default(),
             mode: Default::default(),
-            instrument_token: Default::default(),
+            is_tradable: Default::default(),
+            token: Default::default(),
             last_price: Default::default(),
-            ohlc: Default::default(),
+            close_price: Default::default(),
             change: Default::default(),
-            price_change: Default::default(),
+            absolute_change: Default::default(),
+            open_change: Default::default(),
+            open_change_percent: Default::default(),
+            tick_change: Default::default(),
+            open_price: Default::default(),
+            high_price: Default::default(),
+            low_price: Default::default(),
             exchange_timestamp: FixedOffset::east(19800).ymd(1947, 1, 1).and_hms(9, 15, 0),
+            change_from_tick_packet: Default::default(),
         }
     }
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-pub struct TickerOhlc {
-    pub open: f64,
-    pub high: f64,
-    pub low: f64,
-    pub close: f64,
-}
-
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Quote {
-    pub tradable: bool,
     pub mode: TickerStreamingMode,
-    pub instrument_token: i32,
+    pub is_tradable: bool,
+    pub token: i32,
     pub last_price: f64,
-    pub last_traded_quantity: i32,
-    pub average_traded_price: f64,
-    pub volume_traded: i32,
+    pub close_price: f64,
+    pub change: f64,
+    pub absolute_change: f64,
+    pub open_change: f64,
+    pub open_change_percent: f64,
+    pub tick_change: i8,
+    pub volume: i32,
+    pub last_quantity: i32,
     pub total_buy_quantity: i32,
     pub total_sell_quantity: i32,
-    pub ohlc: TickerOhlc,
-    pub price_change: PriceChange,
+    pub average_price: f64,
+    pub open_price: f64,
+    pub high_price: f64,
+    pub low_price: f64,
 }
 
 impl From<QuoteBin> for Quote {
     fn from(quote_bin: QuoteBin) -> Self {
-        let instrument_token = i32::from_be_bytes(quote_bin.instrument_token.try_into().unwrap());
-        let segment = segment(instrument_token);
+        let token = i32::from_be_bytes(quote_bin.token.try_into().unwrap());
+        let segment = segment(token);
         let last_price = convert_price(
             segment,
             i32::from_be_bytes(quote_bin.last_price.try_into().unwrap()),
         );
-        let last_traded_quantity =
-            i32::from_be_bytes(quote_bin.last_traded_quantity.try_into().unwrap());
-        let average_traded_price = convert_price(
+        let last_quantity = i32::from_be_bytes(quote_bin.last_quantity.try_into().unwrap());
+        let average_price = convert_price(
             segment,
-            i32::from_be_bytes(quote_bin.average_traded_price.try_into().unwrap()),
+            i32::from_be_bytes(quote_bin.average_price.try_into().unwrap()),
         );
-        let volume_traded = i32::from_be_bytes(quote_bin.volume_traded.try_into().unwrap());
+        let volume = i32::from_be_bytes(quote_bin.volume.try_into().unwrap());
         let total_buy_quantity =
             i32::from_be_bytes(quote_bin.total_buy_quantity.try_into().unwrap());
         let total_sell_quantity =
             i32::from_be_bytes(quote_bin.total_sell_quantity.try_into().unwrap());
-        let ohlc = TickerOhlc {
-            open: convert_price(
-                segment,
-                i32::from_be_bytes(quote_bin.ohlc.open.try_into().unwrap()),
-            ),
-            high: convert_price(
-                segment,
-                i32::from_be_bytes(quote_bin.ohlc.high.try_into().unwrap()),
-            ),
-            low: convert_price(
-                segment,
-                i32::from_be_bytes(quote_bin.ohlc.low.try_into().unwrap()),
-            ),
-            close: convert_price(
-                segment,
-                i32::from_be_bytes(quote_bin.ohlc.close.try_into().unwrap()),
-            ),
-        };
-        let price_change = calculate_change(last_price, ohlc.open, ohlc.close);
+        let open_price = convert_price(
+            segment,
+            i32::from_be_bytes(quote_bin.ohlc.open.try_into().unwrap()),
+        );
+        let high_price = convert_price(
+            segment,
+            i32::from_be_bytes(quote_bin.ohlc.high.try_into().unwrap()),
+        );
+        let low_price = convert_price(
+            segment,
+            i32::from_be_bytes(quote_bin.ohlc.low.try_into().unwrap()),
+        );
+        let close_price = convert_price(
+            segment,
+            i32::from_be_bytes(quote_bin.ohlc.close.try_into().unwrap()),
+        );
+        let price_change: PriceChange =
+            PriceChange::calculate_price_change(last_price, open_price, close_price);
+        let (change, absolute_change, open_change, open_change_percent, tick_change) = (
+            price_change.change,
+            price_change.absolute_change,
+            price_change.open_change,
+            price_change.open_change_percent,
+            price_change.tick_change,
+        );
         Self {
-            tradable: tradable(segment),
             mode: TickerStreamingMode::Quote,
-            instrument_token,
+            is_tradable: is_tradable(segment),
+            token,
             last_price,
-            last_traded_quantity,
-            average_traded_price,
-            volume_traded,
+            close_price,
+            change,
+            absolute_change,
+            open_change,
+            open_change_percent,
+            tick_change,
+            volume,
+            last_quantity,
             total_buy_quantity,
             total_sell_quantity,
-            ohlc,
-            price_change,
+            average_price,
+            open_price,
+            high_price,
+            low_price,
         }
     }
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Full {
-    pub tradable: bool,
     pub mode: TickerStreamingMode,
-    pub instrument_token: i32,
+    pub is_tradable: bool,
+    pub token: i32,
     pub last_price: f64,
-    pub last_traded_quantity: i32,
-    pub average_traded_price: f64,
-    pub volume_traded: i32,
+    pub close_price: f64,
+    pub change: f64,
+    pub absolute_change: f64,
+    pub open_change: f64,
+    pub open_change_percent: f64,
+    pub tick_change: i8,
+    pub volume: i32,
+    pub last_quantity: i32,
     pub total_buy_quantity: i32,
     pub total_sell_quantity: i32,
-    pub ohlc: TickerOhlc,
-    pub price_change: PriceChange,
+    pub average_price: f64,
+    pub open_price: f64,
+    pub high_price: f64,
+    pub low_price: f64,
+    pub depth: MarketDepth,
     #[serde(with = "naive_date_time_timezone_from_timestamp")]
-    pub last_trade_time: DateTime<FixedOffset>,
+    pub last_traded_time: DateTime<FixedOffset>,
     pub oi: i32,
-    pub oi_day_low: i32,
     pub oi_day_high: i32,
+    pub oi_day_low: i32,
     #[serde(with = "naive_date_time_timezone_from_timestamp")]
     pub exchange_timestamp: DateTime<FixedOffset>,
-    pub depth: MarketDepth,
 }
 
 impl From<FullBin> for Full {
     fn from(full_bin: FullBin) -> Self {
-        let instrument_token = i32::from_be_bytes(full_bin.instrument_token.try_into().unwrap());
-        let segment = segment(instrument_token);
+        let token = i32::from_be_bytes(full_bin.token.try_into().unwrap());
+        let segment = segment(token);
         let last_price = convert_price(
             segment,
             i32::from_be_bytes(full_bin.last_price.try_into().unwrap()),
         );
-        let last_traded_quantity =
-            i32::from_be_bytes(full_bin.last_traded_quantity.try_into().unwrap());
-        let average_traded_price = convert_price(
+        let last_quantity = i32::from_be_bytes(full_bin.last_quantity.try_into().unwrap());
+        let average_price = convert_price(
             segment,
-            i32::from_be_bytes(full_bin.average_traded_price.try_into().unwrap()),
+            i32::from_be_bytes(full_bin.average_price.try_into().unwrap()),
         );
-        let volume_traded = i32::from_be_bytes(full_bin.volume_traded.try_into().unwrap());
+        let volume = i32::from_be_bytes(full_bin.volume.try_into().unwrap());
         let total_buy_quantity =
             i32::from_be_bytes(full_bin.total_buy_quantity.try_into().unwrap());
         let total_sell_quantity =
             i32::from_be_bytes(full_bin.total_sell_quantity.try_into().unwrap());
-        let ohlc = TickerOhlc {
-            open: convert_price(
-                segment,
-                i32::from_be_bytes(full_bin.ohlc.open.try_into().unwrap()),
-            ),
-            high: convert_price(
-                segment,
-                i32::from_be_bytes(full_bin.ohlc.high.try_into().unwrap()),
-            ),
-            low: convert_price(
-                segment,
-                i32::from_be_bytes(full_bin.ohlc.low.try_into().unwrap()),
-            ),
-            close: convert_price(
-                segment,
-                i32::from_be_bytes(full_bin.ohlc.close.try_into().unwrap()),
-            ),
-        };
-        let price_change = calculate_change(last_price, ohlc.open, ohlc.close);
-        let last_trade_time =
-            i32::from_be_bytes(full_bin.last_trade_time.try_into().unwrap()) as i64;
+        let open_price = convert_price(
+            segment,
+            i32::from_be_bytes(full_bin.ohlc.open.try_into().unwrap()),
+        );
+        let high_price = convert_price(
+            segment,
+            i32::from_be_bytes(full_bin.ohlc.high.try_into().unwrap()),
+        );
+        let low_price = convert_price(
+            segment,
+            i32::from_be_bytes(full_bin.ohlc.low.try_into().unwrap()),
+        );
+        let close_price = convert_price(
+            segment,
+            i32::from_be_bytes(full_bin.ohlc.close.try_into().unwrap()),
+        );
+        let price_change: PriceChange =
+            PriceChange::calculate_price_change(last_price, open_price, close_price);
+        let (change, absolute_change, open_change, open_change_percent, tick_change) = (
+            price_change.change,
+            price_change.absolute_change,
+            price_change.open_change,
+            price_change.open_change_percent,
+            price_change.tick_change,
+        );
+        let last_traded_time =
+            i32::from_be_bytes(full_bin.last_traded_time.try_into().unwrap()) as i64;
         let oi = i32::from_be_bytes(full_bin.oi.try_into().unwrap());
         let oi_day_low = i32::from_be_bytes(full_bin.oi_day_low.try_into().unwrap());
         let oi_day_high = i32::from_be_bytes(full_bin.oi_day_high.try_into().unwrap());
@@ -345,7 +434,9 @@ impl From<FullBin> for Full {
                         orders,
                     }
                 })
-                .collect(),
+                .collect::<Vec<MarketDepthData>>()
+                .try_into()
+                .unwrap(),
             sell: full_bin
                 .depth
                 .sell
@@ -361,26 +452,35 @@ impl From<FullBin> for Full {
                         orders,
                     }
                 })
-                .collect(),
+                .collect::<Vec<MarketDepthData>>()
+                .try_into()
+                .unwrap(),
         };
         Self {
-            tradable: tradable(segment),
             mode: TickerStreamingMode::Full,
-            instrument_token,
+            is_tradable: is_tradable(segment),
+            token,
             last_price,
-            last_traded_quantity,
-            average_traded_price,
-            volume_traded,
+            close_price,
+            change,
+            absolute_change,
+            open_change,
+            open_change_percent,
+            tick_change,
+            volume,
+            last_quantity,
             total_buy_quantity,
             total_sell_quantity,
-            ohlc,
-            price_change,
-            last_trade_time: FixedOffset::east(19800).timestamp(last_trade_time, 0),
+            average_price,
+            open_price,
+            high_price,
+            low_price,
+            depth,
+            last_traded_time: FixedOffset::east(19800).timestamp(last_traded_time, 0),
             oi,
             oi_day_low,
             oi_day_high,
             exchange_timestamp: FixedOffset::east(19800).timestamp(exchange_timestamp, 0),
-            depth,
         }
     }
 }
@@ -388,82 +488,101 @@ impl From<FullBin> for Full {
 impl Default for Full {
     fn default() -> Self {
         Self {
-            tradable: Default::default(),
             mode: Default::default(),
-            instrument_token: Default::default(),
+            is_tradable: Default::default(),
+            token: Default::default(),
             last_price: Default::default(),
-            last_traded_quantity: Default::default(),
-            average_traded_price: Default::default(),
-            volume_traded: Default::default(),
+            close_price: Default::default(),
+            change: Default::default(),
+            absolute_change: Default::default(),
+            open_change: Default::default(),
+            open_change_percent: Default::default(),
+            tick_change: Default::default(),
+            volume: Default::default(),
+            last_quantity: Default::default(),
             total_buy_quantity: Default::default(),
             total_sell_quantity: Default::default(),
-            ohlc: Default::default(),
-            price_change: Default::default(),
-            last_trade_time: FixedOffset::east(19800).ymd(1947, 1, 1).and_hms(9, 15, 0),
-            oi: Default::default(),
-            oi_day_low: Default::default(),
-            oi_day_high: Default::default(),
-            exchange_timestamp: FixedOffset::east(19800).ymd(1947, 1, 1).and_hms(9, 15, 0),
+            average_price: Default::default(),
+            open_price: Default::default(),
+            high_price: Default::default(),
+            low_price: Default::default(),
             depth: Default::default(),
+            last_traded_time: FixedOffset::east(19800).ymd(1947, 1, 1).and_hms(9, 15, 0),
+            oi: Default::default(),
+            oi_day_high: Default::default(),
+            oi_day_low: Default::default(),
+            exchange_timestamp: FixedOffset::east(19800).ymd(1947, 1, 1).and_hms(9, 15, 0),
         }
     }
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CompactFull {
-    pub tradable: bool,
     pub mode: TickerStreamingMode,
-    pub instrument_token: i32,
+    pub is_tradable: bool,
+    pub token: i32,
     pub last_price: f64,
-    pub last_traded_quantity: i32,
-    pub average_traded_price: f64,
-    pub volume_traded: i32,
+    pub close_price: f64,
+    pub change: f64,
+    pub absolute_change: f64,
+    pub open_change: f64,
+    pub open_change_percent: f64,
+    pub tick_change: i8,
+    pub volume: i32,
+    pub last_quantity: i32,
     pub total_buy_quantity: i32,
     pub total_sell_quantity: i32,
-    pub ohlc: TickerOhlc,
-    pub price_change: PriceChange,
+    pub average_price: f64,
+    pub open_price: f64,
+    pub high_price: f64,
+    pub low_price: f64,
     pub depth: MarketDepth,
 }
 
 impl From<CompactFullBin> for CompactFull {
     fn from(compact_full: CompactFullBin) -> Self {
-        let instrument_token =
-            i32::from_be_bytes(compact_full.instrument_token.try_into().unwrap());
-        let segment = segment(instrument_token);
+        let token = i32::from_be_bytes(compact_full.token.try_into().unwrap());
+        let segment = segment(token);
         let last_price = convert_price(
             segment,
             i32::from_be_bytes(compact_full.last_price.try_into().unwrap()),
         );
-        let last_traded_quantity =
-            i32::from_be_bytes(compact_full.last_traded_quantity.try_into().unwrap());
-        let average_traded_price = convert_price(
+        let last_quantity = i32::from_be_bytes(compact_full.last_quantity.try_into().unwrap());
+        let average_price = convert_price(
             segment,
-            i32::from_be_bytes(compact_full.average_traded_price.try_into().unwrap()),
+            i32::from_be_bytes(compact_full.average_price.try_into().unwrap()),
         );
-        let volume_traded = i32::from_be_bytes(compact_full.volume_traded.try_into().unwrap());
+        let volume = i32::from_be_bytes(compact_full.volume.try_into().unwrap());
         let total_buy_quantity =
             i32::from_be_bytes(compact_full.total_buy_quantity.try_into().unwrap());
         let total_sell_quantity =
             i32::from_be_bytes(compact_full.total_sell_quantity.try_into().unwrap());
-        let ohlc = TickerOhlc {
-            open: convert_price(
-                segment,
-                i32::from_be_bytes(compact_full.ohlc.open.try_into().unwrap()),
-            ),
-            high: convert_price(
-                segment,
-                i32::from_be_bytes(compact_full.ohlc.high.try_into().unwrap()),
-            ),
-            low: convert_price(
-                segment,
-                i32::from_be_bytes(compact_full.ohlc.low.try_into().unwrap()),
-            ),
-            close: convert_price(
-                segment,
-                i32::from_be_bytes(compact_full.ohlc.close.try_into().unwrap()),
-            ),
-        };
-        let price_change = calculate_change(last_price, ohlc.open, ohlc.close);
+        let open_price = convert_price(
+            segment,
+            i32::from_be_bytes(compact_full.ohlc.open.try_into().unwrap()),
+        );
+        let high_price = convert_price(
+            segment,
+            i32::from_be_bytes(compact_full.ohlc.high.try_into().unwrap()),
+        );
+        let low_price = convert_price(
+            segment,
+            i32::from_be_bytes(compact_full.ohlc.low.try_into().unwrap()),
+        );
+        let close_price = convert_price(
+            segment,
+            i32::from_be_bytes(compact_full.ohlc.close.try_into().unwrap()),
+        );
+        let price_change: PriceChange =
+            PriceChange::calculate_price_change(last_price, open_price, close_price);
+        let (change, absolute_change, open_change, open_change_percent, tick_change) = (
+            price_change.change,
+            price_change.absolute_change,
+            price_change.open_change,
+            price_change.open_change_percent,
+            price_change.tick_change,
+        );
         let depth = MarketDepth {
             buy: compact_full
                 .depth
@@ -480,7 +599,9 @@ impl From<CompactFullBin> for CompactFull {
                         orders,
                     }
                 })
-                .collect(),
+                .collect::<Vec<MarketDepthData>>()
+                .try_into()
+                .unwrap(),
             sell: compact_full
                 .depth
                 .sell
@@ -496,41 +617,72 @@ impl From<CompactFullBin> for CompactFull {
                         orders,
                     }
                 })
-                .collect(),
+                .collect::<Vec<MarketDepthData>>()
+                .try_into()
+                .unwrap(),
         };
         Self {
-            tradable: tradable(segment),
             mode: TickerStreamingMode::Full,
-            instrument_token,
+            is_tradable: is_tradable(segment),
+            token,
             last_price,
-            last_traded_quantity,
-            average_traded_price,
-            volume_traded,
+            close_price,
+            change,
+            absolute_change,
+            open_change,
+            open_change_percent,
+            tick_change,
+            volume,
+            last_quantity,
             total_buy_quantity,
             total_sell_quantity,
-            ohlc,
-            price_change,
+            average_price,
+            open_price,
+            high_price,
+            low_price,
             depth,
         }
     }
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct ExtendedDepth {
-    pub tradable: bool,
     pub mode: TickerStreamingMode,
-    pub instrument_token: i32,
-    pub depth: MarketDepth,
+    pub is_tradable: bool,
+    pub token: i32,
+    pub last_price: f64,
+    #[serde(with = "naive_date_time_timezone_from_timestamp")]
+    pub last_traded_time: DateTime<FixedOffset>,
+    pub extended_depth: ExtendedMarketDepth,
+}
+
+impl Default for ExtendedDepth {
+    fn default() -> Self {
+        Self {
+            mode: Default::default(),
+            is_tradable: Default::default(),
+            token: Default::default(),
+            last_price: Default::default(),
+            last_traded_time: FixedOffset::east(19800).ymd(1947, 1, 1).and_hms(9, 15, 0),
+            extended_depth: Default::default(),
+        }
+    }
 }
 
 impl From<ExtendedDepthBin> for ExtendedDepth {
     fn from(extended_depth_bin: ExtendedDepthBin) -> Self {
-        let instrument_token =
-            i32::from_be_bytes(extended_depth_bin.instrument_token.try_into().unwrap());
-        let segment = segment(instrument_token);
-        let depth = MarketDepth {
+        let token = i32::from_be_bytes(extended_depth_bin.token.try_into().unwrap());
+        let segment = segment(token);
+        let last_price = convert_price(
+            segment,
+            i32::from_be_bytes(extended_depth_bin.last_price.try_into().unwrap()),
+        );
+        let last_traded_time =
+            i32::from_be_bytes(extended_depth_bin.last_traded_time.try_into().unwrap()) as i64;
+        let extended_depth = ExtendedMarketDepth {
             buy: extended_depth_bin
-                .depth
+                .extended_depth
                 .buy
                 .into_iter()
                 .map(|buy| {
@@ -544,9 +696,11 @@ impl From<ExtendedDepthBin> for ExtendedDepth {
                         orders,
                     }
                 })
-                .collect(),
+                .collect::<Vec<MarketDepthData>>()
+                .try_into()
+                .unwrap(),
             sell: extended_depth_bin
-                .depth
+                .extended_depth
                 .sell
                 .into_iter()
                 .map(|sell| {
@@ -560,36 +714,105 @@ impl From<ExtendedDepthBin> for ExtendedDepth {
                         orders,
                     }
                 })
-                .collect(),
+                .collect::<Vec<MarketDepthData>>()
+                .try_into()
+                .unwrap(),
         };
         Self {
-            tradable: tradable(segment),
             mode: TickerStreamingMode::Full,
-            instrument_token,
-            depth,
+            is_tradable: is_tradable(segment),
+            token,
+            last_price,
+            last_traded_time: FixedOffset::east(19800).timestamp(last_traded_time, 0),
+            extended_depth,
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct FullExtendedDepth {
+    pub mode: TickerStreamingMode,
+    pub is_tradable: bool,
+    pub token: i32,
+    pub last_price: f64,
+    pub close_price: f64,
+    pub change: f64,
+    pub absolute_change: f64,
+    pub open_change: f64,
+    pub open_change_percent: f64,
+    pub tick_change: i8,
+    pub volume: i32,
+    pub last_quantity: i32,
+    pub total_buy_quantity: i32,
+    pub total_sell_quantity: i32,
+    pub average_price: f64,
+    pub open_price: f64,
+    pub high_price: f64,
+    pub low_price: f64,
+    pub depth: MarketDepth,
+    #[serde(with = "naive_date_time_timezone_from_timestamp")]
+    pub last_traded_time: DateTime<FixedOffset>,
+    pub oi: i32,
+    pub oi_day_high: i32,
+    pub oi_day_low: i32,
+    #[serde(with = "naive_date_time_timezone_from_timestamp")]
+    pub exchange_timestamp: DateTime<FixedOffset>,
+    pub extended_depth: ExtendedMarketDepth,
+}
+
+impl Default for FullExtendedDepth {
+    fn default() -> Self {
+        Self {
+            mode: Default::default(),
+            is_tradable: Default::default(),
+            token: Default::default(),
+            last_price: Default::default(),
+            close_price: Default::default(),
+            change: Default::default(),
+            absolute_change: Default::default(),
+            open_change: Default::default(),
+            open_change_percent: Default::default(),
+            tick_change: Default::default(),
+            volume: Default::default(),
+            last_quantity: Default::default(),
+            total_buy_quantity: Default::default(),
+            total_sell_quantity: Default::default(),
+            average_price: Default::default(),
+            open_price: Default::default(),
+            high_price: Default::default(),
+            low_price: Default::default(),
+            depth: Default::default(),
+            last_traded_time: FixedOffset::east(19800).ymd(1947, 1, 1).and_hms(9, 15, 0),
+            oi: Default::default(),
+            oi_day_high: Default::default(),
+            oi_day_low: Default::default(),
+            exchange_timestamp: FixedOffset::east(19800).ymd(1947, 1, 1).and_hms(9, 15, 0),
+            extended_depth: Default::default(),
         }
     }
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct MarketDepth {
-    pub buy: Vec<MarketDepthData>,
-    pub sell: Vec<MarketDepthData>,
+    pub buy: [MarketDepthData; 5],
+    pub sell: [MarketDepthData; 5],
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ExtendedMarketDepth {
+    pub buy: [MarketDepthData; 20],
+    pub sell: [MarketDepthData; 20],
+}
+
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct MarketDepthData {
     pub price: f64,
     pub orders: i32,
     pub quantity: i32,
-}
-
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-pub struct PriceChange {
-    pub change_percent: f64,
-    pub absolute_change: f64,
-    pub open_change: f64,
-    pub open_change_percent: f64,
 }
 
 #[derive(Debug, Clone, PartialEq, Copy, Serialize, Deserialize)]
@@ -678,15 +901,76 @@ impl TickerSchemaTypeData {
     }
 }
 
-pub fn segment(instrument_token: i32) -> i32 {
-    instrument_token & 0xFF
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct PriceChange {
+    pub change: f64,
+    pub absolute_change: f64,
+    pub open_change: f64,
+    pub open_change_percent: f64,
+    pub tick_change: i8,
+}
+
+impl PriceChange {
+    pub fn calculate_price_change(last_price: f64, open_price: f64, close_price: f64) -> Self {
+        if (open_price, close_price) != (0.0_f64, 0.0_f64) {
+            let open_change: f64 = last_price - open_price;
+            let open_change_percent: f64 = (open_change * 100.0_f64) / open_price;
+            let absolute_change: f64 = last_price - close_price;
+            let change: f64 = (absolute_change * 100.0_f64) / close_price;
+            let tick_change: i8 = if change > 0.0_f64 { 1 } else { -1 };
+            Self {
+                change,
+                absolute_change,
+                open_change,
+                open_change_percent,
+                tick_change,
+            }
+        } else {
+            Self::default()
+        }
+    }
+    pub fn calculate_open_price_change(last_price: f64, open_price: f64) -> Self {
+        if open_price != 0.0_f64 {
+            let open_change: f64 = last_price - open_price;
+            let open_change_percent: f64 = (open_change * 100.0_f64) / open_price;
+            Self {
+                change: Default::default(),
+                absolute_change: Default::default(),
+                open_change,
+                open_change_percent,
+                tick_change: Default::default(),
+            }
+        } else {
+            Self::default()
+        }
+    }
+    pub fn calculate_close_price_change(last_price: f64, close_price: f64) -> Self {
+        if close_price != 0.0_f64 {
+            let absolute_change: f64 = last_price - close_price;
+            let change: f64 = (absolute_change * 100.0_f64) / close_price;
+            let tick_change: i8 = if change > 0.0_f64 { 1 } else { -1 };
+            Self {
+                change,
+                absolute_change,
+                open_change: Default::default(),
+                open_change_percent: Default::default(),
+                tick_change,
+            }
+        } else {
+            Self::default()
+        }
+    }
+}
+
+pub fn segment(token: i32) -> i32 {
+    token & 0xFF
 }
 
 pub fn is_index(segment: i32) -> bool {
     segment == ExchangeMap::Indices as i32
 }
 
-pub fn tradable(segment: i32) -> bool {
+pub fn is_tradable(segment: i32) -> bool {
     !is_index(segment)
 }
 
@@ -699,17 +983,4 @@ pub fn convert_price(segment: i32, price: i32) -> f64 {
         _ => 100_i32,
     };
     price as f64 / divisor_val as f64
-}
-
-pub fn calculate_change(last_price: f64, open_price: f64, close_price: f64) -> PriceChange {
-    if close_price != 0.0_f64 && open_price != 0.0_f64 {
-        return PriceChange {
-            change_percent: ((last_price - close_price) * 100.0_f64) / close_price,
-            absolute_change: (last_price - close_price),
-            open_change: (last_price - open_price),
-            open_change_percent: ((last_price - open_price) * 100.0_f64) / open_price,
-        };
-    } else {
-        return PriceChange::default();
-    }
 }

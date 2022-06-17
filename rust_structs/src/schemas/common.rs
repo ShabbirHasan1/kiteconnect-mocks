@@ -598,7 +598,7 @@ impl Default for MfSipTagsValue {
 // use bincode::{Decode, Encode};
 
 // #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Decode, Encode)]
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum TickerStreamingMode {
     Ltp,

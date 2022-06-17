@@ -229,21 +229,8 @@ impl From<FullIndexBin> for FullIndex {
 impl Default for FullIndex {
     fn default() -> Self {
         Self {
-            mode: Default::default(),
-            is_tradable: Default::default(),
-            token: Default::default(),
-            last_price: Default::default(),
-            close_price: Default::default(),
-            change: Default::default(),
-            absolute_change: Default::default(),
-            open_change: Default::default(),
-            open_change_percent: Default::default(),
-            tick_change: Default::default(),
-            open_price: Default::default(),
-            high_price: Default::default(),
-            low_price: Default::default(),
             exchange_timestamp: FixedOffset::east(19800).ymd(1947, 1, 1).and_hms(9, 15, 0),
-            change_from_tick_packet: Default::default(),
+            ..Default::default()
         }
     }
 }
@@ -488,30 +475,9 @@ impl From<FullBin> for Full {
 impl Default for Full {
     fn default() -> Self {
         Self {
-            mode: Default::default(),
-            is_tradable: Default::default(),
-            token: Default::default(),
-            last_price: Default::default(),
-            close_price: Default::default(),
-            change: Default::default(),
-            absolute_change: Default::default(),
-            open_change: Default::default(),
-            open_change_percent: Default::default(),
-            tick_change: Default::default(),
-            volume: Default::default(),
-            last_quantity: Default::default(),
-            total_buy_quantity: Default::default(),
-            total_sell_quantity: Default::default(),
-            average_price: Default::default(),
-            open_price: Default::default(),
-            high_price: Default::default(),
-            low_price: Default::default(),
-            depth: Default::default(),
             last_traded_time: FixedOffset::east(19800).ymd(1947, 1, 1).and_hms(9, 15, 0),
-            oi: Default::default(),
-            oi_day_high: Default::default(),
-            oi_day_low: Default::default(),
             exchange_timestamp: FixedOffset::east(19800).ymd(1947, 1, 1).and_hms(9, 15, 0),
+            ..Default::default()
         }
     }
 }
@@ -660,12 +626,8 @@ pub struct ExtendedDepth {
 impl Default for ExtendedDepth {
     fn default() -> Self {
         Self {
-            mode: Default::default(),
-            is_tradable: Default::default(),
-            token: Default::default(),
-            last_price: Default::default(),
             last_traded_time: FixedOffset::east(19800).ymd(1947, 1, 1).and_hms(9, 15, 0),
-            extended_depth: Default::default(),
+            ..Default::default()
         }
     }
 }
@@ -764,31 +726,9 @@ pub struct FullExtendedDepth {
 impl Default for FullExtendedDepth {
     fn default() -> Self {
         Self {
-            mode: Default::default(),
-            is_tradable: Default::default(),
-            token: Default::default(),
-            last_price: Default::default(),
-            close_price: Default::default(),
-            change: Default::default(),
-            absolute_change: Default::default(),
-            open_change: Default::default(),
-            open_change_percent: Default::default(),
-            tick_change: Default::default(),
-            volume: Default::default(),
-            last_quantity: Default::default(),
-            total_buy_quantity: Default::default(),
-            total_sell_quantity: Default::default(),
-            average_price: Default::default(),
-            open_price: Default::default(),
-            high_price: Default::default(),
-            low_price: Default::default(),
-            depth: Default::default(),
             last_traded_time: FixedOffset::east(19800).ymd(1947, 1, 1).and_hms(9, 15, 0),
-            oi: Default::default(),
-            oi_day_high: Default::default(),
-            oi_day_low: Default::default(),
             exchange_timestamp: FixedOffset::east(19800).ymd(1947, 1, 1).and_hms(9, 15, 0),
-            extended_depth: Default::default(),
+            ..Default::default()
         }
     }
 }

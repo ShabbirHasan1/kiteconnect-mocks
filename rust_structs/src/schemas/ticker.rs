@@ -686,7 +686,7 @@ mod tests {
     //     io::{Cursor, Seek, SeekFrom},
     // };
     #[test]
-    fn test_kite_ticker_raw() -> Result<(), Box<dyn std::error::Error>> {
+    fn test_ticker_raw() -> Result<(), Box<dyn std::error::Error>> {
         let file = OpenOptions::new()
             .write(true)
             .append(true)
@@ -719,7 +719,7 @@ mod tests {
     }
 
     #[test]
-    fn test_kite_ticker_raw_single() -> Result<(), Box<dyn std::error::Error>> {
+    fn test_ticker_raw_single() -> Result<(), Box<dyn std::error::Error>> {
         let data =
             b"AAQACAAD+AkANR9gALgAnzoCAAHViAAAABkAAdQLAANHjQAEGD4AAHxRAAHFAgACDWQAAY7ZAAGWaGKhpZkAA37sAAOgtgADTQVioaWbAAAAGQAB1ZIAAQAAAAAAfQAB1Y0AAQAAAAAAGQAB1YgAAQAAAAAAMgAB1YMAAQAAAAAASwAB1X4AAgAAAAAAGQAB1q8AAQAAAAAAGQAB1tcAAQAAAAAAMgAB1uEAAQAAAAAAyAAB1uYAAgAAAAAAGQAB1usAAQAAALgAnzkCAAAAaQAAABkAAAEcAckZrQAWhBAABWLoAAABvQAAAfQAAABaAAAD1GKhpZwAQvKsAE817gA1P0BioaWcAABhwQAAAGQAJgAAAACQ7AAAAF8AOQAAAAA2MwAAAFoAJwAAAAAbJgAAAFUAFwAAAAA0PwAAAFAAHAAAAAAhAgAAAGkALgAAAABOhAAAAG4AOQAAAAAZlgAAAHMAGgAAAAAZ4QAAAHgAFQAAAAAPuQAAAH0AEAAAAAwANx8BAAAffAAAH0U=";
         let data = base64::decode(data).unwrap();
@@ -738,7 +738,7 @@ mod tests {
         Ok(())
     }
     #[test]
-    fn test_kite_ticker_three_thousand_quote_message() -> Result<(), Box<dyn std::error::Error>> {
+    fn test_ticker_three_thousand_quote_message() -> Result<(), Box<dyn std::error::Error>> {
         let file = OpenOptions::new()
             .write(true)
             .append(true)
@@ -767,7 +767,7 @@ mod tests {
         Ok(())
     }
     #[test]
-    fn test_kite_ticker_extended_depth() -> Result<(), Box<dyn std::error::Error>> {
+    fn test_ticker_extended_depth() -> Result<(), Box<dyn std::error::Error>> {
         let file = OpenOptions::new()
             .write(true)
             .append(true)
@@ -792,7 +792,7 @@ mod tests {
         Ok(())
     }
     #[test]
-    fn test_kite_ticker_extended_depth_one() -> Result<(), Box<dyn std::error::Error>> {
+    fn test_ticker_extended_depth_one() -> Result<(), Box<dyn std::error::Error>> {
         let file = OpenOptions::new()
             .write(true)
             .append(true)
@@ -817,8 +817,8 @@ mod tests {
         Ok(())
     }
     #[test]
-    fn test_kite_ticker_three_thousand_extended_quote_message(
-    ) -> Result<(), Box<dyn std::error::Error>> {
+    fn test_ticker_three_thousand_extended_quote_message() -> Result<(), Box<dyn std::error::Error>>
+    {
         let file = OpenOptions::new()
             .write(true)
             .append(true)

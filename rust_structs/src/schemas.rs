@@ -47,5 +47,6 @@ pub mod quote;
 pub mod session_logout;
 pub mod ticker;
 pub mod ticker_structs;
+pub mod tickers;
 pub mod trades;
 pub mod trigger_range;

@@ -48,14 +48,8 @@ pub struct IndexFull {
 impl Default for IndexFull {
     fn default() -> Self {
         Self {
-            tradable: Default::default(),
-            mode: Default::default(),
-            instrument_token: Default::default(),
-            last_price: Default::default(),
-            ohlc: Default::default(),
-            change: Default::default(),
-            price_change: Default::default(),
             exchange_timestamp: FixedOffset::east(19800).ymd(1947, 1, 1).and_hms(9, 15, 0),
+            ..Default::default()
         }
     }
 }
@@ -109,23 +103,9 @@ pub struct Full {
 impl Default for Full {
     fn default() -> Self {
         Self {
-            tradable: Default::default(),
-            mode: Default::default(),
-            instrument_token: Default::default(),
-            last_price: Default::default(),
-            last_traded_quantity: Default::default(),
-            average_traded_price: Default::default(),
-            volume_traded: Default::default(),
-            total_buy_quantity: Default::default(),
-            total_sell_quantity: Default::default(),
-            ohlc: Default::default(),
-            price_change: Default::default(),
             last_trade_time: FixedOffset::east(19800).ymd(1947, 1, 1).and_hms(9, 15, 0),
-            oi: Default::default(),
-            oi_day_low: Default::default(),
-            oi_day_high: Default::default(),
             exchange_timestamp: FixedOffset::east(19800).ymd(1947, 1, 1).and_hms(9, 15, 0),
-            depth: Default::default(),
+            ..Default::default()
         }
     }
 }
@@ -799,7 +779,6 @@ mod tests {
         Ok(())
     }
 }
-
 
 // fn main() {
 //     let array: [u8; 4] = [0, 1, 2, 3];

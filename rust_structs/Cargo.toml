@@ -13,69 +13,125 @@ name = "rust_structs"
 [dependencies]
 abomonation = "0.7.3"
 alkahest = { version = "0.1.5", features = [
-    "alkahest-proc",
-    "derive",
-    "nightly",
+  "alkahest-proc",
+  "derive",
+  "nightly",
 ] }
 chrono = { version = "0.4.19", features = ["serde"] }
 csv = "1.1.6"
 rkyv = { version = "0.7.38", features = [
-    "arbitrary_enum_discriminant",
-    "archive_le",
-    "bytecheck",
-    "copy",
-    "copy_unsafe",
-    "indexmap",
-    "rend",
-    "smallvec",
-    "strict",
-    "tinyvec",
-    "tinyvec_alloc",
-    "uuid",
-    "uuid_std",
-    "validation",
+  "arbitrary_enum_discriminant",
+  "archive_le",
+  "bytecheck",
+  "copy",
+  "copy_unsafe",
+  "indexmap",
+  "rend",
+  "smallvec",
+  "strict",
+  "tinyvec",
+  "tinyvec_alloc",
+  "uuid",
+  "uuid_std",
+  "validation",
 ] }
 serde = { version = "1.0.137", features = [
-    "derive",
-    "alloc",
-    "rc",
-    "unstable",
+  "derive",
+  "alloc",
+  "rc",
+  "unstable",
 ] }
 serde_json = { version = "1.0.81", features = [
-    "raw_value",
-    "alloc",
-    # "arbitrary_precision",
-    "float_roundtrip",
-    "indexmap",
-    "preserve_order",
-    "unbounded_depth",
+  "raw_value",
+  "alloc",
+  # "arbitrary_precision",
+  "float_roundtrip",
+  "indexmap",
+  "preserve_order",
+  "unbounded_depth",
 ] }
-serde_with = { version = "1.14.0", features = ["serde_json", "chrono", "json", "base64", "indexmap", "hex", "guide", "time_0_3"] }
+serde_with = { version = "1.14.0", features = [
+  "serde_json",
+  "chrono",
+  "json",
+  "base64",
+  "indexmap",
+  "hex",
+  "guide",
+  "time_0_3",
+] }
 sha2 = "0.10.2"
 simd-json = { version = "0.5.0", features = [
-    "128bit",
-    # "allow-non-simd",
-    "hints",
+  "128bit",
+  # "allow-non-simd",
+  "hints",
 ] }
 speedy = { version = "0.8.2", features = [
-    "chrono",
-    "external_doc",
-    "glam",
-    "indexmap",
-    "smallvec",
+  "chrono",
+  "external_doc",
+  "glam",
+  "indexmap",
+  "smallvec",
 ] }
 proc-macro2 = "1.0.39"
 quote = "1.0.18"
 synstructure = "0.12.6"
 bincode = { git = "https://github.com/bincode-org/bincode.git", branch = "trunk", version = "2.0.0-rc.1", features = [
-    "serde",
+  "serde",
 ] }
 byteorder = "1.4.3"
 eio = "0.1.2"
 base64 = "*"
 nom = { version = "7.1.1", features = ["docsrs"] }
-bytemuck = { version = "1.9.1", features = ["bytemuck_derive", "derive", "nightly_portable_simd", "extern_crate_alloc", "extern_crate_std", "min_const_generics", "unsound_ptr_pod_impl", "wasm_simd", "zeroable_maybe_uninit", "aarch64_simd"] }
-tungstenite = { version = "0.17.2", features = ["__rustls-tls", "native-tls", "native-tls-crate", "native-tls-vendored", "rustls", "rustls-native-certs", "rustls-tls-native-roots", "rustls-tls-webpki-roots", "webpki", "webpki-roots"] }
+bytemuck = { version = "1.9.1", features = [
+  "bytemuck_derive",
+  "derive",
+  "nightly_portable_simd",
+  "extern_crate_alloc",
+  "extern_crate_std",
+  "min_const_generics",
+  "unsound_ptr_pod_impl",
+  "wasm_simd",
+  "zeroable_maybe_uninit",
+  "aarch64_simd",
+] }
+tungstenite = { version = "0.17.2", features = [
+  "__rustls-tls",
+  "native-tls",
+  "native-tls-crate",
+  "native-tls-vendored",
+  "rustls",
+  "rustls-native-certs",
+  "rustls-tls-native-roots",
+  "rustls-tls-webpki-roots",
+  "webpki",
+  "webpki-roots",
+] }
 url = { version = "2.2.2", features = ["serde"] }
-tokio-tungstenite = { version = "0.17.1", features = ["__rustls-tls", "native-tls", "native-tls-crate", "native-tls-vendored", "rustls", "rustls-native-certs", "rustls-tls-native-roots", "rustls-tls-webpki-roots", "tokio-native-tls", "tokio-rustls", "webpki", "webpki-roots"] }
+tokio-tungstenite = { version = "0.17.1", features = [
+  "__rustls-tls",
+  "native-tls",
+  "native-tls-crate",
+  "native-tls-vendored",
+  "rustls",
+  "rustls-native-certs",
+  "rustls-tls-native-roots",
+  "rustls-tls-webpki-roots",
+  "tokio-native-tls",
+  "tokio-rustls",
+  "webpki",
+  "webpki-roots",
+] }
 bytes = { version = "1.1.0", features = ["serde"] }
+rayon = "1.5.3"
+num_cpus = "1.13.1"
+parking_lot = { version = "0.12.1", features = [
+  "arc_lock",
+  "deadlock_detection",
+  "hardware-lock-elision",
+  "nightly",
+  "owning_ref",
+  #   "send_guard",
+  "serde",
+] }
+bytes-cast = "0.2.0"

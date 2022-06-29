@@ -1,5 +1,5 @@
 use super::common::*;
-use super::ticker::*;
+use super::ticker_1::*;
 use crate::utils::*;
 use chrono::{DateTime, FixedOffset, TimeZone};
 use serde::{Deserialize, Serialize};

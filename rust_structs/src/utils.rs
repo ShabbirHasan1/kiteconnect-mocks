@@ -14,6 +14,14 @@ pub fn read_json_from_file<P: AsRef<Path>>(path: P) -> Result<BufReader<File>, s
     Ok(reader)
 }
 
+pub fn read_file<P>(filename: P) -> Result<BufReader<File>, std::io::Error>
+where
+    P: AsRef<Path>,
+{
+    let file = File::open(filename)?;
+    Ok(BufReader::new(file))
+}
+
 pub mod optional_naive_date_from_str {
     use chrono::NaiveDate;
     use serde::{de, ser, Deserialize, Deserializer};

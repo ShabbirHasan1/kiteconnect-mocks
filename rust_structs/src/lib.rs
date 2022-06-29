@@ -17,6 +17,7 @@
 // #![feature(custom_inner_attributes)]
 // #![clippy::msrv = "1.61.0"]
 #![feature(generic_arg_infer)]
+#![feature(slice_take)]
 
 pub mod schemas;
 pub mod utils;

@@ -1,133 +1,54 @@
-// To parse the JSON, install Klaxon and do:
+// To parse the JSON, install kotlin's serialization plugin and do:
 //
-//   val trades = Trades.fromJson(jsonString)
+// val json   = Json(JsonConfiguration.Stable)
+// val trades = json.parse(Trades.serializer(), jsonString)
 
-package quicktype
+package Trades
 
-import com.beust.klaxon.*
+import kotlinx.serialization.*
+import kotlinx.serialization.json.*
+import kotlinx.serialization.descriptors.*
+import kotlinx.serialization.encoding.*
 
-private fun <T> Klaxon.convert(k: kotlin.reflect.KClass<*>, fromJson: (JsonValue) -> T, toJson: (T) -> String, isUnion: Boolean = false) =
-    this.converter(object: Converter {
-        @Suppress("UNCHECKED_CAST")
-        override fun toJson(value: Any)        = toJson(value as T)
-        override fun fromJson(jv: JsonValue)   = fromJson(jv) as Any
-        override fun canConvert(cls: Class<*>) = cls == k.java || (isUnion && cls.superclass == k.java)
-    })
-
-private val klaxon = Klaxon()
-    .convert(Type::class, { Type.fromValue(it.string!!) }, { "\"${it.value}\"" })
-
+@Serializable
 data class Trades (
-    @Json(name = "\$ref")
-    val ref: String,
-
-    @Json(name = "\$schema")
-    val schema: String,
-
-    val definitions: Definitions
-) {
-    public fun toJson() = klaxon.toJsonString(this)
-
-    companion object {
-        public fun fromJson(json: String) = klaxon.parse<Trades>(json)
-    }
-}
-
-data class Definitions (
-    @Json(name = "Datum")
-    val datum: Datum,
-
-    @Json(name = "Trades")
-    val trades: TradesClass
+    val data: List<Datum>? = null,
+    val status: String? = null
 )
 
+@Serializable
 data class Datum (
-    val additionalProperties: Boolean,
-    val properties: DatumProperties,
-    val required: List<String>,
-    val title: String,
-    val type: String
-)
+    @SerialName("average_price")
+    val averagePrice: Double? = null,
 
-data class DatumProperties (
-    @Json(name = "average_price")
-    val averagePrice: AveragePrice,
+    val exchange: String? = null,
 
-    val exchange: AveragePrice,
+    @SerialName("exchange_order_id")
+    val exchangeOrderID: String? = null,
 
-    @Json(name = "exchange_order_id")
-    val exchangeOrderID: AveragePrice,
+    @SerialName("exchange_timestamp")
+    val exchangeTimestamp: String? = null,
 
-    @Json(name = "exchange_timestamp")
-    val exchangeTimestamp: ExchangeTimestamp,
+    @SerialName("fill_timestamp")
+    val fillTimestamp: String? = null,
 
-    @Json(name = "fill_timestamp")
-    val fillTimestamp: ExchangeTimestamp,
+    @SerialName("instrument_token")
+    val instrumentToken: Long? = null,
 
-    @Json(name = "instrument_token")
-    val instrumentToken: AveragePrice,
+    @SerialName("order_id")
+    val orderID: String? = null,
 
-    @Json(name = "order_id")
-    val orderID: AveragePrice,
+    @SerialName("order_timestamp")
+    val orderTimestamp: String? = null,
 
-    @Json(name = "order_timestamp")
-    val orderTimestamp: ExchangeTimestamp,
+    val product: String? = null,
+    val quantity: Long? = null,
 
-    val product: AveragePrice,
-    val quantity: AveragePrice,
+    @SerialName("trade_id")
+    val tradeID: String? = null,
 
-    @Json(name = "trade_id")
-    val tradeID: ExchangeTimestamp,
+    val tradingsymbol: String? = null,
 
-    val tradingsymbol: AveragePrice,
-
-    @Json(name = "transaction_type")
-    val transactionType: AveragePrice
-)
-
-data class AveragePrice (
-    val type: Type
-)
-
-enum class Type(val value: String) {
-    Integer("integer"),
-    Number("number"),
-    TypeString("string");
-
-    companion object {
-        public fun fromValue(value: String): Type = when (value) {
-            "integer" -> Integer
-            "number"  -> Number
-            "string"  -> TypeString
-            else      -> throw IllegalArgumentException()
-        }
-    }
-}
-
-data class ExchangeTimestamp (
-    val format: String,
-    val type: Type
-)
-
-data class TradesClass (
-    val additionalProperties: Boolean,
-    val properties: TradesProperties,
-    val required: List<String>,
-    val title: String,
-    val type: String
-)
-
-data class TradesProperties (
-    val data: Data,
-    val status: AveragePrice
-)
-
-data class Data (
-    val items: Items,
-    val type: String
-)
-
-data class Items (
-    @Json(name = "\$ref")
-    val ref: String
+    @SerialName("transaction_type")
+    val transactionType: String? = null
 )

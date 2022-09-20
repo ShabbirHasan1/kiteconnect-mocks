@@ -1,68 +1,23 @@
-// To parse the JSON, install Klaxon and do:
+// To parse the JSON, install kotlin's serialization plugin and do:
 //
-//   val gttDeleteOrder = GttDeleteOrder.fromJson(jsonString)
+// val json           = Json(JsonConfiguration.Stable)
+// val gttDeleteOrder = json.parse(GttDeleteOrder.serializer(), jsonString)
 
-package quicktype
+package GttDeleteOrder
 
-import com.beust.klaxon.*
+import kotlinx.serialization.*
+import kotlinx.serialization.json.*
+import kotlinx.serialization.descriptors.*
+import kotlinx.serialization.encoding.*
 
-private val klaxon = Klaxon()
-
+@Serializable
 data class GttDeleteOrder (
-    @Json(name = "\$ref")
-    val ref: String,
-
-    @Json(name = "\$schema")
-    val schema: String,
-
-    val definitions: Definitions
-) {
-    public fun toJson() = klaxon.toJsonString(this)
-
-    companion object {
-        public fun fromJson(json: String) = klaxon.parse<GttDeleteOrder>(json)
-    }
-}
-
-data class Definitions (
-    @Json(name = "Data")
-    val data: Data,
-
-    @Json(name = "GttDeleteOrder")
-    val gttDeleteOrder: GttDeleteOrderClass
+    val data: Data? = null,
+    val status: String? = null
 )
 
+@Serializable
 data class Data (
-    val additionalProperties: Boolean,
-    val properties: DataProperties,
-    val required: List<String>,
-    val title: String,
-    val type: String
-)
-
-data class DataProperties (
-    @Json(name = "trigger_id")
-    val triggerID: TriggerID
-)
-
-data class TriggerID (
-    val type: String
-)
-
-data class GttDeleteOrderClass (
-    val additionalProperties: Boolean,
-    val properties: GttDeleteOrderProperties,
-    val required: List<String>,
-    val title: String,
-    val type: String
-)
-
-data class GttDeleteOrderProperties (
-    val data: DataClass,
-    val status: TriggerID
-)
-
-data class DataClass (
-    @Json(name = "\$ref")
-    val ref: String
+    @SerialName("trigger_id")
+    val triggerID: Long? = null
 )

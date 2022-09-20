@@ -13,15 +13,13 @@
 // match the expected interface, even if the JSON itself is valid.
 
 class Trades {
-    string      ref;         // json: "$ref"
-    string      schema;      // json: "$schema"
-    Definitions definitions; // json: "definitions"
+    array(Datum)|mixed data;   // json: "data"
+    mixed|string       status; // json: "status"
 
     string encode_json() {
         mapping(string:mixed) json = ([
-            "$ref" : ref,
-            "$schema" : schema,
-            "definitions" : definitions,
+            "data" : data,
+            "status" : status,
         ]);
 
         return Standards.JSON.encode(json);
@@ -31,82 +29,26 @@ class Trades {
 Trades Trades_from_JSON(mixed json) {
     Trades retval = Trades();
 
-    retval.ref = json["$ref"];
-    retval.schema = json["$schema"];
-    retval.definitions = json["definitions"];
-
-    return retval;
-}
-
-class Definitions {
-    Datum       datum;  // json: "Datum"
-    TradesClass trades; // json: "Trades"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "Datum" : datum,
-            "Trades" : trades,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Definitions Definitions_from_JSON(mixed json) {
-    Definitions retval = Definitions();
-
-    retval.datum = json["Datum"];
-    retval.trades = json["Trades"];
+    retval.data = json["data"];
+    retval.status = json["status"];
 
     return retval;
 }
 
 class Datum {
-    bool            additional_properties; // json: "additionalProperties"
-    DatumProperties properties;            // json: "properties"
-    array(string)   required;              // json: "required"
-    string          title;                 // json: "title"
-    string          type;                  // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "additionalProperties" : additional_properties,
-            "properties" : properties,
-            "required" : required,
-            "title" : title,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Datum Datum_from_JSON(mixed json) {
-    Datum retval = Datum();
-
-    retval.additional_properties = json["additionalProperties"];
-    retval.properties = json["properties"];
-    retval.required = json["required"];
-    retval.title = json["title"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
-class DatumProperties {
-    AveragePrice      average_price;      // json: "average_price"
-    AveragePrice      exchange;           // json: "exchange"
-    AveragePrice      exchange_order_id;  // json: "exchange_order_id"
-    ExchangeTimestamp exchange_timestamp; // json: "exchange_timestamp"
-    ExchangeTimestamp fill_timestamp;     // json: "fill_timestamp"
-    AveragePrice      instrument_token;   // json: "instrument_token"
-    AveragePrice      order_id;           // json: "order_id"
-    ExchangeTimestamp order_timestamp;    // json: "order_timestamp"
-    AveragePrice      product;            // json: "product"
-    AveragePrice      quantity;           // json: "quantity"
-    ExchangeTimestamp trade_id;           // json: "trade_id"
-    AveragePrice      tradingsymbol;      // json: "tradingsymbol"
-    AveragePrice      transaction_type;   // json: "transaction_type"
+    float|mixed  average_price;      // json: "average_price"
+    mixed|string exchange;           // json: "exchange"
+    mixed|string exchange_order_id;  // json: "exchange_order_id"
+    mixed|string exchange_timestamp; // json: "exchange_timestamp"
+    mixed|string fill_timestamp;     // json: "fill_timestamp"
+    int|mixed    instrument_token;   // json: "instrument_token"
+    mixed|string order_id;           // json: "order_id"
+    mixed|string order_timestamp;    // json: "order_timestamp"
+    mixed|string product;            // json: "product"
+    int|mixed    quantity;           // json: "quantity"
+    mixed|string trade_id;           // json: "trade_id"
+    mixed|string tradingsymbol;      // json: "tradingsymbol"
+    mixed|string transaction_type;   // json: "transaction_type"
 
     string encode_json() {
         mapping(string:mixed) json = ([
@@ -129,8 +71,8 @@ class DatumProperties {
     }
 }
 
-DatumProperties DatumProperties_from_JSON(mixed json) {
-    DatumProperties retval = DatumProperties();
+Datum Datum_from_JSON(mixed json) {
+    Datum retval = Datum();
 
     retval.average_price = json["average_price"];
     retval.exchange = json["exchange"];
@@ -145,153 +87,6 @@ DatumProperties DatumProperties_from_JSON(mixed json) {
     retval.trade_id = json["trade_id"];
     retval.tradingsymbol = json["tradingsymbol"];
     retval.transaction_type = json["transaction_type"];
-
-    return retval;
-}
-
-class AveragePrice {
-    Type type; // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-AveragePrice AveragePrice_from_JSON(mixed json) {
-    AveragePrice retval = AveragePrice();
-
-    retval.type = json["type"];
-
-    return retval;
-}
-
-enum Type {
-    INTEGER = "integer", // json: "integer"
-    NUMBER = "number",   // json: "number"
-    STRING = "string",   // json: "string"
-}
-
-class ExchangeTimestamp {
-    string format; // json: "format"
-    Type   type;   // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "format" : format,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-ExchangeTimestamp ExchangeTimestamp_from_JSON(mixed json) {
-    ExchangeTimestamp retval = ExchangeTimestamp();
-
-    retval.format = json["format"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
-class TradesClass {
-    bool             additional_properties; // json: "additionalProperties"
-    TradesProperties properties;            // json: "properties"
-    array(string)    required;              // json: "required"
-    string           title;                 // json: "title"
-    string           type;                  // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "additionalProperties" : additional_properties,
-            "properties" : properties,
-            "required" : required,
-            "title" : title,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-TradesClass TradesClass_from_JSON(mixed json) {
-    TradesClass retval = TradesClass();
-
-    retval.additional_properties = json["additionalProperties"];
-    retval.properties = json["properties"];
-    retval.required = json["required"];
-    retval.title = json["title"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
-class TradesProperties {
-    Data         data;   // json: "data"
-    AveragePrice status; // json: "status"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "data" : data,
-            "status" : status,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-TradesProperties TradesProperties_from_JSON(mixed json) {
-    TradesProperties retval = TradesProperties();
-
-    retval.data = json["data"];
-    retval.status = json["status"];
-
-    return retval;
-}
-
-class Data {
-    Items  items; // json: "items"
-    string type;  // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "items" : items,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Data Data_from_JSON(mixed json) {
-    Data retval = Data();
-
-    retval.items = json["items"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
-class Items {
-    string ref; // json: "$ref"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "$ref" : ref,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Items Items_from_JSON(mixed json) {
-    Items retval = Items();
-
-    retval.ref = json["$ref"];
 
     return retval;
 }

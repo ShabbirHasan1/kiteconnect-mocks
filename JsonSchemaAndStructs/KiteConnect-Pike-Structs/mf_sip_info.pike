@@ -13,15 +13,13 @@
 // match the expected interface, even if the JSON itself is valid.
 
 class MfSipInfo {
-    string      ref;         // json: "$ref"
-    string      schema;      // json: "$schema"
-    Definitions definitions; // json: "definitions"
+    Data|mixed   data;   // json: "data"
+    mixed|string status; // json: "status"
 
     string encode_json() {
         mapping(string:mixed) json = ([
-            "$ref" : ref,
-            "$schema" : schema,
-            "definitions" : definitions,
+            "data" : data,
+            "status" : status,
         ]);
 
         return Standards.JSON.encode(json);
@@ -31,93 +29,34 @@ class MfSipInfo {
 MfSipInfo MfSipInfo_from_JSON(mixed json) {
     MfSipInfo retval = MfSipInfo();
 
-    retval.ref = json["$ref"];
-    retval.schema = json["$schema"];
-    retval.definitions = json["definitions"];
-
-    return retval;
-}
-
-class Definitions {
-    Data           data;       // json: "Data"
-    MfsipInfoClass mfsip_info; // json: "MFSIPInfo"
-    StepUpClass    step_up;    // json: "StepUp"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "Data" : data,
-            "MFSIPInfo" : mfsip_info,
-            "StepUp" : step_up,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Definitions Definitions_from_JSON(mixed json) {
-    Definitions retval = Definitions();
-
-    retval.data = json["Data"];
-    retval.mfsip_info = json["MFSIPInfo"];
-    retval.step_up = json["StepUp"];
+    retval.data = json["data"];
+    retval.status = json["status"];
 
     return retval;
 }
 
 class Data {
-    bool           additional_properties; // json: "additionalProperties"
-    DataProperties properties;            // json: "properties"
-    array(string)  required;              // json: "required"
-    string         title;                 // json: "title"
-    string         type;                  // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "additionalProperties" : additional_properties,
-            "properties" : properties,
-            "required" : required,
-            "title" : title,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Data Data_from_JSON(mixed json) {
-    Data retval = Data();
-
-    retval.additional_properties = json["additionalProperties"];
-    retval.properties = json["properties"];
-    retval.required = json["required"];
-    retval.title = json["title"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
-class DataProperties {
-    CompletedInstalments completed_instalments; // json: "completed_instalments"
-    Created              created;               // json: "created"
-    CompletedInstalments dividend_type;         // json: "dividend_type"
-    CompletedInstalments frequency;             // json: "frequency"
-    CompletedInstalments fund;                  // json: "fund"
-    CompletedInstalments fund_source;           // json: "fund_source"
-    CompletedInstalments instalment_amount;     // json: "instalment_amount"
-    CompletedInstalments instalment_day;        // json: "instalment_day"
-    CompletedInstalments instalments;           // json: "instalments"
-    Created              last_instalment;       // json: "last_instalment"
-    Created              next_instalment;       // json: "next_instalment"
-    CompletedInstalments pending_instalments;   // json: "pending_instalments"
-    CompletedInstalments sip_id;                // json: "sip_id"
-    CompletedInstalments sip_reg_num;           // json: "sip_reg_num"
-    CompletedInstalments sip_type;              // json: "sip_type"
-    CompletedInstalments status;                // json: "status"
-    StepUp               step_up;               // json: "step_up"
-    CompletedInstalments tag;                   // json: "tag"
-    CompletedInstalments tradingsymbol;         // json: "tradingsymbol"
-    CompletedInstalments transaction_type;      // json: "transaction_type"
-    CompletedInstalments trigger_price;         // json: "trigger_price"
+    int|mixed    completed_instalments; // json: "completed_instalments"
+    mixed|string created;               // json: "created"
+    mixed|string dividend_type;         // json: "dividend_type"
+    mixed|string frequency;             // json: "frequency"
+    mixed|string fund;                  // json: "fund"
+    mixed|string fund_source;           // json: "fund_source"
+    int|mixed    instalment_amount;     // json: "instalment_amount"
+    int|mixed    instalment_day;        // json: "instalment_day"
+    int|mixed    instalments;           // json: "instalments"
+    mixed|string last_instalment;       // json: "last_instalment"
+    mixed|string next_instalment;       // json: "next_instalment"
+    int|mixed    pending_instalments;   // json: "pending_instalments"
+    mixed|string sip_id;                // json: "sip_id"
+    mixed        sip_reg_num;           // json: "sip_reg_num"
+    mixed|string sip_type;              // json: "sip_type"
+    mixed|string status;                // json: "status"
+    StepUp|mixed step_up;               // json: "step_up"
+    mixed|string tag;                   // json: "tag"
+    mixed|string tradingsymbol;         // json: "tradingsymbol"
+    mixed|string transaction_type;      // json: "transaction_type"
+    int|mixed    trigger_price;         // json: "trigger_price"
 
     string encode_json() {
         mapping(string:mixed) json = ([
@@ -148,8 +87,8 @@ class DataProperties {
     }
 }
 
-DataProperties DataProperties_from_JSON(mixed json) {
-    DataProperties retval = DataProperties();
+Data Data_from_JSON(mixed json) {
+    Data retval = Data();
 
     retval.completed_instalments = json["completed_instalments"];
     retval.created = json["created"];
@@ -176,165 +115,8 @@ DataProperties DataProperties_from_JSON(mixed json) {
     return retval;
 }
 
-class CompletedInstalments {
-    Type type; // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-CompletedInstalments CompletedInstalments_from_JSON(mixed json) {
-    CompletedInstalments retval = CompletedInstalments();
-
-    retval.type = json["type"];
-
-    return retval;
-}
-
-enum Type {
-    INTEGER = "integer", // json: "integer"
-    NULL = "null",       // json: "null"
-    NUMBER = "number",   // json: "number"
-    STRING = "string",   // json: "string"
-}
-
-class Created {
-    string format; // json: "format"
-    Type   type;   // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "format" : format,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Created Created_from_JSON(mixed json) {
-    Created retval = Created();
-
-    retval.format = json["format"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
 class StepUp {
-    string ref; // json: "$ref"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "$ref" : ref,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-StepUp StepUp_from_JSON(mixed json) {
-    StepUp retval = StepUp();
-
-    retval.ref = json["$ref"];
-
-    return retval;
-}
-
-class MfsipInfoClass {
-    bool                additional_properties; // json: "additionalProperties"
-    MfsipInfoProperties properties;            // json: "properties"
-    array(string)       required;              // json: "required"
-    string              title;                 // json: "title"
-    string              type;                  // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "additionalProperties" : additional_properties,
-            "properties" : properties,
-            "required" : required,
-            "title" : title,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-MfsipInfoClass MfsipInfoClass_from_JSON(mixed json) {
-    MfsipInfoClass retval = MfsipInfoClass();
-
-    retval.additional_properties = json["additionalProperties"];
-    retval.properties = json["properties"];
-    retval.required = json["required"];
-    retval.title = json["title"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
-class MfsipInfoProperties {
-    StepUp               data;   // json: "data"
-    CompletedInstalments status; // json: "status"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "data" : data,
-            "status" : status,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-MfsipInfoProperties MfsipInfoProperties_from_JSON(mixed json) {
-    MfsipInfoProperties retval = MfsipInfoProperties();
-
-    retval.data = json["data"];
-    retval.status = json["status"];
-
-    return retval;
-}
-
-class StepUpClass {
-    bool             additional_properties; // json: "additionalProperties"
-    StepUpProperties properties;            // json: "properties"
-    array(string)    required;              // json: "required"
-    string           title;                 // json: "title"
-    string           type;                  // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "additionalProperties" : additional_properties,
-            "properties" : properties,
-            "required" : required,
-            "title" : title,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-StepUpClass StepUpClass_from_JSON(mixed json) {
-    StepUpClass retval = StepUpClass();
-
-    retval.additional_properties = json["additionalProperties"];
-    retval.properties = json["properties"];
-    retval.required = json["required"];
-    retval.title = json["title"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
-class StepUpProperties {
-    CompletedInstalments the_1502; // json: "15-02"
+    int|mixed the_1502; // json: "15-02"
 
     string encode_json() {
         mapping(string:mixed) json = ([
@@ -345,8 +127,8 @@ class StepUpProperties {
     }
 }
 
-StepUpProperties StepUpProperties_from_JSON(mixed json) {
-    StepUpProperties retval = StepUpProperties();
+StepUp StepUp_from_JSON(mixed json) {
+    StepUp retval = StepUp();
 
     retval.the_1502 = json["15-02"];
 

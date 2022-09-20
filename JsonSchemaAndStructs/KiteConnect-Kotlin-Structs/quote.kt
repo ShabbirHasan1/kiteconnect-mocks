@@ -1,211 +1,86 @@
-// To parse the JSON, install Klaxon and do:
+// To parse the JSON, install kotlin's serialization plugin and do:
 //
-//   val quote = Quote.fromJson(jsonString)
+// val json  = Json(JsonConfiguration.Stable)
+// val quote = json.parse(Quote.serializer(), jsonString)
 
-package quicktype
+package Quote
 
-import com.beust.klaxon.*
+import kotlinx.serialization.*
+import kotlinx.serialization.json.*
+import kotlinx.serialization.descriptors.*
+import kotlinx.serialization.encoding.*
 
-private fun <T> Klaxon.convert(k: kotlin.reflect.KClass<*>, fromJson: (JsonValue) -> T, toJson: (T) -> String, isUnion: Boolean = false) =
-    this.converter(object: Converter {
-        @Suppress("UNCHECKED_CAST")
-        override fun toJson(value: Any)        = toJson(value as T)
-        override fun fromJson(jv: JsonValue)   = fromJson(jv) as Any
-        override fun canConvert(cls: Class<*>) = cls == k.java || (isUnion && cls.superclass == k.java)
-    })
-
-private val klaxon = Klaxon()
-    .convert(Type::class, { Type.fromValue(it.string!!) }, { "\"${it.value}\"" })
-
+@Serializable
 data class Quote (
-    @Json(name = "\$ref")
-    val ref: String,
-
-    @Json(name = "\$schema")
-    val schema: String,
-
-    val definitions: Definitions
-) {
-    public fun toJson() = klaxon.toJsonString(this)
-
-    companion object {
-        public fun fromJson(json: String) = klaxon.parse<Quote>(json)
-    }
-}
-
-data class Definitions (
-    @Json(name = "Buy")
-    val buy: Buy,
-
-    @Json(name = "Data")
-    val data: Data,
-
-    @Json(name = "Depth")
-    val depth: Depth,
-
-    @Json(name = "NseInfy")
-    val nseInfy: NseInfyClass,
-
-    @Json(name = "Ohlc")
-    val ohlc: Ohlc,
-
-    @Json(name = "Quote")
-    val quote: QuoteClass
+    val data: Map<String, Datum>? = null,
+    val status: String? = null
 )
 
-data class Buy (
-    val additionalProperties: Boolean,
-    val properties: BuyProperties,
-    val required: List<String>,
-    val title: String,
-    val type: String
+@Serializable
+data class Datum (
+    @SerialName("average_price")
+    val averagePrice: Double? = null,
+
+    @SerialName("buy_quantity")
+    val buyQuantity: Long? = null,
+
+    val depth: Depth? = null,
+
+    @SerialName("instrument_token")
+    val instrumentToken: Long? = null,
+
+    @SerialName("last_price")
+    val lastPrice: Double? = null,
+
+    @SerialName("last_quantity")
+    val lastQuantity: Long? = null,
+
+    @SerialName("last_trade_time")
+    val lastTradeTime: String? = null,
+
+    @SerialName("lower_circuit_limit")
+    val lowerCircuitLimit: Double? = null,
+
+    @SerialName("net_change")
+    val netChange: Long? = null,
+
+    val ohlc: Ohlc? = null,
+    val oi: Long? = null,
+
+    @SerialName("oi_day_high")
+    val oiDayHigh: Long? = null,
+
+    @SerialName("oi_day_low")
+    val oiDayLow: Long? = null,
+
+    @SerialName("sell_quantity")
+    val sellQuantity: Long? = null,
+
+    val timestamp: String? = null,
+
+    @SerialName("upper_circuit_limit")
+    val upperCircuitLimit: Double? = null,
+
+    val volume: Long? = null
 )
 
-data class BuyProperties (
-    val orders: Orders,
-    val price: Orders,
-    val quantity: Orders
-)
-
-data class Orders (
-    val type: Type
-)
-
-enum class Type(val value: String) {
-    Integer("integer"),
-    Number("number"),
-    TypeString("string");
-
-    companion object {
-        public fun fromValue(value: String): Type = when (value) {
-            "integer" -> Integer
-            "number"  -> Number
-            "string"  -> TypeString
-            else      -> throw IllegalArgumentException()
-        }
-    }
-}
-
-data class Data (
-    val additionalProperties: Boolean,
-    val properties: DataProperties,
-    val required: List<String>,
-    val title: String,
-    val type: String
-)
-
-data class DataProperties (
-    @Json(name = "NSE:INFY")
-    val nseInfy: NseInfy
-)
-
-data class NseInfy (
-    @Json(name = "\$ref")
-    val ref: String
-)
-
+@Serializable
 data class Depth (
-    val additionalProperties: Boolean,
-    val properties: DepthProperties,
-    val required: List<String>,
-    val title: String,
-    val type: String
+    val buy: List<Buy>? = null,
+    val sell: List<Buy>? = null
 )
 
-data class DepthProperties (
-    val buy: BuyClass,
-    val sell: BuyClass
+@Serializable
+data class Buy (
+    val orders: Long? = null,
+    val price: Double? = null,
+    val quantity: Long? = null
 )
 
-data class BuyClass (
-    val items: NseInfy,
-    val type: String
-)
-
-data class NseInfyClass (
-    val additionalProperties: Boolean,
-    val properties: NseInfyProperties,
-    val required: List<String>,
-    val title: String,
-    val type: String
-)
-
-data class NseInfyProperties (
-    @Json(name = "average_price")
-    val averagePrice: Orders,
-
-    @Json(name = "buy_quantity")
-    val buyQuantity: Orders,
-
-    val depth: NseInfy,
-
-    @Json(name = "instrument_token")
-    val instrumentToken: Orders,
-
-    @Json(name = "last_price")
-    val lastPrice: Orders,
-
-    @Json(name = "last_quantity")
-    val lastQuantity: Orders,
-
-    @Json(name = "last_trade_time")
-    val lastTradeTime: LastTradeTime,
-
-    @Json(name = "lower_circuit_limit")
-    val lowerCircuitLimit: Orders,
-
-    @Json(name = "net_change")
-    val netChange: Orders,
-
-    val ohlc: NseInfy,
-    val oi: Orders,
-
-    @Json(name = "oi_day_high")
-    val oiDayHigh: Orders,
-
-    @Json(name = "oi_day_low")
-    val oiDayLow: Orders,
-
-    @Json(name = "sell_quantity")
-    val sellQuantity: Orders,
-
-    val timestamp: LastTradeTime,
-
-    @Json(name = "upper_circuit_limit")
-    val upperCircuitLimit: Orders,
-
-    val volume: Orders
-)
-
-data class LastTradeTime (
-    val format: String,
-    val type: Type
-)
-
+@Serializable
 data class Ohlc (
-    val additionalProperties: Boolean,
-    val properties: OhlcProperties,
-    val required: List<String>,
-    val title: String,
-    val type: String
-)
-
-data class OhlcProperties (
-    val close: Orders,
-    val high: Orders,
-    val low: Orders,
-    val open: Orders
-)
-
-data class QuoteClass (
-    val additionalProperties: Boolean,
-    val properties: QuoteProperties,
-    val required: List<String>,
-    val title: String,
-    val type: String
-)
-
-data class QuoteProperties (
-    val data: NseInfy,
-    val status: Orders
+    val close: Double? = null,
+    val high: Double? = null,
+    val low: Double? = null,
+    val open: Long? = null
 )

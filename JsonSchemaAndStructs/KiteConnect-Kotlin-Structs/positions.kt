@@ -1,108 +1,99 @@
-// To parse the JSON, install Klaxon and do:
+// To parse the JSON, install kotlin's serialization plugin and do:
 //
-//   val positions = Positions.fromJson(jsonString)
+// val json      = Json(JsonConfiguration.Stable)
+// val positions = json.parse(Positions.serializer(), jsonString)
 
-package quicktype
+package Positions
 
-import com.beust.klaxon.*
+import kotlinx.serialization.*
+import kotlinx.serialization.json.*
+import kotlinx.serialization.descriptors.*
+import kotlinx.serialization.encoding.*
 
-private fun <T> Klaxon.convert(k: kotlin.reflect.KClass<*>, fromJson: (JsonValue) -> T, toJson: (T) -> String, isUnion: Boolean = false) =
-    this.converter(object: Converter {
-        @Suppress("UNCHECKED_CAST")
-        override fun toJson(value: Any)        = toJson(value as T)
-        override fun fromJson(jv: JsonValue)   = fromJson(jv) as Any
-        override fun canConvert(cls: Class<*>) = cls == k.java || (isUnion && cls.superclass == k.java)
-    })
-
-private val klaxon = Klaxon()
-    .convert(Type::class, { Type.fromValue(it.string!!) }, { "\"${it.value}\"" })
-
+@Serializable
 data class Positions (
-    @Json(name = "\$ref")
-    val ref: String,
-
-    @Json(name = "\$schema")
-    val schema: String,
-
-    val definitions: Definitions
-) {
-    public fun toJson() = klaxon.toJsonString(this)
-
-    companion object {
-        public fun fromJson(json: String) = klaxon.parse<Positions>(json)
-    }
-}
-
-data class Definitions (
-    @Json(name = "Data")
-    val data: Data,
-
-    @Json(name = "Day")
-    val day: DayClass,
-
-    @Json(name = "Positions")
-    val positions: PositionsClass
+    val data: Data? = null,
+    val status: String? = null
 )
 
+@Serializable
 data class Data (
-    val additionalProperties: Boolean,
-    val properties: DataProperties,
-    val required: List<String>,
-    val title: String,
-    val type: String
+    val day: List<Day>? = null,
+    val net: List<Day>? = null
 )
 
-data class DataProperties (
-    val day: Day,
-    val net: Day
-)
-
+@Serializable
 data class Day (
-    val items: DataClass,
-    val type: String
-)
+    @SerialName("average_price")
+    val averagePrice: Double? = null,
 
-data class DataClass (
-    @Json(name = "\$ref")
-    val ref: String
-)
+    @SerialName("buy_m2m")
+    val buyM2M: Long? = null,
 
-data class DayClass (
-    val additionalProperties: Boolean,
-    val properties: Map<String, Property>,
-    val required: List<String>,
-    val title: String,
-    val type: String
-)
+    @SerialName("buy_price")
+    val buyPrice: Double? = null,
 
-data class Property (
-    val type: Type
-)
+    @SerialName("buy_quantity")
+    val buyQuantity: Long? = null,
 
-enum class Type(val value: String) {
-    Integer("integer"),
-    Number("number"),
-    TypeString("string");
+    @SerialName("buy_value")
+    val buyValue: Long? = null,
 
-    companion object {
-        public fun fromValue(value: String): Type = when (value) {
-            "integer" -> Integer
-            "number"  -> Number
-            "string"  -> TypeString
-            else      -> throw IllegalArgumentException()
-        }
-    }
-}
+    @SerialName("close_price")
+    val closePrice: Long? = null,
 
-data class PositionsClass (
-    val additionalProperties: Boolean,
-    val properties: PositionsProperties,
-    val required: List<String>,
-    val title: String,
-    val type: String
-)
+    @SerialName("day_buy_price")
+    val dayBuyPrice: Double? = null,
 
-data class PositionsProperties (
-    val data: DataClass,
-    val status: Property
+    @SerialName("day_buy_quantity")
+    val dayBuyQuantity: Long? = null,
+
+    @SerialName("day_buy_value")
+    val dayBuyValue: Long? = null,
+
+    @SerialName("day_sell_price")
+    val daySellPrice: Long? = null,
+
+    @SerialName("day_sell_quantity")
+    val daySellQuantity: Long? = null,
+
+    @SerialName("day_sell_value")
+    val daySellValue: Long? = null,
+
+    val exchange: String? = null,
+
+    @SerialName("instrument_token")
+    val instrumentToken: Long? = null,
+
+    @SerialName("last_price")
+    val lastPrice: Double? = null,
+
+    @SerialName("m2m")
+    val m2M: Long? = null,
+
+    val multiplier: Long? = null,
+
+    @SerialName("overnight_quantity")
+    val overnightQuantity: Long? = null,
+
+    val pnl: Long? = null,
+    val product: String? = null,
+    val quantity: Long? = null,
+    val realised: Long? = null,
+
+    @SerialName("sell_m2m")
+    val sellM2M: Long? = null,
+
+    @SerialName("sell_price")
+    val sellPrice: Long? = null,
+
+    @SerialName("sell_quantity")
+    val sellQuantity: Long? = null,
+
+    @SerialName("sell_value")
+    val sellValue: Long? = null,
+
+    val tradingsymbol: String? = null,
+    val unrealised: Long? = null,
+    val value: Long? = null
 )

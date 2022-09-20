@@ -13,15 +13,13 @@
 // match the expected interface, even if the JSON itself is valid.
 
 class Profile {
-    string      ref;         // json: "$ref"
-    string      schema;      // json: "$schema"
-    Definitions definitions; // json: "definitions"
+    Data|mixed   data;   // json: "data"
+    mixed|string status; // json: "status"
 
     string encode_json() {
         mapping(string:mixed) json = ([
-            "$ref" : ref,
-            "$schema" : schema,
-            "definitions" : definitions,
+            "data" : data,
+            "status" : status,
         ]);
 
         return Standards.JSON.encode(json);
@@ -31,83 +29,24 @@ class Profile {
 Profile Profile_from_JSON(mixed json) {
     Profile retval = Profile();
 
-    retval.ref = json["$ref"];
-    retval.schema = json["$schema"];
-    retval.definitions = json["definitions"];
-
-    return retval;
-}
-
-class Definitions {
-    Data         data;    // json: "Data"
-    MetaClass    meta;    // json: "Meta"
-    ProfileClass profile; // json: "Profile"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "Data" : data,
-            "Meta" : meta,
-            "Profile" : profile,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Definitions Definitions_from_JSON(mixed json) {
-    Definitions retval = Definitions();
-
-    retval.data = json["Data"];
-    retval.meta = json["Meta"];
-    retval.profile = json["Profile"];
+    retval.data = json["data"];
+    retval.status = json["status"];
 
     return retval;
 }
 
 class Data {
-    bool           additional_properties; // json: "additionalProperties"
-    DataProperties properties;            // json: "properties"
-    array(string)  required;              // json: "required"
-    string         title;                 // json: "title"
-    string         type;                  // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "additionalProperties" : additional_properties,
-            "properties" : properties,
-            "required" : required,
-            "title" : title,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Data Data_from_JSON(mixed json) {
-    Data retval = Data();
-
-    retval.additional_properties = json["additionalProperties"];
-    retval.properties = json["properties"];
-    retval.required = json["required"];
-    retval.title = json["title"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
-class DataProperties {
-    AvatarUrl avatar_url;     // json: "avatar_url"
-    AvatarUrl broker;         // json: "broker"
-    AvatarUrl email;          // json: "email"
-    Exchanges exchanges;      // json: "exchanges"
-    Meta      meta;           // json: "meta"
-    Exchanges order_types;    // json: "order_types"
-    Exchanges products;       // json: "products"
-    AvatarUrl user_id;        // json: "user_id"
-    AvatarUrl user_name;      // json: "user_name"
-    AvatarUrl user_shortname; // json: "user_shortname"
-    AvatarUrl user_type;      // json: "user_type"
+    mixed               avatar_url;     // json: "avatar_url"
+    mixed|string        broker;         // json: "broker"
+    mixed|string        email;          // json: "email"
+    array(string)|mixed exchanges;      // json: "exchanges"
+    Meta|mixed          meta;           // json: "meta"
+    array(string)|mixed order_types;    // json: "order_types"
+    array(string)|mixed products;       // json: "products"
+    mixed|string        user_id;        // json: "user_id"
+    mixed|string        user_name;      // json: "user_name"
+    mixed|string        user_shortname; // json: "user_shortname"
+    mixed|string        user_type;      // json: "user_type"
 
     string encode_json() {
         mapping(string:mixed) json = ([
@@ -128,8 +67,8 @@ class DataProperties {
     }
 }
 
-DataProperties DataProperties_from_JSON(mixed json) {
-    DataProperties retval = DataProperties();
+Data Data_from_JSON(mixed json) {
+    Data retval = Data();
 
     retval.avatar_url = json["avatar_url"];
     retval.broker = json["broker"];
@@ -146,108 +85,8 @@ DataProperties DataProperties_from_JSON(mixed json) {
     return retval;
 }
 
-class AvatarUrl {
-    Type type; // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-AvatarUrl AvatarUrl_from_JSON(mixed json) {
-    AvatarUrl retval = AvatarUrl();
-
-    retval.type = json["type"];
-
-    return retval;
-}
-
-enum Type {
-    NULL = "null",     // json: "null"
-    STRING = "string", // json: "string"
-}
-
-class Exchanges {
-    AvatarUrl items; // json: "items"
-    string    type;  // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "items" : items,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Exchanges Exchanges_from_JSON(mixed json) {
-    Exchanges retval = Exchanges();
-
-    retval.items = json["items"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
 class Meta {
-    string ref; // json: "$ref"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "$ref" : ref,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Meta Meta_from_JSON(mixed json) {
-    Meta retval = Meta();
-
-    retval.ref = json["$ref"];
-
-    return retval;
-}
-
-class MetaClass {
-    bool           additional_properties; // json: "additionalProperties"
-    MetaProperties properties;            // json: "properties"
-    array(string)  required;              // json: "required"
-    string         title;                 // json: "title"
-    string         type;                  // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "additionalProperties" : additional_properties,
-            "properties" : properties,
-            "required" : required,
-            "title" : title,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-MetaClass MetaClass_from_JSON(mixed json) {
-    MetaClass retval = MetaClass();
-
-    retval.additional_properties = json["additionalProperties"];
-    retval.properties = json["properties"];
-    retval.required = json["required"];
-    retval.title = json["title"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
-class MetaProperties {
-    AvatarUrl demat_consent; // json: "demat_consent"
+    mixed|string demat_consent; // json: "demat_consent"
 
     string encode_json() {
         mapping(string:mixed) json = ([
@@ -258,65 +97,10 @@ class MetaProperties {
     }
 }
 
-MetaProperties MetaProperties_from_JSON(mixed json) {
-    MetaProperties retval = MetaProperties();
+Meta Meta_from_JSON(mixed json) {
+    Meta retval = Meta();
 
     retval.demat_consent = json["demat_consent"];
-
-    return retval;
-}
-
-class ProfileClass {
-    bool              additional_properties; // json: "additionalProperties"
-    ProfileProperties properties;            // json: "properties"
-    array(string)     required;              // json: "required"
-    string            title;                 // json: "title"
-    string            type;                  // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "additionalProperties" : additional_properties,
-            "properties" : properties,
-            "required" : required,
-            "title" : title,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-ProfileClass ProfileClass_from_JSON(mixed json) {
-    ProfileClass retval = ProfileClass();
-
-    retval.additional_properties = json["additionalProperties"];
-    retval.properties = json["properties"];
-    retval.required = json["required"];
-    retval.title = json["title"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
-class ProfileProperties {
-    Meta      data;   // json: "data"
-    AvatarUrl status; // json: "status"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "data" : data,
-            "status" : status,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-ProfileProperties ProfileProperties_from_JSON(mixed json) {
-    ProfileProperties retval = ProfileProperties();
-
-    retval.data = json["data"];
-    retval.status = json["status"];
 
     return retval;
 }

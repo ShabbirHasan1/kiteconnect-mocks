@@ -13,15 +13,13 @@
 // match the expected interface, even if the JSON itself is valid.
 
 class OrderMargins {
-    string      ref;         // json: "$ref"
-    string      schema;      // json: "$schema"
-    Definitions definitions; // json: "definitions"
+    array(Datum)|mixed data;   // json: "data"
+    mixed|string       status; // json: "status"
 
     string encode_json() {
         mapping(string:mixed) json = ([
-            "$ref" : ref,
-            "$schema" : schema,
-            "definitions" : definitions,
+            "data" : data,
+            "status" : status,
         ]);
 
         return Standards.JSON.encode(json);
@@ -31,84 +29,25 @@ class OrderMargins {
 OrderMargins OrderMargins_from_JSON(mixed json) {
     OrderMargins retval = OrderMargins();
 
-    retval.ref = json["$ref"];
-    retval.schema = json["$schema"];
-    retval.definitions = json["definitions"];
-
-    return retval;
-}
-
-class Definitions {
-    Datum             datum;         // json: "Datum"
-    OrderMarginsClass order_margins; // json: "OrderMargins"
-    PnlClass          pnl;           // json: "Pnl"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "Datum" : datum,
-            "OrderMargins" : order_margins,
-            "Pnl" : pnl,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Definitions Definitions_from_JSON(mixed json) {
-    Definitions retval = Definitions();
-
-    retval.datum = json["Datum"];
-    retval.order_margins = json["OrderMargins"];
-    retval.pnl = json["Pnl"];
+    retval.data = json["data"];
+    retval.status = json["status"];
 
     return retval;
 }
 
 class Datum {
-    bool            additional_properties; // json: "additionalProperties"
-    DatumProperties properties;            // json: "properties"
-    array(string)   required;              // json: "required"
-    string          title;                 // json: "title"
-    string          type;                  // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "additionalProperties" : additional_properties,
-            "properties" : properties,
-            "required" : required,
-            "title" : title,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Datum Datum_from_JSON(mixed json) {
-    Datum retval = Datum();
-
-    retval.additional_properties = json["additionalProperties"];
-    retval.properties = json["properties"];
-    retval.required = json["required"];
-    retval.title = json["title"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
-class DatumProperties {
-    Additional additional;     // json: "additional"
-    Additional bo;             // json: "bo"
-    Additional cash;           // json: "cash"
-    Additional exchange;       // json: "exchange"
-    Additional exposure;       // json: "exposure"
-    Additional option_premium; // json: "option_premium"
-    Pnl        pnl;            // json: "pnl"
-    Additional span;           // json: "span"
-    Additional total;          // json: "total"
-    Additional tradingsymbol;  // json: "tradingsymbol"
-    Additional type;           // json: "type"
-    Additional var;            // json: "var"
+    int|mixed    additional;     // json: "additional"
+    int|mixed    bo;             // json: "bo"
+    int|mixed    cash;           // json: "cash"
+    mixed|string exchange;       // json: "exchange"
+    int|mixed    exposure;       // json: "exposure"
+    int|mixed    option_premium; // json: "option_premium"
+    Pnl|mixed    pnl;            // json: "pnl"
+    int|mixed    span;           // json: "span"
+    float|mixed  total;          // json: "total"
+    mixed|string tradingsymbol;  // json: "tradingsymbol"
+    mixed|string type;           // json: "type"
+    float|mixed  var;            // json: "var"
 
     string encode_json() {
         mapping(string:mixed) json = ([
@@ -130,8 +69,8 @@ class DatumProperties {
     }
 }
 
-DatumProperties DatumProperties_from_JSON(mixed json) {
-    DatumProperties retval = DatumProperties();
+Datum Datum_from_JSON(mixed json) {
+    Datum retval = Datum();
 
     retval.additional = json["additional"];
     retval.bo = json["bo"];
@@ -149,165 +88,9 @@ DatumProperties DatumProperties_from_JSON(mixed json) {
     return retval;
 }
 
-class Additional {
-    Type type; // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Additional Additional_from_JSON(mixed json) {
-    Additional retval = Additional();
-
-    retval.type = json["type"];
-
-    return retval;
-}
-
-enum Type {
-    INTEGER = "integer", // json: "integer"
-    NUMBER = "number",   // json: "number"
-    STRING = "string",   // json: "string"
-}
-
 class Pnl {
-    string ref; // json: "$ref"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "$ref" : ref,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Pnl Pnl_from_JSON(mixed json) {
-    Pnl retval = Pnl();
-
-    retval.ref = json["$ref"];
-
-    return retval;
-}
-
-class OrderMarginsClass {
-    bool                   additional_properties; // json: "additionalProperties"
-    OrderMarginsProperties properties;            // json: "properties"
-    array(string)          required;              // json: "required"
-    string                 title;                 // json: "title"
-    string                 type;                  // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "additionalProperties" : additional_properties,
-            "properties" : properties,
-            "required" : required,
-            "title" : title,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-OrderMarginsClass OrderMarginsClass_from_JSON(mixed json) {
-    OrderMarginsClass retval = OrderMarginsClass();
-
-    retval.additional_properties = json["additionalProperties"];
-    retval.properties = json["properties"];
-    retval.required = json["required"];
-    retval.title = json["title"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
-class OrderMarginsProperties {
-    Data       data;   // json: "data"
-    Additional status; // json: "status"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "data" : data,
-            "status" : status,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-OrderMarginsProperties OrderMarginsProperties_from_JSON(mixed json) {
-    OrderMarginsProperties retval = OrderMarginsProperties();
-
-    retval.data = json["data"];
-    retval.status = json["status"];
-
-    return retval;
-}
-
-class Data {
-    Pnl    items; // json: "items"
-    string type;  // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "items" : items,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Data Data_from_JSON(mixed json) {
-    Data retval = Data();
-
-    retval.items = json["items"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
-class PnlClass {
-    bool          additional_properties; // json: "additionalProperties"
-    PnlProperties properties;            // json: "properties"
-    array(string) required;              // json: "required"
-    string        title;                 // json: "title"
-    string        type;                  // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "additionalProperties" : additional_properties,
-            "properties" : properties,
-            "required" : required,
-            "title" : title,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-PnlClass PnlClass_from_JSON(mixed json) {
-    PnlClass retval = PnlClass();
-
-    retval.additional_properties = json["additionalProperties"];
-    retval.properties = json["properties"];
-    retval.required = json["required"];
-    retval.title = json["title"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
-class PnlProperties {
-    Additional realised;   // json: "realised"
-    Additional unrealised; // json: "unrealised"
+    int|mixed realised;   // json: "realised"
+    int|mixed unrealised; // json: "unrealised"
 
     string encode_json() {
         mapping(string:mixed) json = ([
@@ -319,8 +102,8 @@ class PnlProperties {
     }
 }
 
-PnlProperties PnlProperties_from_JSON(mixed json) {
-    PnlProperties retval = PnlProperties();
+Pnl Pnl_from_JSON(mixed json) {
+    Pnl retval = Pnl();
 
     retval.realised = json["realised"];
     retval.unrealised = json["unrealised"];

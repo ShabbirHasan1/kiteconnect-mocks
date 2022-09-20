@@ -13,15 +13,13 @@
 // match the expected interface, even if the JSON itself is valid.
 
 class MfHoldings {
-    string      ref;         // json: "$ref"
-    string      schema;      // json: "$schema"
-    Definitions definitions; // json: "definitions"
+    array(Datum)|mixed data;   // json: "data"
+    mixed|string       status; // json: "status"
 
     string encode_json() {
         mapping(string:mixed) json = ([
-            "$ref" : ref,
-            "$schema" : schema,
-            "definitions" : definitions,
+            "data" : data,
+            "status" : status,
         ]);
 
         return Standards.JSON.encode(json);
@@ -31,78 +29,22 @@ class MfHoldings {
 MfHoldings MfHoldings_from_JSON(mixed json) {
     MfHoldings retval = MfHoldings();
 
-    retval.ref = json["$ref"];
-    retval.schema = json["$schema"];
-    retval.definitions = json["definitions"];
-
-    return retval;
-}
-
-class Definitions {
-    Datum           datum;       // json: "Datum"
-    MfHoldingsClass mf_holdings; // json: "MFHoldings"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "Datum" : datum,
-            "MFHoldings" : mf_holdings,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Definitions Definitions_from_JSON(mixed json) {
-    Definitions retval = Definitions();
-
-    retval.datum = json["Datum"];
-    retval.mf_holdings = json["MFHoldings"];
+    retval.data = json["data"];
+    retval.status = json["status"];
 
     return retval;
 }
 
 class Datum {
-    bool            additional_properties; // json: "additionalProperties"
-    DatumProperties properties;            // json: "properties"
-    array(string)   required;              // json: "required"
-    string          title;                 // json: "title"
-    string          type;                  // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "additionalProperties" : additional_properties,
-            "properties" : properties,
-            "required" : required,
-            "title" : title,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Datum Datum_from_JSON(mixed json) {
-    Datum retval = Datum();
-
-    retval.additional_properties = json["additionalProperties"];
-    retval.properties = json["properties"];
-    retval.required = json["required"];
-    retval.title = json["title"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
-class DatumProperties {
-    AveragePrice average_price;    // json: "average_price"
-    AveragePrice folio;            // json: "folio"
-    AveragePrice fund;             // json: "fund"
-    AveragePrice last_price;       // json: "last_price"
-    AveragePrice last_price_date;  // json: "last_price_date"
-    AveragePrice pledged_quantity; // json: "pledged_quantity"
-    AveragePrice pnl;              // json: "pnl"
-    AveragePrice quantity;         // json: "quantity"
-    AveragePrice tradingsymbol;    // json: "tradingsymbol"
+    float|mixed  average_price;    // json: "average_price"
+    mixed|string folio;            // json: "folio"
+    mixed|string fund;             // json: "fund"
+    float|mixed  last_price;       // json: "last_price"
+    mixed|string last_price_date;  // json: "last_price_date"
+    int|mixed    pledged_quantity; // json: "pledged_quantity"
+    int|mixed    pnl;              // json: "pnl"
+    float|mixed  quantity;         // json: "quantity"
+    mixed|string tradingsymbol;    // json: "tradingsymbol"
 
     string encode_json() {
         mapping(string:mixed) json = ([
@@ -121,8 +63,8 @@ class DatumProperties {
     }
 }
 
-DatumProperties DatumProperties_from_JSON(mixed json) {
-    DatumProperties retval = DatumProperties();
+Datum Datum_from_JSON(mixed json) {
+    Datum retval = Datum();
 
     retval.average_price = json["average_price"];
     retval.folio = json["folio"];
@@ -133,130 +75,6 @@ DatumProperties DatumProperties_from_JSON(mixed json) {
     retval.pnl = json["pnl"];
     retval.quantity = json["quantity"];
     retval.tradingsymbol = json["tradingsymbol"];
-
-    return retval;
-}
-
-class AveragePrice {
-    Type type; // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-AveragePrice AveragePrice_from_JSON(mixed json) {
-    AveragePrice retval = AveragePrice();
-
-    retval.type = json["type"];
-
-    return retval;
-}
-
-enum Type {
-    INTEGER = "integer", // json: "integer"
-    NUMBER = "number",   // json: "number"
-    STRING = "string",   // json: "string"
-}
-
-class MfHoldingsClass {
-    bool                 additional_properties; // json: "additionalProperties"
-    MfHoldingsProperties properties;            // json: "properties"
-    array(string)        required;              // json: "required"
-    string               title;                 // json: "title"
-    string               type;                  // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "additionalProperties" : additional_properties,
-            "properties" : properties,
-            "required" : required,
-            "title" : title,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-MfHoldingsClass MfHoldingsClass_from_JSON(mixed json) {
-    MfHoldingsClass retval = MfHoldingsClass();
-
-    retval.additional_properties = json["additionalProperties"];
-    retval.properties = json["properties"];
-    retval.required = json["required"];
-    retval.title = json["title"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
-class MfHoldingsProperties {
-    Data         data;   // json: "data"
-    AveragePrice status; // json: "status"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "data" : data,
-            "status" : status,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-MfHoldingsProperties MfHoldingsProperties_from_JSON(mixed json) {
-    MfHoldingsProperties retval = MfHoldingsProperties();
-
-    retval.data = json["data"];
-    retval.status = json["status"];
-
-    return retval;
-}
-
-class Data {
-    Items  items; // json: "items"
-    string type;  // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "items" : items,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Data Data_from_JSON(mixed json) {
-    Data retval = Data();
-
-    retval.items = json["items"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
-class Items {
-    string ref; // json: "$ref"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "$ref" : ref,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Items Items_from_JSON(mixed json) {
-    Items retval = Items();
-
-    retval.ref = json["$ref"];
 
     return retval;
 }

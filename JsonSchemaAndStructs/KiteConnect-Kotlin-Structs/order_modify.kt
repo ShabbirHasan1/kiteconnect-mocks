@@ -1,68 +1,23 @@
-// To parse the JSON, install Klaxon and do:
+// To parse the JSON, install kotlin's serialization plugin and do:
 //
-//   val orderModify = OrderModify.fromJson(jsonString)
+// val json        = Json(JsonConfiguration.Stable)
+// val orderModify = json.parse(OrderModify.serializer(), jsonString)
 
-package quicktype
+package OrderModify
 
-import com.beust.klaxon.*
+import kotlinx.serialization.*
+import kotlinx.serialization.json.*
+import kotlinx.serialization.descriptors.*
+import kotlinx.serialization.encoding.*
 
-private val klaxon = Klaxon()
-
+@Serializable
 data class OrderModify (
-    @Json(name = "\$ref")
-    val ref: String,
-
-    @Json(name = "\$schema")
-    val schema: String,
-
-    val definitions: Definitions
-) {
-    public fun toJson() = klaxon.toJsonString(this)
-
-    companion object {
-        public fun fromJson(json: String) = klaxon.parse<OrderModify>(json)
-    }
-}
-
-data class Definitions (
-    @Json(name = "Data")
-    val data: Data,
-
-    @Json(name = "OrderModify")
-    val orderModify: OrderModifyClass
+    val data: Data? = null,
+    val status: String? = null
 )
 
+@Serializable
 data class Data (
-    val additionalProperties: Boolean,
-    val properties: DataProperties,
-    val required: List<String>,
-    val title: String,
-    val type: String
-)
-
-data class DataProperties (
-    @Json(name = "order_id")
-    val orderID: OrderID
-)
-
-data class OrderID (
-    val type: String
-)
-
-data class OrderModifyClass (
-    val additionalProperties: Boolean,
-    val properties: OrderModifyProperties,
-    val required: List<String>,
-    val title: String,
-    val type: String
-)
-
-data class OrderModifyProperties (
-    val data: DataClass,
-    val status: OrderID
-)
-
-data class DataClass (
-    @Json(name = "\$ref")
-    val ref: String
+    @SerialName("order_id")
+    val orderID: String? = null
 )

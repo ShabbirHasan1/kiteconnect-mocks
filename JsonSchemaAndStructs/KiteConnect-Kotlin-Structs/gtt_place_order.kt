@@ -1,68 +1,23 @@
-// To parse the JSON, install Klaxon and do:
+// To parse the JSON, install kotlin's serialization plugin and do:
 //
-//   val gttPlaceOrder = GttPlaceOrder.fromJson(jsonString)
+// val json          = Json(JsonConfiguration.Stable)
+// val gttPlaceOrder = json.parse(GttPlaceOrder.serializer(), jsonString)
 
-package quicktype
+package GttPlaceOrder
 
-import com.beust.klaxon.*
+import kotlinx.serialization.*
+import kotlinx.serialization.json.*
+import kotlinx.serialization.descriptors.*
+import kotlinx.serialization.encoding.*
 
-private val klaxon = Klaxon()
-
+@Serializable
 data class GttPlaceOrder (
-    @Json(name = "\$ref")
-    val ref: String,
-
-    @Json(name = "\$schema")
-    val schema: String,
-
-    val definitions: Definitions
-) {
-    public fun toJson() = klaxon.toJsonString(this)
-
-    companion object {
-        public fun fromJson(json: String) = klaxon.parse<GttPlaceOrder>(json)
-    }
-}
-
-data class Definitions (
-    @Json(name = "Data")
-    val data: Data,
-
-    @Json(name = "GttPlaceOrder")
-    val gttPlaceOrder: GttPlaceOrderClass
+    val data: Data? = null,
+    val status: String? = null
 )
 
+@Serializable
 data class Data (
-    val additionalProperties: Boolean,
-    val properties: DataProperties,
-    val required: List<String>,
-    val title: String,
-    val type: String
-)
-
-data class DataProperties (
-    @Json(name = "trigger_id")
-    val triggerID: TriggerID
-)
-
-data class TriggerID (
-    val type: String
-)
-
-data class GttPlaceOrderClass (
-    val additionalProperties: Boolean,
-    val properties: GttPlaceOrderProperties,
-    val required: List<String>,
-    val title: String,
-    val type: String
-)
-
-data class GttPlaceOrderProperties (
-    val data: DataClass,
-    val status: TriggerID
-)
-
-data class DataClass (
-    @Json(name = "\$ref")
-    val ref: String
+    @SerialName("trigger_id")
+    val triggerID: Long? = null
 )

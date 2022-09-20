@@ -13,147 +13,40 @@
 // match the expected interface, even if the JSON itself is valid.
 
 class Postback {
-    string      ref;         // json: "$ref"
-    string      schema;      // json: "$schema"
-    Definitions definitions; // json: "definitions"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "$ref" : ref,
-            "$schema" : schema,
-            "definitions" : definitions,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Postback Postback_from_JSON(mixed json) {
-    Postback retval = Postback();
-
-    retval.ref = json["$ref"];
-    retval.schema = json["$schema"];
-    retval.definitions = json["definitions"];
-
-    return retval;
-}
-
-class Definitions {
-    Meta          meta;     // json: "Meta"
-    PostbackClass postback; // json: "Postback"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "Meta" : meta,
-            "Postback" : postback,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Definitions Definitions_from_JSON(mixed json) {
-    Definitions retval = Definitions();
-
-    retval.meta = json["Meta"];
-    retval.postback = json["Postback"];
-
-    return retval;
-}
-
-class Meta {
-    bool   additional_properties; // json: "additionalProperties"
-    string title;                 // json: "title"
-    string type;                  // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "additionalProperties" : additional_properties,
-            "title" : title,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Meta Meta_from_JSON(mixed json) {
-    Meta retval = Meta();
-
-    retval.additional_properties = json["additionalProperties"];
-    retval.title = json["title"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
-class PostbackClass {
-    bool          additional_properties; // json: "additionalProperties"
-    Properties    properties;            // json: "properties"
-    array(string) required;              // json: "required"
-    string        title;                 // json: "title"
-    string        type;                  // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "additionalProperties" : additional_properties,
-            "properties" : properties,
-            "required" : required,
-            "title" : title,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-PostbackClass PostbackClass_from_JSON(mixed json) {
-    PostbackClass retval = PostbackClass();
-
-    retval.additional_properties = json["additionalProperties"];
-    retval.properties = json["properties"];
-    retval.required = json["required"];
-    retval.title = json["title"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
-class Properties {
-    AppId     app_id;                    // json: "app_id"
-    AppId     average_price;             // json: "average_price"
-    AppId     cancelled_quantity;        // json: "cancelled_quantity"
-    AppId     checksum;                  // json: "checksum"
-    AppId     disclosed_quantity;        // json: "disclosed_quantity"
-    AppId     exchange;                  // json: "exchange"
-    AppId     exchange_order_id;         // json: "exchange_order_id"
-    Timestamp exchange_timestamp;        // json: "exchange_timestamp"
-    Timestamp exchange_update_timestamp; // json: "exchange_update_timestamp"
-    AppId     filled_quantity;           // json: "filled_quantity"
-    AppId     guid;                      // json: "guid"
-    AppId     instrument_token;          // json: "instrument_token"
-    AppId     market_protection;         // json: "market_protection"
-    MetaClass meta;                      // json: "meta"
-    AppId     order_id;                  // json: "order_id"
-    Timestamp order_timestamp;           // json: "order_timestamp"
-    AppId     order_type;                // json: "order_type"
-    AppId     parent_order_id;           // json: "parent_order_id"
-    AppId     pending_quantity;          // json: "pending_quantity"
-    AppId     placed_by;                 // json: "placed_by"
-    AppId     price;                     // json: "price"
-    AppId     product;                   // json: "product"
-    AppId     quantity;                  // json: "quantity"
-    AppId     status;                    // json: "status"
-    AppId     status_message;            // json: "status_message"
-    AppId     status_message_raw;        // json: "status_message_raw"
-    AppId     tag;                       // json: "tag"
-    AppId     tradingsymbol;             // json: "tradingsymbol"
-    AppId     transaction_type;          // json: "transaction_type"
-    AppId     trigger_price;             // json: "trigger_price"
-    AppId     unfilled_quantity;         // json: "unfilled_quantity"
-    AppId     user_id;                   // json: "user_id"
-    AppId     validity;                  // json: "validity"
-    AppId     variety;                   // json: "variety"
+    int|mixed    app_id;                    // json: "app_id"
+    int|mixed    average_price;             // json: "average_price"
+    int|mixed    cancelled_quantity;        // json: "cancelled_quantity"
+    mixed|string checksum;                  // json: "checksum"
+    int|mixed    disclosed_quantity;        // json: "disclosed_quantity"
+    mixed|string exchange;                  // json: "exchange"
+    mixed|string exchange_order_id;         // json: "exchange_order_id"
+    mixed|string exchange_timestamp;        // json: "exchange_timestamp"
+    mixed|string exchange_update_timestamp; // json: "exchange_update_timestamp"
+    int|mixed    filled_quantity;           // json: "filled_quantity"
+    mixed|string guid;                      // json: "guid"
+    int|mixed    instrument_token;          // json: "instrument_token"
+    int|mixed    market_protection;         // json: "market_protection"
+    Meta|mixed   meta;                      // json: "meta"
+    mixed|string order_id;                  // json: "order_id"
+    mixed|string order_timestamp;           // json: "order_timestamp"
+    mixed|string order_type;                // json: "order_type"
+    mixed        parent_order_id;           // json: "parent_order_id"
+    int|mixed    pending_quantity;          // json: "pending_quantity"
+    mixed|string placed_by;                 // json: "placed_by"
+    int|mixed    price;                     // json: "price"
+    mixed|string product;                   // json: "product"
+    int|mixed    quantity;                  // json: "quantity"
+    mixed|string status;                    // json: "status"
+    mixed        status_message;            // json: "status_message"
+    mixed        status_message_raw;        // json: "status_message_raw"
+    mixed        tag;                       // json: "tag"
+    mixed|string tradingsymbol;             // json: "tradingsymbol"
+    mixed|string transaction_type;          // json: "transaction_type"
+    int|mixed    trigger_price;             // json: "trigger_price"
+    int|mixed    unfilled_quantity;         // json: "unfilled_quantity"
+    mixed|string user_id;                   // json: "user_id"
+    mixed|string validity;                  // json: "validity"
+    mixed|string variety;                   // json: "variety"
 
     string encode_json() {
         mapping(string:mixed) json = ([
@@ -197,8 +90,8 @@ class Properties {
     }
 }
 
-Properties Properties_from_JSON(mixed json) {
-    Properties retval = Properties();
+Postback Postback_from_JSON(mixed json) {
+    Postback retval = Postback();
 
     retval.app_id = json["app_id"];
     retval.average_price = json["average_price"];
@@ -238,71 +131,18 @@ Properties Properties_from_JSON(mixed json) {
     return retval;
 }
 
-class AppId {
-    Type type; // json: "type"
+class Meta {
 
     string encode_json() {
         mapping(string:mixed) json = ([
-            "type" : type,
         ]);
 
         return Standards.JSON.encode(json);
     }
 }
 
-AppId AppId_from_JSON(mixed json) {
-    AppId retval = AppId();
-
-    retval.type = json["type"];
-
-    return retval;
-}
-
-enum Type {
-    INTEGER = "integer", // json: "integer"
-    NULL = "null",       // json: "null"
-    STRING = "string",   // json: "string"
-}
-
-class Timestamp {
-    string format; // json: "format"
-    Type   type;   // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "format" : format,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Timestamp Timestamp_from_JSON(mixed json) {
-    Timestamp retval = Timestamp();
-
-    retval.format = json["format"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
-class MetaClass {
-    string ref; // json: "$ref"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "$ref" : ref,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-MetaClass MetaClass_from_JSON(mixed json) {
-    MetaClass retval = MetaClass();
-
-    retval.ref = json["$ref"];
+Meta Meta_from_JSON(mixed json) {
+    Meta retval = Meta();
 
     return retval;
 }

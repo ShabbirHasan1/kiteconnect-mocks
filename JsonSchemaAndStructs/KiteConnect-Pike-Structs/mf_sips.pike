@@ -13,15 +13,11 @@
 // match the expected interface, even if the JSON itself is valid.
 
 class MfSips {
-    string      ref;         // json: "$ref"
-    string      schema;      // json: "$schema"
-    Definitions definitions; // json: "definitions"
+    array(Datum)|mixed data; // json: "data"
 
     string encode_json() {
         mapping(string:mixed) json = ([
-            "$ref" : ref,
-            "$schema" : schema,
-            "definitions" : definitions,
+            "data" : data,
         ]);
 
         return Standards.JSON.encode(json);
@@ -31,89 +27,32 @@ class MfSips {
 MfSips MfSips_from_JSON(mixed json) {
     MfSips retval = MfSips();
 
-    retval.ref = json["$ref"];
-    retval.schema = json["$schema"];
-    retval.definitions = json["definitions"];
-
-    return retval;
-}
-
-class Definitions {
-    Datum       datum;   // json: "Datum"
-    MfSipsClass mf_sips; // json: "MFSips"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "Datum" : datum,
-            "MFSips" : mf_sips,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Definitions Definitions_from_JSON(mixed json) {
-    Definitions retval = Definitions();
-
-    retval.datum = json["Datum"];
-    retval.mf_sips = json["MFSips"];
+    retval.data = json["data"];
 
     return retval;
 }
 
 class Datum {
-    bool            additional_properties; // json: "additionalProperties"
-    DatumProperties properties;            // json: "properties"
-    array(string)   required;              // json: "required"
-    string          title;                 // json: "title"
-    string          type;                  // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "additionalProperties" : additional_properties,
-            "properties" : properties,
-            "required" : required,
-            "title" : title,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Datum Datum_from_JSON(mixed json) {
-    Datum retval = Datum();
-
-    retval.additional_properties = json["additionalProperties"];
-    retval.properties = json["properties"];
-    retval.required = json["required"];
-    retval.title = json["title"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
-class DatumProperties {
-    CompletedInstalments completed_instalments; // json: "completed_instalments"
-    Created              created;               // json: "created"
-    CompletedInstalments dividend_type;         // json: "dividend_type"
-    CompletedInstalments frequency;             // json: "frequency"
-    CompletedInstalments fund;                  // json: "fund"
-    CompletedInstalments instalment_amount;     // json: "instalment_amount"
-    CompletedInstalments instalment_day;        // json: "instalment_day"
-    CompletedInstalments instalments;           // json: "instalments"
-    Created              last_instalment;       // json: "last_instalment"
-    Created              next_instalment;       // json: "next_instalment"
-    CompletedInstalments pending_instalments;   // json: "pending_instalments"
-    CompletedInstalments sip_id;                // json: "sip_id"
-    SipRegNum            sip_reg_num;           // json: "sip_reg_num"
-    CompletedInstalments sip_type;              // json: "sip_type"
-    CompletedInstalments status;                // json: "status"
-    StepUp               step_up;               // json: "step_up"
-    CompletedInstalments tag;                   // json: "tag"
-    CompletedInstalments tradingsymbol;         // json: "tradingsymbol"
-    CompletedInstalments transaction_type;      // json: "transaction_type"
-    CompletedInstalments trigger_price;         // json: "trigger_price"
+    int|mixed                 completed_instalments; // json: "completed_instalments"
+    mixed|string              created;               // json: "created"
+    mixed|string              dividend_type;         // json: "dividend_type"
+    mixed|string              frequency;             // json: "frequency"
+    mixed|string              fund;                  // json: "fund"
+    int|mixed                 instalment_amount;     // json: "instalment_amount"
+    int|mixed                 instalment_day;        // json: "instalment_day"
+    int|mixed                 instalments;           // json: "instalments"
+    mixed|string              last_instalment;       // json: "last_instalment"
+    mixed|string              next_instalment;       // json: "next_instalment"
+    int|mixed                 pending_instalments;   // json: "pending_instalments"
+    mixed|string              sip_id;                // json: "sip_id"
+    mixed|string              sip_reg_num;           // json: "sip_reg_num"
+    mixed|string              sip_type;              // json: "sip_type"
+    mixed|string              status;                // json: "status"
+    mapping(string:int)|mixed step_up;               // json: "step_up"
+    mixed|string              tag;                   // json: "tag"
+    mixed|string              tradingsymbol;         // json: "tradingsymbol"
+    mixed|string              transaction_type;      // json: "transaction_type"
+    int|mixed                 trigger_price;         // json: "trigger_price"
 
     string encode_json() {
         mapping(string:mixed) json = ([
@@ -143,8 +82,8 @@ class DatumProperties {
     }
 }
 
-DatumProperties DatumProperties_from_JSON(mixed json) {
-    DatumProperties retval = DatumProperties();
+Datum Datum_from_JSON(mixed json) {
+    Datum retval = Datum();
 
     retval.completed_instalments = json["completed_instalments"];
     retval.created = json["created"];
@@ -166,193 +105,6 @@ DatumProperties DatumProperties_from_JSON(mixed json) {
     retval.tradingsymbol = json["tradingsymbol"];
     retval.transaction_type = json["transaction_type"];
     retval.trigger_price = json["trigger_price"];
-
-    return retval;
-}
-
-class CompletedInstalments {
-    Type type; // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-CompletedInstalments CompletedInstalments_from_JSON(mixed json) {
-    CompletedInstalments retval = CompletedInstalments();
-
-    retval.type = json["type"];
-
-    return retval;
-}
-
-enum Type {
-    INTEGER = "integer", // json: "integer"
-    NUMBER = "number",   // json: "number"
-    STRING = "string",   // json: "string"
-}
-
-class Created {
-    mixed|string format; // json: "format"
-    string       type;   // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "format" : format,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Created Created_from_JSON(mixed json) {
-    Created retval = Created();
-
-    retval.format = json["format"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
-class SipRegNum {
-    array(Created) any_of; // json: "anyOf"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "anyOf" : any_of,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-SipRegNum SipRegNum_from_JSON(mixed json) {
-    SipRegNum retval = SipRegNum();
-
-    retval.any_of = json["anyOf"];
-
-    return retval;
-}
-
-class StepUp {
-    CompletedInstalments additional_properties; // json: "additionalProperties"
-    string               type;                  // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "additionalProperties" : additional_properties,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-StepUp StepUp_from_JSON(mixed json) {
-    StepUp retval = StepUp();
-
-    retval.additional_properties = json["additionalProperties"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
-class MfSipsClass {
-    bool             additional_properties; // json: "additionalProperties"
-    MfSipsProperties properties;            // json: "properties"
-    array(string)    required;              // json: "required"
-    string           title;                 // json: "title"
-    string           type;                  // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "additionalProperties" : additional_properties,
-            "properties" : properties,
-            "required" : required,
-            "title" : title,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-MfSipsClass MfSipsClass_from_JSON(mixed json) {
-    MfSipsClass retval = MfSipsClass();
-
-    retval.additional_properties = json["additionalProperties"];
-    retval.properties = json["properties"];
-    retval.required = json["required"];
-    retval.title = json["title"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
-class MfSipsProperties {
-    Data data; // json: "data"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "data" : data,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-MfSipsProperties MfSipsProperties_from_JSON(mixed json) {
-    MfSipsProperties retval = MfSipsProperties();
-
-    retval.data = json["data"];
-
-    return retval;
-}
-
-class Data {
-    Items  items; // json: "items"
-    string type;  // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "items" : items,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Data Data_from_JSON(mixed json) {
-    Data retval = Data();
-
-    retval.items = json["items"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
-class Items {
-    string ref; // json: "$ref"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "$ref" : ref,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Items Items_from_JSON(mixed json) {
-    Items retval = Items();
-
-    retval.ref = json["$ref"];
 
     return retval;
 }

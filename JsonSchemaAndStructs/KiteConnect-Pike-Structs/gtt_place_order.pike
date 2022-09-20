@@ -13,161 +13,8 @@
 // match the expected interface, even if the JSON itself is valid.
 
 class GttPlaceOrder {
-    string      ref;         // json: "$ref"
-    string      schema;      // json: "$schema"
-    Definitions definitions; // json: "definitions"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "$ref" : ref,
-            "$schema" : schema,
-            "definitions" : definitions,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-GttPlaceOrder GttPlaceOrder_from_JSON(mixed json) {
-    GttPlaceOrder retval = GttPlaceOrder();
-
-    retval.ref = json["$ref"];
-    retval.schema = json["$schema"];
-    retval.definitions = json["definitions"];
-
-    return retval;
-}
-
-class Definitions {
-    Data               data;            // json: "Data"
-    GttPlaceOrderClass gtt_place_order; // json: "GttPlaceOrder"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "Data" : data,
-            "GttPlaceOrder" : gtt_place_order,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Definitions Definitions_from_JSON(mixed json) {
-    Definitions retval = Definitions();
-
-    retval.data = json["Data"];
-    retval.gtt_place_order = json["GttPlaceOrder"];
-
-    return retval;
-}
-
-class Data {
-    bool           additional_properties; // json: "additionalProperties"
-    DataProperties properties;            // json: "properties"
-    array(string)  required;              // json: "required"
-    string         title;                 // json: "title"
-    string         type;                  // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "additionalProperties" : additional_properties,
-            "properties" : properties,
-            "required" : required,
-            "title" : title,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Data Data_from_JSON(mixed json) {
-    Data retval = Data();
-
-    retval.additional_properties = json["additionalProperties"];
-    retval.properties = json["properties"];
-    retval.required = json["required"];
-    retval.title = json["title"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
-class DataProperties {
-    TriggerId trigger_id; // json: "trigger_id"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "trigger_id" : trigger_id,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-DataProperties DataProperties_from_JSON(mixed json) {
-    DataProperties retval = DataProperties();
-
-    retval.trigger_id = json["trigger_id"];
-
-    return retval;
-}
-
-class TriggerId {
-    string type; // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-TriggerId TriggerId_from_JSON(mixed json) {
-    TriggerId retval = TriggerId();
-
-    retval.type = json["type"];
-
-    return retval;
-}
-
-class GttPlaceOrderClass {
-    bool                    additional_properties; // json: "additionalProperties"
-    GttPlaceOrderProperties properties;            // json: "properties"
-    array(string)           required;              // json: "required"
-    string                  title;                 // json: "title"
-    string                  type;                  // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "additionalProperties" : additional_properties,
-            "properties" : properties,
-            "required" : required,
-            "title" : title,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-GttPlaceOrderClass GttPlaceOrderClass_from_JSON(mixed json) {
-    GttPlaceOrderClass retval = GttPlaceOrderClass();
-
-    retval.additional_properties = json["additionalProperties"];
-    retval.properties = json["properties"];
-    retval.required = json["required"];
-    retval.title = json["title"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
-class GttPlaceOrderProperties {
-    DataClass data;   // json: "data"
-    TriggerId status; // json: "status"
+    Data|mixed   data;   // json: "data"
+    mixed|string status; // json: "status"
 
     string encode_json() {
         mapping(string:mixed) json = ([
@@ -179,8 +26,8 @@ class GttPlaceOrderProperties {
     }
 }
 
-GttPlaceOrderProperties GttPlaceOrderProperties_from_JSON(mixed json) {
-    GttPlaceOrderProperties retval = GttPlaceOrderProperties();
+GttPlaceOrder GttPlaceOrder_from_JSON(mixed json) {
+    GttPlaceOrder retval = GttPlaceOrder();
 
     retval.data = json["data"];
     retval.status = json["status"];
@@ -188,22 +35,22 @@ GttPlaceOrderProperties GttPlaceOrderProperties_from_JSON(mixed json) {
     return retval;
 }
 
-class DataClass {
-    string ref; // json: "$ref"
+class Data {
+    int|mixed trigger_id; // json: "trigger_id"
 
     string encode_json() {
         mapping(string:mixed) json = ([
-            "$ref" : ref,
+            "trigger_id" : trigger_id,
         ]);
 
         return Standards.JSON.encode(json);
     }
 }
 
-DataClass DataClass_from_JSON(mixed json) {
-    DataClass retval = DataClass();
+Data Data_from_JSON(mixed json) {
+    Data retval = Data();
 
-    retval.ref = json["$ref"];
+    retval.trigger_id = json["trigger_id"];
 
     return retval;
 }

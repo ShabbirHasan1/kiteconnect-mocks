@@ -1,170 +1,81 @@
-// To parse the JSON, install Klaxon and do:
+// To parse the JSON, install kotlin's serialization plugin and do:
 //
-//   val orderInfo = OrderInfo.fromJson(jsonString)
+// val json      = Json(JsonConfiguration.Stable)
+// val orderInfo = json.parse(OrderInfo.serializer(), jsonString)
 
-package quicktype
+package OrderInfo
 
-import com.beust.klaxon.*
+import kotlinx.serialization.*
+import kotlinx.serialization.json.*
+import kotlinx.serialization.descriptors.*
+import kotlinx.serialization.encoding.*
 
-private fun <T> Klaxon.convert(k: kotlin.reflect.KClass<*>, fromJson: (JsonValue) -> T, toJson: (T) -> String, isUnion: Boolean = false) =
-    this.converter(object: Converter {
-        @Suppress("UNCHECKED_CAST")
-        override fun toJson(value: Any)        = toJson(value as T)
-        override fun fromJson(jv: JsonValue)   = fromJson(jv) as Any
-        override fun canConvert(cls: Class<*>) = cls == k.java || (isUnion && cls.superclass == k.java)
-    })
-
-private val klaxon = Klaxon()
-    .convert(Type::class, { Type.fromValue(it.string!!) }, { "\"${it.value}\"" })
-
+@Serializable
 data class OrderInfo (
-    @Json(name = "\$ref")
-    val ref: String,
-
-    @Json(name = "\$schema")
-    val schema: String,
-
-    val definitions: Definitions
-) {
-    public fun toJson() = klaxon.toJsonString(this)
-
-    companion object {
-        public fun fromJson(json: String) = klaxon.parse<OrderInfo>(json)
-    }
-}
-
-data class Definitions (
-    @Json(name = "Datum")
-    val datum: Datum,
-
-    @Json(name = "OrderInfo")
-    val orderInfo: OrderInfoClass
+    val data: List<Datum>? = null,
+    val status: String? = null
 )
 
+@Serializable
 data class Datum (
-    val additionalProperties: Boolean,
-    val properties: DatumProperties,
-    val required: List<String>,
-    val title: String,
-    val type: String
-)
+    @SerialName("average_price")
+    val averagePrice: Long? = null,
 
-data class DatumProperties (
-    @Json(name = "average_price")
-    val averagePrice: AveragePrice,
+    @SerialName("cancelled_quantity")
+    val cancelledQuantity: Long? = null,
 
-    @Json(name = "cancelled_quantity")
-    val cancelledQuantity: AveragePrice,
+    @SerialName("disclosed_quantity")
+    val disclosedQuantity: Long? = null,
 
-    @Json(name = "disclosed_quantity")
-    val disclosedQuantity: AveragePrice,
+    val exchange: String? = null,
 
-    val exchange: AveragePrice,
+    @SerialName("exchange_order_id")
+    val exchangeOrderID: String? = null,
 
-    @Json(name = "exchange_order_id")
-    val exchangeOrderID: ExchangeOrderID,
+    @SerialName("exchange_timestamp")
+    val exchangeTimestamp: String? = null,
 
-    @Json(name = "exchange_timestamp")
-    val exchangeTimestamp: ExchangeTimestamp,
+    @SerialName("filled_quantity")
+    val filledQuantity: Long? = null,
 
-    @Json(name = "filled_quantity")
-    val filledQuantity: AveragePrice,
+    @SerialName("instrument_token")
+    val instrumentToken: Long? = null,
 
-    @Json(name = "instrument_token")
-    val instrumentToken: AveragePrice,
+    @SerialName("order_id")
+    val orderID: String? = null,
 
-    @Json(name = "order_id")
-    val orderID: AveragePrice,
+    @SerialName("order_timestamp")
+    val orderTimestamp: String? = null,
 
-    @Json(name = "order_timestamp")
-    val orderTimestamp: OrderTimestamp,
+    @SerialName("order_type")
+    val orderType: String? = null,
 
-    @Json(name = "order_type")
-    val orderType: AveragePrice,
+    @SerialName("parent_order_id")
+    val parentOrderID: JsonObject? = null,
 
-    @Json(name = "parent_order_id")
-    val parentOrderID: AveragePrice,
+    @SerialName("pending_quantity")
+    val pendingQuantity: Long? = null,
 
-    @Json(name = "pending_quantity")
-    val pendingQuantity: AveragePrice,
+    @SerialName("placed_by")
+    val placedBy: String? = null,
 
-    @Json(name = "placed_by")
-    val placedBy: AveragePrice,
+    val price: Double? = null,
+    val product: String? = null,
+    val quantity: Long? = null,
+    val status: String? = null,
 
-    val price: AveragePrice,
-    val product: AveragePrice,
-    val quantity: AveragePrice,
-    val status: AveragePrice,
+    @SerialName("status_message")
+    val statusMessage: JsonObject? = null,
 
-    @Json(name = "status_message")
-    val statusMessage: AveragePrice,
+    val tag: JsonObject? = null,
+    val tradingsymbol: String? = null,
 
-    val tag: AveragePrice,
-    val tradingsymbol: AveragePrice,
+    @SerialName("transaction_type")
+    val transactionType: String? = null,
 
-    @Json(name = "transaction_type")
-    val transactionType: AveragePrice,
+    @SerialName("trigger_price")
+    val triggerPrice: Long? = null,
 
-    @Json(name = "trigger_price")
-    val triggerPrice: AveragePrice,
-
-    val validity: AveragePrice,
-    val variety: AveragePrice
-)
-
-data class AveragePrice (
-    val type: Type
-)
-
-enum class Type(val value: String) {
-    Integer("integer"),
-    Null("null"),
-    Number("number"),
-    TypeString("string");
-
-    companion object {
-        public fun fromValue(value: String): Type = when (value) {
-            "integer" -> Integer
-            "null"    -> Null
-            "number"  -> Number
-            "string"  -> TypeString
-            else      -> throw IllegalArgumentException()
-        }
-    }
-}
-
-data class ExchangeOrderID (
-    val anyOf: List<AveragePrice>
-)
-
-data class ExchangeTimestamp (
-    val anyOf: List<OrderTimestamp>
-)
-
-data class OrderTimestamp (
-    val format: String? = null,
-    val type: Type
-)
-
-data class OrderInfoClass (
-    val additionalProperties: Boolean,
-    val properties: OrderInfoProperties,
-    val required: List<String>,
-    val title: String,
-    val type: String
-)
-
-data class OrderInfoProperties (
-    val data: Data,
-    val status: AveragePrice
-)
-
-data class Data (
-    val items: Items,
-    val type: String
-)
-
-data class Items (
-    @Json(name = "\$ref")
-    val ref: String
+    val validity: String? = null,
+    val variety: String? = null
 )

@@ -1,119 +1,49 @@
-// To parse the JSON, install Klaxon and do:
+// To parse the JSON, install kotlin's serialization plugin and do:
 //
-//   val margins = Margins.fromJson(jsonString)
+// val json    = Json(JsonConfiguration.Stable)
+// val margins = json.parse(Margins.serializer(), jsonString)
 
-package quicktype
+package Margins
 
-import com.beust.klaxon.*
+import kotlinx.serialization.*
+import kotlinx.serialization.json.*
+import kotlinx.serialization.descriptors.*
+import kotlinx.serialization.encoding.*
 
-private val klaxon = Klaxon()
-
+@Serializable
 data class Margins (
-    @Json(name = "\$ref")
-    val ref: String,
-
-    @Json(name = "\$schema")
-    val schema: String,
-
-    val definitions: Definitions
-) {
-    public fun toJson() = klaxon.toJsonString(this)
-
-    companion object {
-        public fun fromJson(json: String) = klaxon.parse<Margins>(json)
-    }
-}
-
-data class Definitions (
-    @Json(name = "Available")
-    val available: Available,
-
-    @Json(name = "Data")
-    val data: Data,
-
-    @Json(name = "Ity")
-    val ity: Ity,
-
-    @Json(name = "Margins")
-    val margins: MarginsClass
+    val data: Data? = null,
+    val status: String? = null
 )
 
-data class Available (
-    val additionalProperties: Boolean,
-    val properties: AvailableProperties,
-    val required: List<String>,
-    val title: String,
-    val type: String
-)
-
-data class AvailableProperties (
-    @Json(name = "adhoc_margin")
-    val adhocMargin: AdhocMargin,
-
-    val cash: AdhocMargin,
-    val collateral: AdhocMargin,
-
-    @Json(name = "intraday_payin")
-    val intradayPayin: AdhocMargin,
-
-    @Json(name = "live_balance")
-    val liveBalance: AdhocMargin,
-
-    @Json(name = "opening_balance")
-    val openingBalance: AdhocMargin
-)
-
-data class AdhocMargin (
-    val type: String
-)
-
+@Serializable
 data class Data (
-    val additionalProperties: Boolean,
-    val properties: DataProperties,
-    val required: List<String>,
-    val title: String,
-    val type: String
+    val commodity: Ity? = null,
+    val equity: Ity? = null
 )
 
-data class DataProperties (
-    val commodity: Commodity,
-    val equity: Commodity
-)
-
-data class Commodity (
-    @Json(name = "\$ref")
-    val ref: String
-)
-
+@Serializable
 data class Ity (
-    val additionalProperties: Boolean,
-    val properties: ItyProperties,
-    val required: List<String>,
-    val title: String,
-    val type: String
+    val available: Available? = null,
+    val enabled: Boolean? = null,
+    val net: Double? = null,
+    val utilised: Map<String, Double>? = null
 )
 
-data class ItyProperties (
-    val available: Commodity,
-    val enabled: AdhocMargin,
-    val net: AdhocMargin,
-    val utilised: Utilised
-)
+@Serializable
+data class Available (
+    @SerialName("adhoc_margin")
+    val adhocMargin: Long? = null,
 
-data class Utilised (
-    val additionalProperties: AdhocMargin,
-    val type: String
-)
+    val cash: Double? = null,
+    val collateral: Long? = null,
 
-data class MarginsClass (
-    val additionalProperties: Boolean,
-    val properties: MarginsProperties,
-    val required: List<String>,
-    val title: String,
-    val type: String
-)
+    @SerialName("intraday_payin")
+    val intradayPayin: Long? = null,
 
-data class MarginsProperties (
-    val data: Commodity,
-    val status: AdhocMargin
+    @SerialName("live_balance")
+    val liveBalance: Double? = null,
+
+    @SerialName("opening_balance")
+    val openingBalance: Double? = null
 )

@@ -13,15 +13,13 @@
 // match the expected interface, even if the JSON itself is valid.
 
 class GttGetOrders {
-    string      ref;         // json: "$ref"
-    string      schema;      // json: "$schema"
-    Definitions definitions; // json: "definitions"
+    array(Datum)|mixed data;   // json: "data"
+    mixed|string       status; // json: "status"
 
     string encode_json() {
         mapping(string:mixed) json = ([
-            "$ref" : ref,
-            "$schema" : schema,
-            "definitions" : definitions,
+            "data" : data,
+            "status" : status,
         ]);
 
         return Standards.JSON.encode(json);
@@ -31,209 +29,24 @@ class GttGetOrders {
 GttGetOrders GttGetOrders_from_JSON(mixed json) {
     GttGetOrders retval = GttGetOrders();
 
-    retval.ref = json["$ref"];
-    retval.schema = json["$schema"];
-    retval.definitions = json["definitions"];
-
-    return retval;
-}
-
-class Definitions {
-    Condition         condition;      // json: "Condition"
-    Datum             datum;          // json: "Datum"
-    GttGetOrdersClass gtt_get_orders; // json: "GttGetOrders"
-    MetaClass         meta;           // json: "Meta"
-    Order             order;          // json: "Order"
-    OrderResult       order_result;   // json: "OrderResult"
-    Result            result;         // json: "Result"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "Condition" : condition,
-            "Datum" : datum,
-            "GttGetOrders" : gtt_get_orders,
-            "Meta" : meta,
-            "Order" : order,
-            "OrderResult" : order_result,
-            "Result" : result,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Definitions Definitions_from_JSON(mixed json) {
-    Definitions retval = Definitions();
-
-    retval.condition = json["Condition"];
-    retval.datum = json["Datum"];
-    retval.gtt_get_orders = json["GttGetOrders"];
-    retval.meta = json["Meta"];
-    retval.order = json["Order"];
-    retval.order_result = json["OrderResult"];
-    retval.result = json["Result"];
-
-    return retval;
-}
-
-class Condition {
-    bool                additional_properties; // json: "additionalProperties"
-    ConditionProperties properties;            // json: "properties"
-    array(string)       required;              // json: "required"
-    string              title;                 // json: "title"
-    string              type;                  // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "additionalProperties" : additional_properties,
-            "properties" : properties,
-            "required" : required,
-            "title" : title,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Condition Condition_from_JSON(mixed json) {
-    Condition retval = Condition();
-
-    retval.additional_properties = json["additionalProperties"];
-    retval.properties = json["properties"];
-    retval.required = json["required"];
-    retval.title = json["title"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
-class ConditionProperties {
-    Exchange      exchange;         // json: "exchange"
-    Exchange      instrument_token; // json: "instrument_token"
-    Exchange      last_price;       // json: "last_price"
-    Exchange      tradingsymbol;    // json: "tradingsymbol"
-    TriggerValues trigger_values;   // json: "trigger_values"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "exchange" : exchange,
-            "instrument_token" : instrument_token,
-            "last_price" : last_price,
-            "tradingsymbol" : tradingsymbol,
-            "trigger_values" : trigger_values,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-ConditionProperties ConditionProperties_from_JSON(mixed json) {
-    ConditionProperties retval = ConditionProperties();
-
-    retval.exchange = json["exchange"];
-    retval.instrument_token = json["instrument_token"];
-    retval.last_price = json["last_price"];
-    retval.tradingsymbol = json["tradingsymbol"];
-    retval.trigger_values = json["trigger_values"];
-
-    return retval;
-}
-
-class Exchange {
-    Type type; // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Exchange Exchange_from_JSON(mixed json) {
-    Exchange retval = Exchange();
-
-    retval.type = json["type"];
-
-    return retval;
-}
-
-enum Type {
-    INTEGER = "integer", // json: "integer"
-    NULL = "null",       // json: "null"
-    NUMBER = "number",   // json: "number"
-    STRING = "string",   // json: "string"
-}
-
-class TriggerValues {
-    Exchange items; // json: "items"
-    string   type;  // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "items" : items,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-TriggerValues TriggerValues_from_JSON(mixed json) {
-    TriggerValues retval = TriggerValues();
-
-    retval.items = json["items"];
-    retval.type = json["type"];
+    retval.data = json["data"];
+    retval.status = json["status"];
 
     return retval;
 }
 
 class Datum {
-    bool            additional_properties; // json: "additionalProperties"
-    DatumProperties properties;            // json: "properties"
-    array(string)   required;              // json: "required"
-    string          title;                 // json: "title"
-    string          type;                  // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "additionalProperties" : additional_properties,
-            "properties" : properties,
-            "required" : required,
-            "title" : title,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Datum Datum_from_JSON(mixed json) {
-    Datum retval = Datum();
-
-    retval.additional_properties = json["additionalProperties"];
-    retval.properties = json["properties"];
-    retval.required = json["required"];
-    retval.title = json["title"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
-class DatumProperties {
-    ConditionClass condition;      // json: "condition"
-    CreatedAt      created_at;     // json: "created_at"
-    CreatedAt      expires_at;     // json: "expires_at"
-    Exchange       id;             // json: "id"
-    Meta           meta;           // json: "meta"
-    Orders         orders;         // json: "orders"
-    Exchange       parent_trigger; // json: "parent_trigger"
-    Exchange       status;         // json: "status"
-    Exchange       type;           // json: "type"
-    CreatedAt      updated_at;     // json: "updated_at"
-    Exchange       user_id;        // json: "user_id"
+    Condition|mixed    condition;      // json: "condition"
+    mixed|string       created_at;     // json: "created_at"
+    mixed|string       expires_at;     // json: "expires_at"
+    int|mixed          id;             // json: "id"
+    Meta|mixed         meta;           // json: "meta"
+    array(Order)|mixed orders;         // json: "orders"
+    mixed              parent_trigger; // json: "parent_trigger"
+    mixed|string       status;         // json: "status"
+    mixed|string       type;           // json: "type"
+    mixed|string       updated_at;     // json: "updated_at"
+    mixed|string       user_id;        // json: "user_id"
 
     string encode_json() {
         mapping(string:mixed) json = ([
@@ -254,8 +67,8 @@ class DatumProperties {
     }
 }
 
-DatumProperties DatumProperties_from_JSON(mixed json) {
-    DatumProperties retval = DatumProperties();
+Datum Datum_from_JSON(mixed json) {
+    Datum retval = Datum();
 
     retval.condition = json["condition"];
     retval.created_at = json["created_at"];
@@ -272,55 +85,42 @@ DatumProperties DatumProperties_from_JSON(mixed json) {
     return retval;
 }
 
-class ConditionClass {
-    string ref; // json: "$ref"
+class Condition {
+    mixed|string       exchange;         // json: "exchange"
+    int|mixed          instrument_token; // json: "instrument_token"
+    float|mixed        last_price;       // json: "last_price"
+    mixed|string       tradingsymbol;    // json: "tradingsymbol"
+    array(float)|mixed trigger_values;   // json: "trigger_values"
 
     string encode_json() {
         mapping(string:mixed) json = ([
-            "$ref" : ref,
+            "exchange" : exchange,
+            "instrument_token" : instrument_token,
+            "last_price" : last_price,
+            "tradingsymbol" : tradingsymbol,
+            "trigger_values" : trigger_values,
         ]);
 
         return Standards.JSON.encode(json);
     }
 }
 
-ConditionClass ConditionClass_from_JSON(mixed json) {
-    ConditionClass retval = ConditionClass();
+Condition Condition_from_JSON(mixed json) {
+    Condition retval = Condition();
 
-    retval.ref = json["$ref"];
-
-    return retval;
-}
-
-class CreatedAt {
-    string format; // json: "format"
-    Type   type;   // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "format" : format,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-CreatedAt CreatedAt_from_JSON(mixed json) {
-    CreatedAt retval = CreatedAt();
-
-    retval.format = json["format"];
-    retval.type = json["type"];
+    retval.exchange = json["exchange"];
+    retval.instrument_token = json["instrument_token"];
+    retval.last_price = json["last_price"];
+    retval.tradingsymbol = json["tradingsymbol"];
+    retval.trigger_values = json["trigger_values"];
 
     return retval;
 }
 
 class Meta {
-    array(AnyOf) any_of; // json: "anyOf"
 
     string encode_json() {
         mapping(string:mixed) json = ([
-            "anyOf" : any_of,
         ]);
 
         return Standards.JSON.encode(json);
@@ -330,179 +130,18 @@ class Meta {
 Meta Meta_from_JSON(mixed json) {
     Meta retval = Meta();
 
-    retval.any_of = json["anyOf"];
-
-    return retval;
-}
-
-class AnyOf {
-    mixed|string ref;  // json: "$ref"
-    Type|mixed   type; // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "$ref" : ref,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-AnyOf AnyOf_from_JSON(mixed json) {
-    AnyOf retval = AnyOf();
-
-    retval.ref = json["$ref"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
-class Orders {
-    ConditionClass items; // json: "items"
-    string         type;  // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "items" : items,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Orders Orders_from_JSON(mixed json) {
-    Orders retval = Orders();
-
-    retval.items = json["items"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
-class GttGetOrdersClass {
-    bool                   additional_properties; // json: "additionalProperties"
-    GttGetOrdersProperties properties;            // json: "properties"
-    array(string)          required;              // json: "required"
-    string                 title;                 // json: "title"
-    string                 type;                  // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "additionalProperties" : additional_properties,
-            "properties" : properties,
-            "required" : required,
-            "title" : title,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-GttGetOrdersClass GttGetOrdersClass_from_JSON(mixed json) {
-    GttGetOrdersClass retval = GttGetOrdersClass();
-
-    retval.additional_properties = json["additionalProperties"];
-    retval.properties = json["properties"];
-    retval.required = json["required"];
-    retval.title = json["title"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
-class GttGetOrdersProperties {
-    Orders   data;   // json: "data"
-    Exchange status; // json: "status"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "data" : data,
-            "status" : status,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-GttGetOrdersProperties GttGetOrdersProperties_from_JSON(mixed json) {
-    GttGetOrdersProperties retval = GttGetOrdersProperties();
-
-    retval.data = json["data"];
-    retval.status = json["status"];
-
-    return retval;
-}
-
-class MetaClass {
-    bool   additional_properties; // json: "additionalProperties"
-    string title;                 // json: "title"
-    string type;                  // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "additionalProperties" : additional_properties,
-            "title" : title,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-MetaClass MetaClass_from_JSON(mixed json) {
-    MetaClass retval = MetaClass();
-
-    retval.additional_properties = json["additionalProperties"];
-    retval.title = json["title"];
-    retval.type = json["type"];
-
     return retval;
 }
 
 class Order {
-    bool            additional_properties; // json: "additionalProperties"
-    OrderProperties properties;            // json: "properties"
-    array(string)   required;              // json: "required"
-    string          title;                 // json: "title"
-    string          type;                  // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "additionalProperties" : additional_properties,
-            "properties" : properties,
-            "required" : required,
-            "title" : title,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Order Order_from_JSON(mixed json) {
-    Order retval = Order();
-
-    retval.additional_properties = json["additionalProperties"];
-    retval.properties = json["properties"];
-    retval.required = json["required"];
-    retval.title = json["title"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
-class OrderProperties {
-    Exchange exchange;         // json: "exchange"
-    Exchange order_type;       // json: "order_type"
-    Exchange price;            // json: "price"
-    Exchange product;          // json: "product"
-    Exchange quantity;         // json: "quantity"
-    Meta     result;           // json: "result"
-    Exchange tradingsymbol;    // json: "tradingsymbol"
-    Exchange transaction_type; // json: "transaction_type"
+    mixed|string exchange;         // json: "exchange"
+    mixed|string order_type;       // json: "order_type"
+    float|mixed  price;            // json: "price"
+    mixed|string product;          // json: "product"
+    int|mixed    quantity;         // json: "quantity"
+    Result|mixed result;           // json: "result"
+    mixed|string tradingsymbol;    // json: "tradingsymbol"
+    mixed|string transaction_type; // json: "transaction_type"
 
     string encode_json() {
         mapping(string:mixed) json = ([
@@ -520,8 +159,8 @@ class OrderProperties {
     }
 }
 
-OrderProperties OrderProperties_from_JSON(mixed json) {
-    OrderProperties retval = OrderProperties();
+Order Order_from_JSON(mixed json) {
+    Order retval = Order();
 
     retval.exchange = json["exchange"];
     retval.order_type = json["order_type"];
@@ -535,110 +174,20 @@ OrderProperties OrderProperties_from_JSON(mixed json) {
     return retval;
 }
 
-class OrderResult {
-    bool                  additional_properties; // json: "additionalProperties"
-    OrderResultProperties properties;            // json: "properties"
-    array(string)         required;              // json: "required"
-    string                title;                 // json: "title"
-    string                type;                  // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "additionalProperties" : additional_properties,
-            "properties" : properties,
-            "required" : required,
-            "title" : title,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-OrderResult OrderResult_from_JSON(mixed json) {
-    OrderResult retval = OrderResult();
-
-    retval.additional_properties = json["additionalProperties"];
-    retval.properties = json["properties"];
-    retval.required = json["required"];
-    retval.title = json["title"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
-class OrderResultProperties {
-    Exchange order_id;         // json: "order_id"
-    Exchange rejection_reason; // json: "rejection_reason"
-    Exchange status;           // json: "status"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "order_id" : order_id,
-            "rejection_reason" : rejection_reason,
-            "status" : status,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-OrderResultProperties OrderResultProperties_from_JSON(mixed json) {
-    OrderResultProperties retval = OrderResultProperties();
-
-    retval.order_id = json["order_id"];
-    retval.rejection_reason = json["rejection_reason"];
-    retval.status = json["status"];
-
-    return retval;
-}
-
 class Result {
-    bool             additional_properties; // json: "additionalProperties"
-    ResultProperties properties;            // json: "properties"
-    array(string)    required;              // json: "required"
-    string           title;                 // json: "title"
-    string           type;                  // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "additionalProperties" : additional_properties,
-            "properties" : properties,
-            "required" : required,
-            "title" : title,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Result Result_from_JSON(mixed json) {
-    Result retval = Result();
-
-    retval.additional_properties = json["additionalProperties"];
-    retval.properties = json["properties"];
-    retval.required = json["required"];
-    retval.title = json["title"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
-class ResultProperties {
-    Exchange       account_id;       // json: "account_id"
-    Exchange       exchange;         // json: "exchange"
-    Exchange       meta;             // json: "meta"
-    ConditionClass order_result;     // json: "order_result"
-    Exchange       order_type;       // json: "order_type"
-    Exchange       price;            // json: "price"
-    Exchange       product;          // json: "product"
-    Exchange       quantity;         // json: "quantity"
-    CreatedAt      timestamp;        // json: "timestamp"
-    Exchange       tradingsymbol;    // json: "tradingsymbol"
-    Exchange       transaction_type; // json: "transaction_type"
-    Exchange       triggered_at;     // json: "triggered_at"
-    Exchange       validity;         // json: "validity"
+    mixed|string      account_id;       // json: "account_id"
+    mixed|string      exchange;         // json: "exchange"
+    mixed|string      meta;             // json: "meta"
+    OrderResult|mixed order_result;     // json: "order_result"
+    mixed|string      order_type;       // json: "order_type"
+    int|mixed         price;            // json: "price"
+    mixed|string      product;          // json: "product"
+    int|mixed         quantity;         // json: "quantity"
+    mixed|string      timestamp;        // json: "timestamp"
+    mixed|string      tradingsymbol;    // json: "tradingsymbol"
+    mixed|string      transaction_type; // json: "transaction_type"
+    float|mixed       triggered_at;     // json: "triggered_at"
+    mixed|string      validity;         // json: "validity"
 
     string encode_json() {
         mapping(string:mixed) json = ([
@@ -661,8 +210,8 @@ class ResultProperties {
     }
 }
 
-ResultProperties ResultProperties_from_JSON(mixed json) {
-    ResultProperties retval = ResultProperties();
+Result Result_from_JSON(mixed json) {
+    Result retval = Result();
 
     retval.account_id = json["account_id"];
     retval.exchange = json["exchange"];
@@ -677,6 +226,32 @@ ResultProperties ResultProperties_from_JSON(mixed json) {
     retval.transaction_type = json["transaction_type"];
     retval.triggered_at = json["triggered_at"];
     retval.validity = json["validity"];
+
+    return retval;
+}
+
+class OrderResult {
+    mixed|string order_id;         // json: "order_id"
+    mixed|string rejection_reason; // json: "rejection_reason"
+    mixed|string status;           // json: "status"
+
+    string encode_json() {
+        mapping(string:mixed) json = ([
+            "order_id" : order_id,
+            "rejection_reason" : rejection_reason,
+            "status" : status,
+        ]);
+
+        return Standards.JSON.encode(json);
+    }
+}
+
+OrderResult OrderResult_from_JSON(mixed json) {
+    OrderResult retval = OrderResult();
+
+    retval.order_id = json["order_id"];
+    retval.rejection_reason = json["rejection_reason"];
+    retval.status = json["status"];
 
     return retval;
 }

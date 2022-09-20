@@ -13,15 +13,13 @@
 // match the expected interface, even if the JSON itself is valid.
 
 class Holdings {
-    string      ref;         // json: "$ref"
-    string      schema;      // json: "$schema"
-    Definitions definitions; // json: "definitions"
+    array(Datum)|mixed data;   // json: "data"
+    mixed|string       status; // json: "status"
 
     string encode_json() {
         mapping(string:mixed) json = ([
-            "$ref" : ref,
-            "$schema" : schema,
-            "definitions" : definitions,
+            "data" : data,
+            "status" : status,
         ]);
 
         return Standards.JSON.encode(json);
@@ -31,91 +29,35 @@ class Holdings {
 Holdings Holdings_from_JSON(mixed json) {
     Holdings retval = Holdings();
 
-    retval.ref = json["$ref"];
-    retval.schema = json["$schema"];
-    retval.definitions = json["definitions"];
-
-    return retval;
-}
-
-class Definitions {
-    Datum         datum;    // json: "Datum"
-    HoldingsClass holdings; // json: "Holdings"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "Datum" : datum,
-            "Holdings" : holdings,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Definitions Definitions_from_JSON(mixed json) {
-    Definitions retval = Definitions();
-
-    retval.datum = json["Datum"];
-    retval.holdings = json["Holdings"];
+    retval.data = json["data"];
+    retval.status = json["status"];
 
     return retval;
 }
 
 class Datum {
-    bool            additional_properties; // json: "additionalProperties"
-    DatumProperties properties;            // json: "properties"
-    array(string)   required;              // json: "required"
-    string          title;                 // json: "title"
-    string          type;                  // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "additionalProperties" : additional_properties,
-            "properties" : properties,
-            "required" : required,
-            "title" : title,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Datum Datum_from_JSON(mixed json) {
-    Datum retval = Datum();
-
-    retval.additional_properties = json["additionalProperties"];
-    retval.properties = json["properties"];
-    retval.required = json["required"];
-    retval.title = json["title"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
-class DatumProperties {
-    AuthorisedDate     authorised_date;       // json: "authorised_date"
-    AuthorisedQuantity authorised_quantity;   // json: "authorised_quantity"
-    AuthorisedQuantity average_price;         // json: "average_price"
-    AuthorisedQuantity close_price;           // json: "close_price"
-    AuthorisedQuantity collateral_quantity;   // json: "collateral_quantity"
-    AuthorisedQuantity collateral_type;       // json: "collateral_type"
-    AuthorisedQuantity day_change;            // json: "day_change"
-    AuthorisedQuantity day_change_percentage; // json: "day_change_percentage"
-    AuthorisedQuantity discrepancy;           // json: "discrepancy"
-    AuthorisedQuantity exchange;              // json: "exchange"
-    AuthorisedQuantity instrument_token;      // json: "instrument_token"
-    AuthorisedQuantity isin;                  // json: "isin"
-    AuthorisedQuantity last_price;            // json: "last_price"
-    AuthorisedQuantity opening_quantity;      // json: "opening_quantity"
-    AuthorisedQuantity pnl;                   // json: "pnl"
-    AuthorisedQuantity price;                 // json: "price"
-    AuthorisedQuantity product;               // json: "product"
-    AuthorisedQuantity quantity;              // json: "quantity"
-    AuthorisedQuantity realised_quantity;     // json: "realised_quantity"
-    AuthorisedQuantity t1_quantity;           // json: "t1_quantity"
-    AuthorisedQuantity tradingsymbol;         // json: "tradingsymbol"
-    AuthorisedQuantity used_quantity;         // json: "used_quantity"
+    mixed|string authorised_date;       // json: "authorised_date"
+    int|mixed    authorised_quantity;   // json: "authorised_quantity"
+    float|mixed  average_price;         // json: "average_price"
+    float|mixed  close_price;           // json: "close_price"
+    int|mixed    collateral_quantity;   // json: "collateral_quantity"
+    mixed|string collateral_type;       // json: "collateral_type"
+    float|mixed  day_change;            // json: "day_change"
+    float|mixed  day_change_percentage; // json: "day_change_percentage"
+    bool|mixed   discrepancy;           // json: "discrepancy"
+    mixed|string exchange;              // json: "exchange"
+    int|mixed    instrument_token;      // json: "instrument_token"
+    mixed|string isin;                  // json: "isin"
+    float|mixed  last_price;            // json: "last_price"
+    int|mixed    opening_quantity;      // json: "opening_quantity"
+    float|mixed  pnl;                   // json: "pnl"
+    int|mixed    price;                 // json: "price"
+    mixed|string product;               // json: "product"
+    int|mixed    quantity;              // json: "quantity"
+    int|mixed    realised_quantity;     // json: "realised_quantity"
+    int|mixed    t1_quantity;           // json: "t1_quantity"
+    mixed|string tradingsymbol;         // json: "tradingsymbol"
+    int|mixed    used_quantity;         // json: "used_quantity"
 
     string encode_json() {
         mapping(string:mixed) json = ([
@@ -147,8 +89,8 @@ class DatumProperties {
     }
 }
 
-DatumProperties DatumProperties_from_JSON(mixed json) {
-    DatumProperties retval = DatumProperties();
+Datum Datum_from_JSON(mixed json) {
+    Datum retval = Datum();
 
     retval.authorised_date = json["authorised_date"];
     retval.authorised_quantity = json["authorised_quantity"];
@@ -172,154 +114,6 @@ DatumProperties DatumProperties_from_JSON(mixed json) {
     retval.t1_quantity = json["t1_quantity"];
     retval.tradingsymbol = json["tradingsymbol"];
     retval.used_quantity = json["used_quantity"];
-
-    return retval;
-}
-
-class AuthorisedDate {
-    string format; // json: "format"
-    Type   type;   // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "format" : format,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-AuthorisedDate AuthorisedDate_from_JSON(mixed json) {
-    AuthorisedDate retval = AuthorisedDate();
-
-    retval.format = json["format"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
-enum Type {
-    BOOLEAN = "boolean", // json: "boolean"
-    INTEGER = "integer", // json: "integer"
-    NUMBER = "number",   // json: "number"
-    STRING = "string",   // json: "string"
-}
-
-class AuthorisedQuantity {
-    Type type; // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-AuthorisedQuantity AuthorisedQuantity_from_JSON(mixed json) {
-    AuthorisedQuantity retval = AuthorisedQuantity();
-
-    retval.type = json["type"];
-
-    return retval;
-}
-
-class HoldingsClass {
-    bool               additional_properties; // json: "additionalProperties"
-    HoldingsProperties properties;            // json: "properties"
-    array(string)      required;              // json: "required"
-    string             title;                 // json: "title"
-    string             type;                  // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "additionalProperties" : additional_properties,
-            "properties" : properties,
-            "required" : required,
-            "title" : title,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-HoldingsClass HoldingsClass_from_JSON(mixed json) {
-    HoldingsClass retval = HoldingsClass();
-
-    retval.additional_properties = json["additionalProperties"];
-    retval.properties = json["properties"];
-    retval.required = json["required"];
-    retval.title = json["title"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
-class HoldingsProperties {
-    Data               data;   // json: "data"
-    AuthorisedQuantity status; // json: "status"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "data" : data,
-            "status" : status,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-HoldingsProperties HoldingsProperties_from_JSON(mixed json) {
-    HoldingsProperties retval = HoldingsProperties();
-
-    retval.data = json["data"];
-    retval.status = json["status"];
-
-    return retval;
-}
-
-class Data {
-    Items  items; // json: "items"
-    string type;  // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "items" : items,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Data Data_from_JSON(mixed json) {
-    Data retval = Data();
-
-    retval.items = json["items"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
-class Items {
-    string ref; // json: "$ref"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "$ref" : ref,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Items Items_from_JSON(mixed json) {
-    Items retval = Items();
-
-    retval.ref = json["$ref"];
 
     return retval;
 }

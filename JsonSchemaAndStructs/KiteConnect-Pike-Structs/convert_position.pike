@@ -13,86 +13,8 @@
 // match the expected interface, even if the JSON itself is valid.
 
 class ConvertPosition {
-    string      ref;         // json: "$ref"
-    string      schema;      // json: "$schema"
-    Definitions definitions; // json: "definitions"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "$ref" : ref,
-            "$schema" : schema,
-            "definitions" : definitions,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-ConvertPosition ConvertPosition_from_JSON(mixed json) {
-    ConvertPosition retval = ConvertPosition();
-
-    retval.ref = json["$ref"];
-    retval.schema = json["$schema"];
-    retval.definitions = json["definitions"];
-
-    return retval;
-}
-
-class Definitions {
-    ConvertPositionClass convert_position; // json: "ConvertPosition"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "ConvertPosition" : convert_position,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Definitions Definitions_from_JSON(mixed json) {
-    Definitions retval = Definitions();
-
-    retval.convert_position = json["ConvertPosition"];
-
-    return retval;
-}
-
-class ConvertPositionClass {
-    bool          additional_properties; // json: "additionalProperties"
-    Properties    properties;            // json: "properties"
-    array(string) required;              // json: "required"
-    string        title;                 // json: "title"
-    string        type;                  // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "additionalProperties" : additional_properties,
-            "properties" : properties,
-            "required" : required,
-            "title" : title,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-ConvertPositionClass ConvertPositionClass_from_JSON(mixed json) {
-    ConvertPositionClass retval = ConvertPositionClass();
-
-    retval.additional_properties = json["additionalProperties"];
-    retval.properties = json["properties"];
-    retval.required = json["required"];
-    retval.title = json["title"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
-class Properties {
-    Data data;   // json: "data"
-    Data status; // json: "status"
+    bool|mixed   data;   // json: "data"
+    mixed|string status; // json: "status"
 
     string encode_json() {
         mapping(string:mixed) json = ([
@@ -104,31 +26,11 @@ class Properties {
     }
 }
 
-Properties Properties_from_JSON(mixed json) {
-    Properties retval = Properties();
+ConvertPosition ConvertPosition_from_JSON(mixed json) {
+    ConvertPosition retval = ConvertPosition();
 
     retval.data = json["data"];
     retval.status = json["status"];
-
-    return retval;
-}
-
-class Data {
-    string type; // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Data Data_from_JSON(mixed json) {
-    Data retval = Data();
-
-    retval.type = json["type"];
 
     return retval;
 }

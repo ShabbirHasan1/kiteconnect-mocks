@@ -1,68 +1,23 @@
-// To parse the JSON, install Klaxon and do:
+// To parse the JSON, install kotlin's serialization plugin and do:
 //
-//   val mFSIPModify = MFSIPModify.fromJson(jsonString)
+// val json        = Json(JsonConfiguration.Stable)
+// val mFSIPModify = json.parse(MFSIPModify.serializer(), jsonString)
 
-package quicktype
+package MfSipModify
 
-import com.beust.klaxon.*
+import kotlinx.serialization.*
+import kotlinx.serialization.json.*
+import kotlinx.serialization.descriptors.*
+import kotlinx.serialization.encoding.*
 
-private val klaxon = Klaxon()
-
+@Serializable
 data class MFSIPModify (
-    @Json(name = "\$ref")
-    val ref: String,
-
-    @Json(name = "\$schema")
-    val schema: String,
-
-    val definitions: Definitions
-) {
-    public fun toJson() = klaxon.toJsonString(this)
-
-    companion object {
-        public fun fromJson(json: String) = klaxon.parse<MFSIPModify>(json)
-    }
-}
-
-data class Definitions (
-    @Json(name = "Data")
-    val data: Data,
-
-    @Json(name = "MFSIPModify")
-    val mfsipModify: MFSIPModifyClass
+    val data: Data? = null,
+    val status: String? = null
 )
 
+@Serializable
 data class Data (
-    val additionalProperties: Boolean,
-    val properties: DataProperties,
-    val required: List<String>,
-    val title: String,
-    val type: String
-)
-
-data class DataProperties (
-    @Json(name = "sip_id")
-    val sipID: Sipid
-)
-
-data class Sipid (
-    val type: String
-)
-
-data class MFSIPModifyClass (
-    val additionalProperties: Boolean,
-    val properties: MFSIPModifyProperties,
-    val required: List<String>,
-    val title: String,
-    val type: String
-)
-
-data class MFSIPModifyProperties (
-    val data: DataClass,
-    val status: Sipid
-)
-
-data class DataClass (
-    @Json(name = "\$ref")
-    val ref: String
+    @SerialName("sip_id")
+    val sipID: String? = null
 )

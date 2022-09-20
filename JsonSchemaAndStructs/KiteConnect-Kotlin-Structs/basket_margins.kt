@@ -1,145 +1,51 @@
-// To parse the JSON, install Klaxon and do:
+// To parse the JSON, install kotlin's serialization plugin and do:
 //
-//   val basketMargins = BasketMargins.fromJson(jsonString)
+// val json          = Json(JsonConfiguration.Stable)
+// val basketMargins = json.parse(BasketMargins.serializer(), jsonString)
 
-package quicktype
+package BasketMargins
 
-import com.beust.klaxon.*
+import kotlinx.serialization.*
+import kotlinx.serialization.json.*
+import kotlinx.serialization.descriptors.*
+import kotlinx.serialization.encoding.*
 
-private fun <T> Klaxon.convert(k: kotlin.reflect.KClass<*>, fromJson: (JsonValue) -> T, toJson: (T) -> String, isUnion: Boolean = false) =
-    this.converter(object: Converter {
-        @Suppress("UNCHECKED_CAST")
-        override fun toJson(value: Any)        = toJson(value as T)
-        override fun fromJson(jv: JsonValue)   = fromJson(jv) as Any
-        override fun canConvert(cls: Class<*>) = cls == k.java || (isUnion && cls.superclass == k.java)
-    })
-
-private val klaxon = Klaxon()
-    .convert(Type::class, { Type.fromValue(it.string!!) }, { "\"${it.value}\"" })
-
+@Serializable
 data class BasketMargins (
-    @Json(name = "\$ref")
-    val ref: String,
-
-    @Json(name = "\$schema")
-    val schema: String,
-
-    val definitions: Definitions
-) {
-    public fun toJson() = klaxon.toJsonString(this)
-
-    companion object {
-        public fun fromJson(json: String) = klaxon.parse<BasketMargins>(json)
-    }
-}
-
-data class Definitions (
-    @Json(name = "BasketMargins")
-    val basketMargins: BasketMarginsClass,
-
-    @Json(name = "Data")
-    val data: DataClass,
-
-    @Json(name = "Final")
-    val final: Final,
-
-    @Json(name = "Pnl")
-    val pnl: Pnl
+    val data: Data? = null,
+    val status: String? = null
 )
 
-data class BasketMarginsClass (
-    val additionalProperties: Boolean,
-    val properties: BasketMarginsProperties,
-    val required: List<String>,
-    val title: String,
-    val type: String
-)
-
-data class BasketMarginsProperties (
-    val data: Data,
-    val status: Status
-)
-
+@Serializable
 data class Data (
-    @Json(name = "\$ref")
-    val ref: String
+    val final: Final? = null,
+    val initial: Final? = null,
+    val orders: List<Final>? = null
 )
 
-data class Status (
-    val type: Type
-)
-
-enum class Type(val value: String) {
-    Integer("integer"),
-    Number("number"),
-    TypeString("string");
-
-    companion object {
-        public fun fromValue(value: String): Type = when (value) {
-            "integer" -> Integer
-            "number"  -> Number
-            "string"  -> TypeString
-            else      -> throw IllegalArgumentException()
-        }
-    }
-}
-
-data class DataClass (
-    val additionalProperties: Boolean,
-    val properties: DataProperties,
-    val required: List<String>,
-    val title: String,
-    val type: String
-)
-
-data class DataProperties (
-    val final: Data,
-    val initial: Data,
-    val orders: Orders
-)
-
-data class Orders (
-    val items: Data,
-    val type: String
-)
-
+@Serializable
 data class Final (
-    val additionalProperties: Boolean,
-    val properties: FinalProperties,
-    val required: List<String>,
-    val title: String,
-    val type: String
+    val additional: Long? = null,
+    val bo: Long? = null,
+    val cash: Long? = null,
+    val exchange: String? = null,
+    val exposure: Double? = null,
+
+    @SerialName("option_premium")
+    val optionPremium: Double? = null,
+
+    val pnl: Pnl? = null,
+    val span: Double? = null,
+    val total: Double? = null,
+    val tradingsymbol: String? = null,
+    val type: String? = null,
+
+    @SerialName("var")
+    val finalVar: Long? = null
 )
 
-data class FinalProperties (
-    val additional: Status,
-    val bo: Status,
-    val cash: Status,
-    val exchange: Status,
-    val exposure: Status,
-
-    @Json(name = "option_premium")
-    val optionPremium: Status,
-
-    val pnl: Data,
-    val span: Status,
-    val total: Status,
-    val tradingsymbol: Status,
-    val type: Status,
-
-    @Json(name = "var")
-    val finalPropertiesVar: Status
-)
-
+@Serializable
 data class Pnl (
-    val additionalProperties: Boolean,
-    val properties: PnlProperties,
-    val required: List<String>,
-    val title: String,
-    val type: String
-)
-
-data class PnlProperties (
-    val realised: Status,
-    val unrealised: Status
+    val realised: Long? = null,
+    val unrealised: Long? = null
 )

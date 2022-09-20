@@ -1,263 +1,120 @@
-// To parse the JSON, install Klaxon and do:
+// To parse the JSON, install kotlin's serialization plugin and do:
 //
-//   val gttGetOrders = GttGetOrders.fromJson(jsonString)
+// val json         = Json(JsonConfiguration.Stable)
+// val gttGetOrders = json.parse(GttGetOrders.serializer(), jsonString)
 
-package quicktype
+package GttGetOrders
 
-import com.beust.klaxon.*
+import kotlinx.serialization.*
+import kotlinx.serialization.json.*
+import kotlinx.serialization.descriptors.*
+import kotlinx.serialization.encoding.*
 
-private fun <T> Klaxon.convert(k: kotlin.reflect.KClass<*>, fromJson: (JsonValue) -> T, toJson: (T) -> String, isUnion: Boolean = false) =
-    this.converter(object: Converter {
-        @Suppress("UNCHECKED_CAST")
-        override fun toJson(value: Any)        = toJson(value as T)
-        override fun fromJson(jv: JsonValue)   = fromJson(jv) as Any
-        override fun canConvert(cls: Class<*>) = cls == k.java || (isUnion && cls.superclass == k.java)
-    })
-
-private val klaxon = Klaxon()
-    .convert(Type::class, { Type.fromValue(it.string!!) }, { "\"${it.value}\"" })
-
+@Serializable
 data class GttGetOrders (
-    @Json(name = "\$ref")
-    val ref: String,
-
-    @Json(name = "\$schema")
-    val schema: String,
-
-    val definitions: Definitions
-) {
-    public fun toJson() = klaxon.toJsonString(this)
-
-    companion object {
-        public fun fromJson(json: String) = klaxon.parse<GttGetOrders>(json)
-    }
-}
-
-data class Definitions (
-    @Json(name = "Condition")
-    val condition: Condition,
-
-    @Json(name = "Datum")
-    val datum: Datum,
-
-    @Json(name = "GttGetOrders")
-    val gttGetOrders: GttGetOrdersClass,
-
-    @Json(name = "Meta")
-    val meta: MetaClass,
-
-    @Json(name = "Order")
-    val order: Order,
-
-    @Json(name = "OrderResult")
-    val orderResult: OrderResult,
-
-    @Json(name = "Result")
-    val result: Result
+    val data: List<Datum>? = null,
+    val status: String? = null
 )
 
-data class Condition (
-    val additionalProperties: Boolean,
-    val properties: ConditionProperties,
-    val required: List<String>,
-    val title: String,
-    val type: String
-)
-
-data class ConditionProperties (
-    val exchange: Exchange,
-
-    @Json(name = "instrument_token")
-    val instrumentToken: Exchange,
-
-    @Json(name = "last_price")
-    val lastPrice: Exchange,
-
-    val tradingsymbol: Exchange,
-
-    @Json(name = "trigger_values")
-    val triggerValues: TriggerValues
-)
-
-data class Exchange (
-    val type: Type
-)
-
-enum class Type(val value: String) {
-    Integer("integer"),
-    Null("null"),
-    Number("number"),
-    TypeString("string");
-
-    companion object {
-        public fun fromValue(value: String): Type = when (value) {
-            "integer" -> Integer
-            "null"    -> Null
-            "number"  -> Number
-            "string"  -> TypeString
-            else      -> throw IllegalArgumentException()
-        }
-    }
-}
-
-data class TriggerValues (
-    val items: Exchange,
-    val type: String
-)
-
+@Serializable
 data class Datum (
-    val additionalProperties: Boolean,
-    val properties: DatumProperties,
-    val required: List<String>,
-    val title: String,
-    val type: String
+    val condition: Condition? = null,
+
+    @SerialName("created_at")
+    val createdAt: String? = null,
+
+    @SerialName("expires_at")
+    val expiresAt: String? = null,
+
+    val id: Long? = null,
+    val meta: Meta? = null,
+    val orders: List<Order>? = null,
+
+    @SerialName("parent_trigger")
+    val parentTrigger: JsonObject? = null,
+
+    val status: String? = null,
+    val type: String? = null,
+
+    @SerialName("updated_at")
+    val updatedAt: String? = null,
+
+    @SerialName("user_id")
+    val userID: String? = null
 )
 
-data class DatumProperties (
-    val condition: ConditionClass,
+@Serializable
+data class Condition (
+    val exchange: String? = null,
 
-    @Json(name = "created_at")
-    val createdAt: CreatedAt,
+    @SerialName("instrument_token")
+    val instrumentToken: Long? = null,
 
-    @Json(name = "expires_at")
-    val expiresAt: CreatedAt,
+    @SerialName("last_price")
+    val lastPrice: Double? = null,
 
-    val id: Exchange,
-    val meta: Meta,
-    val orders: Orders,
+    val tradingsymbol: String? = null,
 
-    @Json(name = "parent_trigger")
-    val parentTrigger: Exchange,
-
-    val status: Exchange,
-    val type: Exchange,
-
-    @Json(name = "updated_at")
-    val updatedAt: CreatedAt,
-
-    @Json(name = "user_id")
-    val userID: Exchange
+    @SerialName("trigger_values")
+    val triggerValues: List<Double>? = null
 )
 
-data class ConditionClass (
-    @Json(name = "\$ref")
-    val ref: String
-)
+@Serializable
+class Meta()
 
-data class CreatedAt (
-    val format: String,
-    val type: Type
-)
-
-data class Meta (
-    val anyOf: List<AnyOf>
-)
-
-data class AnyOf (
-    @Json(name = "\$ref")
-    val ref: String? = null,
-
-    val type: Type? = null
-)
-
-data class Orders (
-    val items: ConditionClass,
-    val type: String
-)
-
-data class GttGetOrdersClass (
-    val additionalProperties: Boolean,
-    val properties: GttGetOrdersProperties,
-    val required: List<String>,
-    val title: String,
-    val type: String
-)
-
-data class GttGetOrdersProperties (
-    val data: Orders,
-    val status: Exchange
-)
-
-data class MetaClass (
-    val additionalProperties: Boolean,
-    val title: String,
-    val type: String
-)
-
+@Serializable
 data class Order (
-    val additionalProperties: Boolean,
-    val properties: OrderProperties,
-    val required: List<String>,
-    val title: String,
-    val type: String
+    val exchange: String? = null,
+
+    @SerialName("order_type")
+    val orderType: String? = null,
+
+    val price: Double? = null,
+    val product: String? = null,
+    val quantity: Long? = null,
+    val result: Result? = null,
+    val tradingsymbol: String? = null,
+
+    @SerialName("transaction_type")
+    val transactionType: String? = null
 )
 
-data class OrderProperties (
-    val exchange: Exchange,
-
-    @Json(name = "order_type")
-    val orderType: Exchange,
-
-    val price: Exchange,
-    val product: Exchange,
-    val quantity: Exchange,
-    val result: Meta,
-    val tradingsymbol: Exchange,
-
-    @Json(name = "transaction_type")
-    val transactionType: Exchange
-)
-
-data class OrderResult (
-    val additionalProperties: Boolean,
-    val properties: OrderResultProperties,
-    val required: List<String>,
-    val title: String,
-    val type: String
-)
-
-data class OrderResultProperties (
-    @Json(name = "order_id")
-    val orderID: Exchange,
-
-    @Json(name = "rejection_reason")
-    val rejectionReason: Exchange,
-
-    val status: Exchange
-)
-
+@Serializable
 data class Result (
-    val additionalProperties: Boolean,
-    val properties: ResultProperties,
-    val required: List<String>,
-    val title: String,
-    val type: String
+    @SerialName("account_id")
+    val accountID: String? = null,
+
+    val exchange: String? = null,
+    val meta: String? = null,
+
+    @SerialName("order_result")
+    val orderResult: OrderResult? = null,
+
+    @SerialName("order_type")
+    val orderType: String? = null,
+
+    val price: Long? = null,
+    val product: String? = null,
+    val quantity: Long? = null,
+    val timestamp: String? = null,
+    val tradingsymbol: String? = null,
+
+    @SerialName("transaction_type")
+    val transactionType: String? = null,
+
+    @SerialName("triggered_at")
+    val triggeredAt: Double? = null,
+
+    val validity: String? = null
 )
 
-data class ResultProperties (
-    @Json(name = "account_id")
-    val accountID: Exchange,
+@Serializable
+data class OrderResult (
+    @SerialName("order_id")
+    val orderID: String? = null,
 
-    val exchange: Exchange,
-    val meta: Exchange,
+    @SerialName("rejection_reason")
+    val rejectionReason: String? = null,
 
-    @Json(name = "order_result")
-    val orderResult: ConditionClass,
-
-    @Json(name = "order_type")
-    val orderType: Exchange,
-
-    val price: Exchange,
-    val product: Exchange,
-    val quantity: Exchange,
-    val timestamp: CreatedAt,
-    val tradingsymbol: Exchange,
-
-    @Json(name = "transaction_type")
-    val transactionType: Exchange,
-
-    @Json(name = "triggered_at")
-    val triggeredAt: Exchange,
-
-    val validity: Exchange
+    val status: String? = null
 )

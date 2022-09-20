@@ -13,15 +13,13 @@
 // match the expected interface, even if the JSON itself is valid.
 
 class MarginsEquity {
-    string      ref;         // json: "$ref"
-    string      schema;      // json: "$schema"
-    Definitions definitions; // json: "definitions"
+    Data|mixed   data;   // json: "data"
+    mixed|string status; // json: "status"
 
     string encode_json() {
         mapping(string:mixed) json = ([
-            "$ref" : ref,
-            "$schema" : schema,
-            "definitions" : definitions,
+            "data" : data,
+            "status" : status,
         ]);
 
         return Standards.JSON.encode(json);
@@ -31,78 +29,48 @@ class MarginsEquity {
 MarginsEquity MarginsEquity_from_JSON(mixed json) {
     MarginsEquity retval = MarginsEquity();
 
-    retval.ref = json["$ref"];
-    retval.schema = json["$schema"];
-    retval.definitions = json["definitions"];
+    retval.data = json["data"];
+    retval.status = json["status"];
 
     return retval;
 }
 
-class Definitions {
-    Available          available;      // json: "Available"
-    Data               data;           // json: "Data"
-    MarginsEquityClass margins_equity; // json: "MarginsEquity"
+class Data {
+    Available|mixed             available; // json: "available"
+    bool|mixed                  enabled;   // json: "enabled"
+    float|mixed                 net;       // json: "net"
+    mapping(string:float)|mixed utilised;  // json: "utilised"
 
     string encode_json() {
         mapping(string:mixed) json = ([
-            "Available" : available,
-            "Data" : data,
-            "MarginsEquity" : margins_equity,
+            "available" : available,
+            "enabled" : enabled,
+            "net" : net,
+            "utilised" : utilised,
         ]);
 
         return Standards.JSON.encode(json);
     }
 }
 
-Definitions Definitions_from_JSON(mixed json) {
-    Definitions retval = Definitions();
+Data Data_from_JSON(mixed json) {
+    Data retval = Data();
 
-    retval.available = json["Available"];
-    retval.data = json["Data"];
-    retval.margins_equity = json["MarginsEquity"];
+    retval.available = json["available"];
+    retval.enabled = json["enabled"];
+    retval.net = json["net"];
+    retval.utilised = json["utilised"];
 
     return retval;
 }
 
 class Available {
-    bool                additional_properties; // json: "additionalProperties"
-    AvailableProperties properties;            // json: "properties"
-    array(string)       required;              // json: "required"
-    string              title;                 // json: "title"
-    string              type;                  // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "additionalProperties" : additional_properties,
-            "properties" : properties,
-            "required" : required,
-            "title" : title,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Available Available_from_JSON(mixed json) {
-    Available retval = Available();
-
-    retval.additional_properties = json["additionalProperties"];
-    retval.properties = json["properties"];
-    retval.required = json["required"];
-    retval.title = json["title"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
-class AvailableProperties {
-    AdhocMargin adhoc_margin;    // json: "adhoc_margin"
-    AdhocMargin cash;            // json: "cash"
-    AdhocMargin collateral;      // json: "collateral"
-    AdhocMargin intraday_payin;  // json: "intraday_payin"
-    AdhocMargin live_balance;    // json: "live_balance"
-    AdhocMargin opening_balance; // json: "opening_balance"
+    int|mixed   adhoc_margin;    // json: "adhoc_margin"
+    float|mixed cash;            // json: "cash"
+    int|mixed   collateral;      // json: "collateral"
+    int|mixed   intraday_payin;  // json: "intraday_payin"
+    float|mixed live_balance;    // json: "live_balance"
+    float|mixed opening_balance; // json: "opening_balance"
 
     string encode_json() {
         mapping(string:mixed) json = ([
@@ -118,8 +86,8 @@ class AvailableProperties {
     }
 }
 
-AvailableProperties AvailableProperties_from_JSON(mixed json) {
-    AvailableProperties retval = AvailableProperties();
+Available Available_from_JSON(mixed json) {
+    Available retval = Available();
 
     retval.adhoc_margin = json["adhoc_margin"];
     retval.cash = json["cash"];
@@ -127,185 +95,6 @@ AvailableProperties AvailableProperties_from_JSON(mixed json) {
     retval.intraday_payin = json["intraday_payin"];
     retval.live_balance = json["live_balance"];
     retval.opening_balance = json["opening_balance"];
-
-    return retval;
-}
-
-class AdhocMargin {
-    string type; // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-AdhocMargin AdhocMargin_from_JSON(mixed json) {
-    AdhocMargin retval = AdhocMargin();
-
-    retval.type = json["type"];
-
-    return retval;
-}
-
-class Data {
-    bool           additional_properties; // json: "additionalProperties"
-    DataProperties properties;            // json: "properties"
-    array(string)  required;              // json: "required"
-    string         title;                 // json: "title"
-    string         type;                  // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "additionalProperties" : additional_properties,
-            "properties" : properties,
-            "required" : required,
-            "title" : title,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Data Data_from_JSON(mixed json) {
-    Data retval = Data();
-
-    retval.additional_properties = json["additionalProperties"];
-    retval.properties = json["properties"];
-    retval.required = json["required"];
-    retval.title = json["title"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
-class DataProperties {
-    AvailableClass available; // json: "available"
-    AdhocMargin    enabled;   // json: "enabled"
-    AdhocMargin    net;       // json: "net"
-    Utilised       utilised;  // json: "utilised"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "available" : available,
-            "enabled" : enabled,
-            "net" : net,
-            "utilised" : utilised,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-DataProperties DataProperties_from_JSON(mixed json) {
-    DataProperties retval = DataProperties();
-
-    retval.available = json["available"];
-    retval.enabled = json["enabled"];
-    retval.net = json["net"];
-    retval.utilised = json["utilised"];
-
-    return retval;
-}
-
-class AvailableClass {
-    string ref; // json: "$ref"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "$ref" : ref,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-AvailableClass AvailableClass_from_JSON(mixed json) {
-    AvailableClass retval = AvailableClass();
-
-    retval.ref = json["$ref"];
-
-    return retval;
-}
-
-class Utilised {
-    AdhocMargin additional_properties; // json: "additionalProperties"
-    string      type;                  // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "additionalProperties" : additional_properties,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Utilised Utilised_from_JSON(mixed json) {
-    Utilised retval = Utilised();
-
-    retval.additional_properties = json["additionalProperties"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
-class MarginsEquityClass {
-    bool                    additional_properties; // json: "additionalProperties"
-    MarginsEquityProperties properties;            // json: "properties"
-    array(string)           required;              // json: "required"
-    string                  title;                 // json: "title"
-    string                  type;                  // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "additionalProperties" : additional_properties,
-            "properties" : properties,
-            "required" : required,
-            "title" : title,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-MarginsEquityClass MarginsEquityClass_from_JSON(mixed json) {
-    MarginsEquityClass retval = MarginsEquityClass();
-
-    retval.additional_properties = json["additionalProperties"];
-    retval.properties = json["properties"];
-    retval.required = json["required"];
-    retval.title = json["title"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
-class MarginsEquityProperties {
-    AvailableClass data;   // json: "data"
-    AdhocMargin    status; // json: "status"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "data" : data,
-            "status" : status,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-MarginsEquityProperties MarginsEquityProperties_from_JSON(mixed json) {
-    MarginsEquityProperties retval = MarginsEquityProperties();
-
-    retval.data = json["data"];
-    retval.status = json["status"];
 
     return retval;
 }

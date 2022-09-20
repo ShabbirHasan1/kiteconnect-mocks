@@ -1,158 +1,70 @@
-// To parse the JSON, install Klaxon and do:
+// To parse the JSON, install kotlin's serialization plugin and do:
 //
-//   val mFSips = MFSips.fromJson(jsonString)
+// val json   = Json(JsonConfiguration.Stable)
+// val mFSips = json.parse(MFSips.serializer(), jsonString)
 
-package quicktype
+package MfSips
 
-import com.beust.klaxon.*
+import kotlinx.serialization.*
+import kotlinx.serialization.json.*
+import kotlinx.serialization.descriptors.*
+import kotlinx.serialization.encoding.*
 
-private fun <T> Klaxon.convert(k: kotlin.reflect.KClass<*>, fromJson: (JsonValue) -> T, toJson: (T) -> String, isUnion: Boolean = false) =
-    this.converter(object: Converter {
-        @Suppress("UNCHECKED_CAST")
-        override fun toJson(value: Any)        = toJson(value as T)
-        override fun fromJson(jv: JsonValue)   = fromJson(jv) as Any
-        override fun canConvert(cls: Class<*>) = cls == k.java || (isUnion && cls.superclass == k.java)
-    })
-
-private val klaxon = Klaxon()
-    .convert(Type::class, { Type.fromValue(it.string!!) }, { "\"${it.value}\"" })
-
+@Serializable
 data class MFSips (
-    @Json(name = "\$ref")
-    val ref: String,
-
-    @Json(name = "\$schema")
-    val schema: String,
-
-    val definitions: Definitions
-) {
-    public fun toJson() = klaxon.toJsonString(this)
-
-    companion object {
-        public fun fromJson(json: String) = klaxon.parse<MFSips>(json)
-    }
-}
-
-data class Definitions (
-    @Json(name = "Datum")
-    val datum: Datum,
-
-    @Json(name = "MFSips")
-    val mfSips: MFSipsClass
+    val data: List<Datum>? = null
 )
 
+@Serializable
 data class Datum (
-    val additionalProperties: Boolean,
-    val properties: DatumProperties,
-    val required: List<String>,
-    val title: String,
-    val type: String
-)
+    @SerialName("completed_instalments")
+    val completedInstalments: Long? = null,
 
-data class DatumProperties (
-    @Json(name = "completed_instalments")
-    val completedInstalments: CompletedInstalments,
+    val created: String? = null,
 
-    val created: Created,
+    @SerialName("dividend_type")
+    val dividendType: String? = null,
 
-    @Json(name = "dividend_type")
-    val dividendType: CompletedInstalments,
+    val frequency: String? = null,
+    val fund: String? = null,
 
-    val frequency: CompletedInstalments,
-    val fund: CompletedInstalments,
+    @SerialName("instalment_amount")
+    val instalmentAmount: Long? = null,
 
-    @Json(name = "instalment_amount")
-    val instalmentAmount: CompletedInstalments,
+    @SerialName("instalment_day")
+    val instalmentDay: Long? = null,
 
-    @Json(name = "instalment_day")
-    val instalmentDay: CompletedInstalments,
+    val instalments: Long? = null,
 
-    val instalments: CompletedInstalments,
+    @SerialName("last_instalment")
+    val lastInstalment: String? = null,
 
-    @Json(name = "last_instalment")
-    val lastInstalment: Created,
+    @SerialName("next_instalment")
+    val nextInstalment: String? = null,
 
-    @Json(name = "next_instalment")
-    val nextInstalment: Created,
+    @SerialName("pending_instalments")
+    val pendingInstalments: Long? = null,
 
-    @Json(name = "pending_instalments")
-    val pendingInstalments: CompletedInstalments,
+    @SerialName("sip_id")
+    val sipID: String? = null,
 
-    @Json(name = "sip_id")
-    val sipID: CompletedInstalments,
+    @SerialName("sip_reg_num")
+    val sipRegNum: String? = null,
 
-    @Json(name = "sip_reg_num")
-    val sipRegNum: SIPRegNum,
+    @SerialName("sip_type")
+    val sipType: String? = null,
 
-    @Json(name = "sip_type")
-    val sipType: CompletedInstalments,
+    val status: String? = null,
 
-    val status: CompletedInstalments,
+    @SerialName("step_up")
+    val stepUp: Map<String, Long>? = null,
 
-    @Json(name = "step_up")
-    val stepUp: StepUp,
+    val tag: String? = null,
+    val tradingsymbol: String? = null,
 
-    val tag: CompletedInstalments,
-    val tradingsymbol: CompletedInstalments,
+    @SerialName("transaction_type")
+    val transactionType: String? = null,
 
-    @Json(name = "transaction_type")
-    val transactionType: CompletedInstalments,
-
-    @Json(name = "trigger_price")
-    val triggerPrice: CompletedInstalments
-)
-
-data class CompletedInstalments (
-    val type: Type
-)
-
-enum class Type(val value: String) {
-    Integer("integer"),
-    Number("number"),
-    TypeString("string");
-
-    companion object {
-        public fun fromValue(value: String): Type = when (value) {
-            "integer" -> Integer
-            "number"  -> Number
-            "string"  -> TypeString
-            else      -> throw IllegalArgumentException()
-        }
-    }
-}
-
-data class Created (
-    val format: String? = null,
-    val type: String
-)
-
-data class SIPRegNum (
-    val anyOf: List<Created>
-)
-
-data class StepUp (
-    val additionalProperties: CompletedInstalments,
-    val type: String
-)
-
-data class MFSipsClass (
-    val additionalProperties: Boolean,
-    val properties: MFSipsProperties,
-    val required: List<String>,
-    val title: String,
-    val type: String
-)
-
-data class MFSipsProperties (
-    val data: Data
-)
-
-data class Data (
-    val items: Items,
-    val type: String
-)
-
-data class Items (
-    @Json(name = "\$ref")
-    val ref: String
+    @SerialName("trigger_price")
+    val triggerPrice: Long? = null
 )

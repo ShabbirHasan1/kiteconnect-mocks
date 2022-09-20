@@ -1,133 +1,51 @@
-// To parse the JSON, install Klaxon and do:
+// To parse the JSON, install kotlin's serialization plugin and do:
 //
-//   val profile = Profile.fromJson(jsonString)
+// val json    = Json(JsonConfiguration.Stable)
+// val profile = json.parse(Profile.serializer(), jsonString)
 
-package quicktype
+package Profile
 
-import com.beust.klaxon.*
+import kotlinx.serialization.*
+import kotlinx.serialization.json.*
+import kotlinx.serialization.descriptors.*
+import kotlinx.serialization.encoding.*
 
-private fun <T> Klaxon.convert(k: kotlin.reflect.KClass<*>, fromJson: (JsonValue) -> T, toJson: (T) -> String, isUnion: Boolean = false) =
-    this.converter(object: Converter {
-        @Suppress("UNCHECKED_CAST")
-        override fun toJson(value: Any)        = toJson(value as T)
-        override fun fromJson(jv: JsonValue)   = fromJson(jv) as Any
-        override fun canConvert(cls: Class<*>) = cls == k.java || (isUnion && cls.superclass == k.java)
-    })
-
-private val klaxon = Klaxon()
-    .convert(Type::class, { Type.fromValue(it.string!!) }, { "\"${it.value}\"" })
-
+@Serializable
 data class Profile (
-    @Json(name = "\$ref")
-    val ref: String,
-
-    @Json(name = "\$schema")
-    val schema: String,
-
-    val definitions: Definitions
-) {
-    public fun toJson() = klaxon.toJsonString(this)
-
-    companion object {
-        public fun fromJson(json: String) = klaxon.parse<Profile>(json)
-    }
-}
-
-data class Definitions (
-    @Json(name = "Data")
-    val data: Data,
-
-    @Json(name = "Meta")
-    val meta: MetaClass,
-
-    @Json(name = "Profile")
-    val profile: ProfileClass
+    val data: Data? = null,
+    val status: String? = null
 )
 
+@Serializable
 data class Data (
-    val additionalProperties: Boolean,
-    val properties: DataProperties,
-    val required: List<String>,
-    val title: String,
-    val type: String
+    @SerialName("avatar_url")
+    val avatarURL: JsonObject? = null,
+
+    val broker: String? = null,
+    val email: String? = null,
+    val exchanges: List<String>? = null,
+    val meta: Meta? = null,
+
+    @SerialName("order_types")
+    val orderTypes: List<String>? = null,
+
+    val products: List<String>? = null,
+
+    @SerialName("user_id")
+    val userID: String? = null,
+
+    @SerialName("user_name")
+    val userName: String? = null,
+
+    @SerialName("user_shortname")
+    val userShortname: String? = null,
+
+    @SerialName("user_type")
+    val userType: String? = null
 )
 
-data class DataProperties (
-    @Json(name = "avatar_url")
-    val avatarURL: AvatarURL,
-
-    val broker: AvatarURL,
-    val email: AvatarURL,
-    val exchanges: Exchanges,
-    val meta: Meta,
-
-    @Json(name = "order_types")
-    val orderTypes: Exchanges,
-
-    val products: Exchanges,
-
-    @Json(name = "user_id")
-    val userID: AvatarURL,
-
-    @Json(name = "user_name")
-    val userName: AvatarURL,
-
-    @Json(name = "user_shortname")
-    val userShortname: AvatarURL,
-
-    @Json(name = "user_type")
-    val userType: AvatarURL
-)
-
-data class AvatarURL (
-    val type: Type
-)
-
-enum class Type(val value: String) {
-    Null("null"),
-    TypeString("string");
-
-    companion object {
-        public fun fromValue(value: String): Type = when (value) {
-            "null"   -> Null
-            "string" -> TypeString
-            else     -> throw IllegalArgumentException()
-        }
-    }
-}
-
-data class Exchanges (
-    val items: AvatarURL,
-    val type: String
-)
-
+@Serializable
 data class Meta (
-    @Json(name = "\$ref")
-    val ref: String
-)
-
-data class MetaClass (
-    val additionalProperties: Boolean,
-    val properties: MetaProperties,
-    val required: List<String>,
-    val title: String,
-    val type: String
-)
-
-data class MetaProperties (
-    @Json(name = "demat_consent")
-    val dematConsent: AvatarURL
-)
-
-data class ProfileClass (
-    val additionalProperties: Boolean,
-    val properties: ProfileProperties,
-    val required: List<String>,
-    val title: String,
-    val type: String
-)
-
-data class ProfileProperties (
-    val data: Meta,
-    val status: AvatarURL
+    @SerialName("demat_consent")
+    val dematConsent: String? = null
 )

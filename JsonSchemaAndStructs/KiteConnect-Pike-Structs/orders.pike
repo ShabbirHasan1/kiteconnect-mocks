@@ -13,15 +13,13 @@
 // match the expected interface, even if the JSON itself is valid.
 
 class Orders {
-    string      ref;         // json: "$ref"
-    string      schema;      // json: "$schema"
-    Definitions definitions; // json: "definitions"
+    array(Datum)|mixed data;   // json: "data"
+    mixed|string       status; // json: "status"
 
     string encode_json() {
         mapping(string:mixed) json = ([
-            "$ref" : ref,
-            "$schema" : schema,
-            "definitions" : definitions,
+            "data" : data,
+            "status" : status,
         ]);
 
         return Standards.JSON.encode(json);
@@ -31,108 +29,46 @@ class Orders {
 Orders Orders_from_JSON(mixed json) {
     Orders retval = Orders();
 
-    retval.ref = json["$ref"];
-    retval.schema = json["$schema"];
-    retval.definitions = json["definitions"];
-
-    return retval;
-}
-
-class Definitions {
-    Datum       datum;   // json: "Datum"
-    Iceberg     iceberg; // json: "Iceberg"
-    MetaClass   meta;    // json: "Meta"
-    OrdersClass orders;  // json: "Orders"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "Datum" : datum,
-            "Iceberg" : iceberg,
-            "Meta" : meta,
-            "Orders" : orders,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Definitions Definitions_from_JSON(mixed json) {
-    Definitions retval = Definitions();
-
-    retval.datum = json["Datum"];
-    retval.iceberg = json["Iceberg"];
-    retval.meta = json["Meta"];
-    retval.orders = json["Orders"];
+    retval.data = json["data"];
+    retval.status = json["status"];
 
     return retval;
 }
 
 class Datum {
-    bool            additional_properties; // json: "additionalProperties"
-    DatumProperties properties;            // json: "properties"
-    array(string)   required;              // json: "required"
-    string          title;                 // json: "title"
-    string          type;                  // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "additionalProperties" : additional_properties,
-            "properties" : properties,
-            "required" : required,
-            "title" : title,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Datum Datum_from_JSON(mixed json) {
-    Datum retval = Datum();
-
-    retval.additional_properties = json["additionalProperties"];
-    retval.properties = json["properties"];
-    retval.required = json["required"];
-    retval.title = json["title"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
-class DatumProperties {
-    AveragePrice       average_price;             // json: "average_price"
-    AveragePrice       cancelled_quantity;        // json: "cancelled_quantity"
-    AveragePrice       disclosed_quantity;        // json: "disclosed_quantity"
-    AveragePrice       exchange;                  // json: "exchange"
-    ExchangeOrderId    exchange_order_id;         // json: "exchange_order_id"
-    ExchangeETimestamp exchange_timestamp;        // json: "exchange_timestamp"
-    ExchangeETimestamp exchange_update_timestamp; // json: "exchange_update_timestamp"
-    AveragePrice       filled_quantity;           // json: "filled_quantity"
-    AveragePrice       guid;                      // json: "guid"
-    AveragePrice       instrument_token;          // json: "instrument_token"
-    AveragePrice       market_protection;         // json: "market_protection"
-    Meta               meta;                      // json: "meta"
-    AveragePrice       modified;                  // json: "modified"
-    AveragePrice       order_id;                  // json: "order_id"
-    OrderTimestamp     order_timestamp;           // json: "order_timestamp"
-    AveragePrice       order_type;                // json: "order_type"
-    AveragePrice       parent_order_id;           // json: "parent_order_id"
-    AveragePrice       pending_quantity;          // json: "pending_quantity"
-    AveragePrice       placed_by;                 // json: "placed_by"
-    AveragePrice       price;                     // json: "price"
-    AveragePrice       product;                   // json: "product"
-    AveragePrice       quantity;                  // json: "quantity"
-    AveragePrice       status;                    // json: "status"
-    ExchangeOrderId    status_message;            // json: "status_message"
-    ExchangeOrderId    status_message_raw;        // json: "status_message_raw"
-    ExchangeOrderId    tag;                       // json: "tag"
-    Tags               tags;                      // json: "tags"
-    AveragePrice       tradingsymbol;             // json: "tradingsymbol"
-    AveragePrice       transaction_type;          // json: "transaction_type"
-    AveragePrice       trigger_price;             // json: "trigger_price"
-    AveragePrice       validity;                  // json: "validity"
-    AveragePrice       validity_ttl;              // json: "validity_ttl"
-    AveragePrice       variety;                   // json: "variety"
+    int|mixed           average_price;             // json: "average_price"
+    int|mixed           cancelled_quantity;        // json: "cancelled_quantity"
+    int|mixed           disclosed_quantity;        // json: "disclosed_quantity"
+    mixed|string        exchange;                  // json: "exchange"
+    mixed|string        exchange_order_id;         // json: "exchange_order_id"
+    mixed|string        exchange_timestamp;        // json: "exchange_timestamp"
+    mixed|string        exchange_update_timestamp; // json: "exchange_update_timestamp"
+    int|mixed           filled_quantity;           // json: "filled_quantity"
+    mixed|string        guid;                      // json: "guid"
+    int|mixed           instrument_token;          // json: "instrument_token"
+    int|mixed           market_protection;         // json: "market_protection"
+    Meta|mixed          meta;                      // json: "meta"
+    bool|mixed          modified;                  // json: "modified"
+    mixed|string        order_id;                  // json: "order_id"
+    mixed|string        order_timestamp;           // json: "order_timestamp"
+    mixed|string        order_type;                // json: "order_type"
+    mixed               parent_order_id;           // json: "parent_order_id"
+    int|mixed           pending_quantity;          // json: "pending_quantity"
+    mixed|string        placed_by;                 // json: "placed_by"
+    int|mixed           price;                     // json: "price"
+    mixed|string        product;                   // json: "product"
+    int|mixed           quantity;                  // json: "quantity"
+    mixed|string        status;                    // json: "status"
+    mixed|string        status_message;            // json: "status_message"
+    mixed|string        status_message_raw;        // json: "status_message_raw"
+    mixed|string        tag;                       // json: "tag"
+    array(string)|mixed tags;                      // json: "tags"
+    mixed|string        tradingsymbol;             // json: "tradingsymbol"
+    mixed|string        transaction_type;          // json: "transaction_type"
+    int|mixed           trigger_price;             // json: "trigger_price"
+    mixed|string        validity;                  // json: "validity"
+    int|mixed           validity_ttl;              // json: "validity_ttl"
+    mixed|string        variety;                   // json: "variety"
 
     string encode_json() {
         mapping(string:mixed) json = ([
@@ -175,8 +111,8 @@ class DatumProperties {
     }
 }
 
-DatumProperties DatumProperties_from_JSON(mixed json) {
-    DatumProperties retval = DatumProperties();
+Datum Datum_from_JSON(mixed json) {
+    Datum retval = Datum();
 
     retval.average_price = json["average_price"];
     retval.cancelled_quantity = json["cancelled_quantity"];
@@ -215,102 +151,12 @@ DatumProperties DatumProperties_from_JSON(mixed json) {
     return retval;
 }
 
-class AveragePrice {
-    Type type; // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-AveragePrice AveragePrice_from_JSON(mixed json) {
-    AveragePrice retval = AveragePrice();
-
-    retval.type = json["type"];
-
-    return retval;
-}
-
-enum Type {
-    BOOLEAN = "boolean", // json: "boolean"
-    INTEGER = "integer", // json: "integer"
-    NULL = "null",       // json: "null"
-    STRING = "string",   // json: "string"
-}
-
-class ExchangeOrderId {
-    array(AveragePrice) any_of; // json: "anyOf"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "anyOf" : any_of,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-ExchangeOrderId ExchangeOrderId_from_JSON(mixed json) {
-    ExchangeOrderId retval = ExchangeOrderId();
-
-    retval.any_of = json["anyOf"];
-
-    return retval;
-}
-
-class ExchangeETimestamp {
-    array(OrderTimestamp) any_of; // json: "anyOf"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "anyOf" : any_of,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-ExchangeETimestamp ExchangeETimestamp_from_JSON(mixed json) {
-    ExchangeETimestamp retval = ExchangeETimestamp();
-
-    retval.any_of = json["anyOf"];
-
-    return retval;
-}
-
-class OrderTimestamp {
-    mixed|string format; // json: "format"
-    Type         type;   // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "format" : format,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-OrderTimestamp OrderTimestamp_from_JSON(mixed json) {
-    OrderTimestamp retval = OrderTimestamp();
-
-    retval.format = json["format"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
 class Meta {
-    string ref; // json: "$ref"
+    Iceberg|mixed iceberg; // json: "iceberg"
 
     string encode_json() {
         mapping(string:mixed) json = ([
-            "$ref" : ref,
+            "iceberg" : iceberg,
         ]);
 
         return Standards.JSON.encode(json);
@@ -320,72 +166,17 @@ class Meta {
 Meta Meta_from_JSON(mixed json) {
     Meta retval = Meta();
 
-    retval.ref = json["$ref"];
-
-    return retval;
-}
-
-class Tags {
-    AveragePrice items; // json: "items"
-    string       type;  // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "items" : items,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Tags Tags_from_JSON(mixed json) {
-    Tags retval = Tags();
-
-    retval.items = json["items"];
-    retval.type = json["type"];
+    retval.iceberg = json["iceberg"];
 
     return retval;
 }
 
 class Iceberg {
-    bool              additional_properties; // json: "additionalProperties"
-    IcebergProperties properties;            // json: "properties"
-    array(string)     required;              // json: "required"
-    string            title;                 // json: "title"
-    string            type;                  // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "additionalProperties" : additional_properties,
-            "properties" : properties,
-            "required" : required,
-            "title" : title,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Iceberg Iceberg_from_JSON(mixed json) {
-    Iceberg retval = Iceberg();
-
-    retval.additional_properties = json["additionalProperties"];
-    retval.properties = json["properties"];
-    retval.required = json["required"];
-    retval.title = json["title"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
-class IcebergProperties {
-    AveragePrice leg;                // json: "leg"
-    AveragePrice leg_quantity;       // json: "leg_quantity"
-    AveragePrice legs;               // json: "legs"
-    AveragePrice remaining_quantity; // json: "remaining_quantity"
-    AveragePrice total_quantity;     // json: "total_quantity"
+    int|mixed leg;                // json: "leg"
+    int|mixed leg_quantity;       // json: "leg_quantity"
+    int|mixed legs;               // json: "legs"
+    int|mixed remaining_quantity; // json: "remaining_quantity"
+    int|mixed total_quantity;     // json: "total_quantity"
 
     string encode_json() {
         mapping(string:mixed) json = ([
@@ -400,144 +191,14 @@ class IcebergProperties {
     }
 }
 
-IcebergProperties IcebergProperties_from_JSON(mixed json) {
-    IcebergProperties retval = IcebergProperties();
+Iceberg Iceberg_from_JSON(mixed json) {
+    Iceberg retval = Iceberg();
 
     retval.leg = json["leg"];
     retval.leg_quantity = json["leg_quantity"];
     retval.legs = json["legs"];
     retval.remaining_quantity = json["remaining_quantity"];
     retval.total_quantity = json["total_quantity"];
-
-    return retval;
-}
-
-class MetaClass {
-    bool           additional_properties; // json: "additionalProperties"
-    MetaProperties properties;            // json: "properties"
-    array(mixed)   required;              // json: "required"
-    string         title;                 // json: "title"
-    string         type;                  // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "additionalProperties" : additional_properties,
-            "properties" : properties,
-            "required" : required,
-            "title" : title,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-MetaClass MetaClass_from_JSON(mixed json) {
-    MetaClass retval = MetaClass();
-
-    retval.additional_properties = json["additionalProperties"];
-    retval.properties = json["properties"];
-    retval.required = json["required"];
-    retval.title = json["title"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
-class MetaProperties {
-    Meta iceberg; // json: "iceberg"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "iceberg" : iceberg,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-MetaProperties MetaProperties_from_JSON(mixed json) {
-    MetaProperties retval = MetaProperties();
-
-    retval.iceberg = json["iceberg"];
-
-    return retval;
-}
-
-class OrdersClass {
-    bool             additional_properties; // json: "additionalProperties"
-    OrdersProperties properties;            // json: "properties"
-    array(string)    required;              // json: "required"
-    string           title;                 // json: "title"
-    string           type;                  // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "additionalProperties" : additional_properties,
-            "properties" : properties,
-            "required" : required,
-            "title" : title,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-OrdersClass OrdersClass_from_JSON(mixed json) {
-    OrdersClass retval = OrdersClass();
-
-    retval.additional_properties = json["additionalProperties"];
-    retval.properties = json["properties"];
-    retval.required = json["required"];
-    retval.title = json["title"];
-    retval.type = json["type"];
-
-    return retval;
-}
-
-class OrdersProperties {
-    Data         data;   // json: "data"
-    AveragePrice status; // json: "status"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "data" : data,
-            "status" : status,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-OrdersProperties OrdersProperties_from_JSON(mixed json) {
-    OrdersProperties retval = OrdersProperties();
-
-    retval.data = json["data"];
-    retval.status = json["status"];
-
-    return retval;
-}
-
-class Data {
-    Meta   items; // json: "items"
-    string type;  // json: "type"
-
-    string encode_json() {
-        mapping(string:mixed) json = ([
-            "items" : items,
-            "type" : type,
-        ]);
-
-        return Standards.JSON.encode(json);
-    }
-}
-
-Data Data_from_JSON(mixed json) {
-    Data retval = Data();
-
-    retval.items = json["items"];
-    retval.type = json["type"];
 
     return retval;
 }

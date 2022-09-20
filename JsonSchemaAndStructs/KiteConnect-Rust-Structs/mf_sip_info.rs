@@ -13,197 +13,39 @@
 
 extern crate serde_derive;
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct MfSipInfo {
-    #[serde(rename = "$ref")]
-    mf_sip_info_ref: String,
-
-    #[serde(rename = "$schema")]
-    schema: String,
-
-    #[serde(rename = "definitions")]
-    definitions: Definitions,
+    pub data: Option<Data>,
+    pub status: Option<String>,
 }
 
-#[derive(Serialize, Deserialize)]
-pub struct Definitions {
-    #[serde(rename = "Data")]
-    data: Data,
-
-    #[serde(rename = "MFSIPInfo")]
-    mfsip_info: MfsipInfoClass,
-
-    #[serde(rename = "StepUp")]
-    step_up: StepUpClass,
-}
-
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Data {
-    #[serde(rename = "additionalProperties")]
-    additional_properties: bool,
-
-    #[serde(rename = "properties")]
-    properties: DataProperties,
-
-    #[serde(rename = "required")]
-    required: Vec<String>,
-
-    #[serde(rename = "title")]
-    title: String,
-
-    #[serde(rename = "type")]
-    data_type: String,
+    pub completed_instalments: Option<i64>,
+    pub created: Option<String>,
+    pub dividend_type: Option<String>,
+    pub frequency: Option<String>,
+    pub fund: Option<String>,
+    pub fund_source: Option<String>,
+    pub instalment_amount: Option<i64>,
+    pub instalment_day: Option<i64>,
+    pub instalments: Option<i64>,
+    pub last_instalment: Option<String>,
+    pub next_instalment: Option<String>,
+    pub pending_instalments: Option<i64>,
+    pub sip_id: Option<String>,
+    pub sip_reg_num: Option<serde_json::Value>,
+    pub sip_type: Option<String>,
+    pub status: Option<String>,
+    pub step_up: Option<StepUp>,
+    pub tag: Option<String>,
+    pub tradingsymbol: Option<String>,
+    pub transaction_type: Option<String>,
+    pub trigger_price: Option<i64>,
 }
 
-#[derive(Serialize, Deserialize)]
-pub struct DataProperties {
-    #[serde(rename = "completed_instalments")]
-    completed_instalments: CompletedInstalments,
-
-    #[serde(rename = "created")]
-    created: Created,
-
-    #[serde(rename = "dividend_type")]
-    dividend_type: CompletedInstalments,
-
-    #[serde(rename = "frequency")]
-    frequency: CompletedInstalments,
-
-    #[serde(rename = "fund")]
-    fund: CompletedInstalments,
-
-    #[serde(rename = "fund_source")]
-    fund_source: CompletedInstalments,
-
-    #[serde(rename = "instalment_amount")]
-    instalment_amount: CompletedInstalments,
-
-    #[serde(rename = "instalment_day")]
-    instalment_day: CompletedInstalments,
-
-    #[serde(rename = "instalments")]
-    instalments: CompletedInstalments,
-
-    #[serde(rename = "last_instalment")]
-    last_instalment: Created,
-
-    #[serde(rename = "next_instalment")]
-    next_instalment: Created,
-
-    #[serde(rename = "pending_instalments")]
-    pending_instalments: CompletedInstalments,
-
-    #[serde(rename = "sip_id")]
-    sip_id: CompletedInstalments,
-
-    #[serde(rename = "sip_reg_num")]
-    sip_reg_num: CompletedInstalments,
-
-    #[serde(rename = "sip_type")]
-    sip_type: CompletedInstalments,
-
-    #[serde(rename = "status")]
-    status: CompletedInstalments,
-
-    #[serde(rename = "step_up")]
-    step_up: StepUp,
-
-    #[serde(rename = "tag")]
-    tag: CompletedInstalments,
-
-    #[serde(rename = "tradingsymbol")]
-    tradingsymbol: CompletedInstalments,
-
-    #[serde(rename = "transaction_type")]
-    transaction_type: CompletedInstalments,
-
-    #[serde(rename = "trigger_price")]
-    trigger_price: CompletedInstalments,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct CompletedInstalments {
-    #[serde(rename = "type")]
-    completed_instalments_type: Type,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct Created {
-    #[serde(rename = "format")]
-    format: String,
-
-    #[serde(rename = "type")]
-    created_type: Type,
-}
-
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct StepUp {
-    #[serde(rename = "$ref")]
-    step_up_ref: String,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct MfsipInfoClass {
-    #[serde(rename = "additionalProperties")]
-    additional_properties: bool,
-
-    #[serde(rename = "properties")]
-    properties: MfsipInfoProperties,
-
-    #[serde(rename = "required")]
-    required: Vec<String>,
-
-    #[serde(rename = "title")]
-    title: String,
-
-    #[serde(rename = "type")]
-    mfsip_info_class_type: String,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct MfsipInfoProperties {
-    #[serde(rename = "data")]
-    data: StepUp,
-
-    #[serde(rename = "status")]
-    status: CompletedInstalments,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct StepUpClass {
-    #[serde(rename = "additionalProperties")]
-    additional_properties: bool,
-
-    #[serde(rename = "properties")]
-    properties: StepUpProperties,
-
-    #[serde(rename = "required")]
-    required: Vec<String>,
-
-    #[serde(rename = "title")]
-    title: String,
-
-    #[serde(rename = "type")]
-    step_up_class_type: String,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct StepUpProperties {
     #[serde(rename = "15-02")]
-    the_1502: CompletedInstalments,
-}
-
-#[derive(Serialize, Deserialize)]
-pub enum Type {
-    #[serde(rename = "integer")]
-    Integer,
-
-    #[serde(rename = "null")]
-    Null,
-
-    #[serde(rename = "number")]
-    Number,
-
-    #[serde(rename = "string")]
-    String,
+    pub the_1502: Option<i64>,
 }

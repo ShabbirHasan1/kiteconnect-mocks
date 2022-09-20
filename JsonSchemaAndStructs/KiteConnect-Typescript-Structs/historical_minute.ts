@@ -8,64 +8,15 @@
 // match the expected interface, even if the JSON is valid.
 
 export interface HistoricalMinute {
-    $ref:        string;
-    $schema:     string;
-    definitions: Definitions;
-}
-
-export interface Definitions {
-    Candle:           Candle;
-    Data:             Data;
-    HistoricalMinute: HistoricalMinuteClass;
-}
-
-export interface Candle {
-    anyOf: AnyOf[];
-    title: string;
-}
-
-export interface AnyOf {
-    type: string;
+    data?:   Data;
+    status?: string;
 }
 
 export interface Data {
-    additionalProperties: boolean;
-    properties:           DataProperties;
-    required:             string[];
-    title:                string;
-    type:                 string;
+    candles?: Array<Candle[]>;
 }
 
-export interface DataProperties {
-    candles: Candles;
-}
-
-export interface Candles {
-    items: Items;
-    type:  string;
-}
-
-export interface Items {
-    items: DataClass;
-    type:  string;
-}
-
-export interface DataClass {
-    $ref: string;
-}
-
-export interface HistoricalMinuteClass {
-    additionalProperties: boolean;
-    properties:           HistoricalMinuteProperties;
-    required:             string[];
-    title:                string;
-    type:                 string;
-}
-
-export interface HistoricalMinuteProperties {
-    data:   DataClass;
-    status: AnyOf;
-}
+export type Candle = number | string;
 
 // Converts JSON strings to/from your types
 // and asserts the results of JSON.parse at runtime
@@ -213,52 +164,10 @@ function r(name: string) {
 
 const typeMap: any = {
     "HistoricalMinute": o([
-        { json: "$ref", js: "$ref", typ: "" },
-        { json: "$schema", js: "$schema", typ: "" },
-        { json: "definitions", js: "definitions", typ: r("Definitions") },
-    ], false),
-    "Definitions": o([
-        { json: "Candle", js: "Candle", typ: r("Candle") },
-        { json: "Data", js: "Data", typ: r("Data") },
-        { json: "HistoricalMinute", js: "HistoricalMinute", typ: r("HistoricalMinuteClass") },
-    ], false),
-    "Candle": o([
-        { json: "anyOf", js: "anyOf", typ: a(r("AnyOf")) },
-        { json: "title", js: "title", typ: "" },
-    ], false),
-    "AnyOf": o([
-        { json: "type", js: "type", typ: "" },
+        { json: "data", js: "data", typ: u(undefined, r("Data")) },
+        { json: "status", js: "status", typ: u(undefined, "") },
     ], false),
     "Data": o([
-        { json: "additionalProperties", js: "additionalProperties", typ: true },
-        { json: "properties", js: "properties", typ: r("DataProperties") },
-        { json: "required", js: "required", typ: a("") },
-        { json: "title", js: "title", typ: "" },
-        { json: "type", js: "type", typ: "" },
-    ], false),
-    "DataProperties": o([
-        { json: "candles", js: "candles", typ: r("Candles") },
-    ], false),
-    "Candles": o([
-        { json: "items", js: "items", typ: r("Items") },
-        { json: "type", js: "type", typ: "" },
-    ], false),
-    "Items": o([
-        { json: "items", js: "items", typ: r("DataClass") },
-        { json: "type", js: "type", typ: "" },
-    ], false),
-    "DataClass": o([
-        { json: "$ref", js: "$ref", typ: "" },
-    ], false),
-    "HistoricalMinuteClass": o([
-        { json: "additionalProperties", js: "additionalProperties", typ: true },
-        { json: "properties", js: "properties", typ: r("HistoricalMinuteProperties") },
-        { json: "required", js: "required", typ: a("") },
-        { json: "title", js: "title", typ: "" },
-        { json: "type", js: "type", typ: "" },
-    ], false),
-    "HistoricalMinuteProperties": o([
-        { json: "data", js: "data", typ: r("DataClass") },
-        { json: "status", js: "status", typ: r("AnyOf") },
+        { json: "candles", js: "candles", typ: u(undefined, a(a(u(3.14, "")))) },
     ], false),
 };

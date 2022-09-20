@@ -12,133 +12,51 @@
 // }
 
 extern crate serde_derive;
-use std::collections::HashMap;
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Positions {
-    #[serde(rename = "$ref")]
-    positions_ref: String,
-
-    #[serde(rename = "$schema")]
-    schema: String,
-
-    #[serde(rename = "definitions")]
-    definitions: Definitions,
+    pub data: Option<Data>,
+    pub status: Option<String>,
 }
 
-#[derive(Serialize, Deserialize)]
-pub struct Definitions {
-    #[serde(rename = "Data")]
-    data: Data,
-
-    #[serde(rename = "Day")]
-    day: DayClass,
-
-    #[serde(rename = "Positions")]
-    positions: PositionsClass,
-}
-
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Data {
-    #[serde(rename = "additionalProperties")]
-    additional_properties: bool,
-
-    #[serde(rename = "properties")]
-    properties: DataProperties,
-
-    #[serde(rename = "required")]
-    required: Vec<String>,
-
-    #[serde(rename = "title")]
-    title: String,
-
-    #[serde(rename = "type")]
-    data_type: String,
+    pub day: Option<Vec<Day>>,
+    pub net: Option<Vec<Day>>,
 }
 
-#[derive(Serialize, Deserialize)]
-pub struct DataProperties {
-    #[serde(rename = "day")]
-    day: Day,
-
-    #[serde(rename = "net")]
-    net: Day,
-}
-
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Day {
-    #[serde(rename = "items")]
-    items: DataClass,
-
-    #[serde(rename = "type")]
-    day_type: String,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct DataClass {
-    #[serde(rename = "$ref")]
-    data_class_ref: String,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct DayClass {
-    #[serde(rename = "additionalProperties")]
-    additional_properties: bool,
-
-    #[serde(rename = "properties")]
-    properties: HashMap<String, Property>,
-
-    #[serde(rename = "required")]
-    required: Vec<String>,
-
-    #[serde(rename = "title")]
-    title: String,
-
-    #[serde(rename = "type")]
-    day_class_type: String,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct Property {
-    #[serde(rename = "type")]
-    property_type: Type,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct PositionsClass {
-    #[serde(rename = "additionalProperties")]
-    additional_properties: bool,
-
-    #[serde(rename = "properties")]
-    properties: PositionsProperties,
-
-    #[serde(rename = "required")]
-    required: Vec<String>,
-
-    #[serde(rename = "title")]
-    title: String,
-
-    #[serde(rename = "type")]
-    positions_class_type: String,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct PositionsProperties {
-    #[serde(rename = "data")]
-    data: DataClass,
-
-    #[serde(rename = "status")]
-    status: Property,
-}
-
-#[derive(Serialize, Deserialize)]
-pub enum Type {
-    #[serde(rename = "integer")]
-    Integer,
-
-    #[serde(rename = "number")]
-    Number,
-
-    #[serde(rename = "string")]
-    String,
+    pub average_price: Option<f64>,
+    #[serde(rename = "buy_m2m")]
+    pub buy_m2_m: Option<i64>,
+    pub buy_price: Option<f64>,
+    pub buy_quantity: Option<i64>,
+    pub buy_value: Option<i64>,
+    pub close_price: Option<i64>,
+    pub day_buy_price: Option<f64>,
+    pub day_buy_quantity: Option<i64>,
+    pub day_buy_value: Option<i64>,
+    pub day_sell_price: Option<i64>,
+    pub day_sell_quantity: Option<i64>,
+    pub day_sell_value: Option<i64>,
+    pub exchange: Option<String>,
+    pub instrument_token: Option<i64>,
+    pub last_price: Option<f64>,
+    #[serde(rename = "m2m")]
+    pub m2_m: Option<i64>,
+    pub multiplier: Option<i64>,
+    pub overnight_quantity: Option<i64>,
+    pub pnl: Option<i64>,
+    pub product: Option<String>,
+    pub quantity: Option<i64>,
+    pub realised: Option<i64>,
+    #[serde(rename = "sell_m2m")]
+    pub sell_m2_m: Option<i64>,
+    pub sell_price: Option<i64>,
+    pub sell_quantity: Option<i64>,
+    pub sell_value: Option<i64>,
+    pub tradingsymbol: Option<String>,
+    pub unrealised: Option<i64>,
+    pub value: Option<i64>,
 }

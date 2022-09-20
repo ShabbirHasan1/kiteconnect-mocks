@@ -8,66 +8,20 @@
 // match the expected interface, even if the JSON is valid.
 
 export interface MFHoldings {
-    $ref:        string;
-    $schema:     string;
-    definitions: Definitions;
-}
-
-export interface Definitions {
-    Datum:      Datum;
-    MFHoldings: MFHoldingsClass;
+    data?:   Datum[];
+    status?: string;
 }
 
 export interface Datum {
-    additionalProperties: boolean;
-    properties:           DatumProperties;
-    required:             string[];
-    title:                string;
-    type:                 string;
-}
-
-export interface DatumProperties {
-    average_price:    AveragePrice;
-    folio:            AveragePrice;
-    fund:             AveragePrice;
-    last_price:       AveragePrice;
-    last_price_date:  AveragePrice;
-    pledged_quantity: AveragePrice;
-    pnl:              AveragePrice;
-    quantity:         AveragePrice;
-    tradingsymbol:    AveragePrice;
-}
-
-export interface AveragePrice {
-    type: Type;
-}
-
-export enum Type {
-    Integer = "integer",
-    Number = "number",
-    String = "string",
-}
-
-export interface MFHoldingsClass {
-    additionalProperties: boolean;
-    properties:           MFHoldingsProperties;
-    required:             string[];
-    title:                string;
-    type:                 string;
-}
-
-export interface MFHoldingsProperties {
-    data:   Data;
-    status: AveragePrice;
-}
-
-export interface Data {
-    items: Items;
-    type:  string;
-}
-
-export interface Items {
-    $ref: string;
+    averagePrice?:    number;
+    folio?:           string;
+    fund?:            string;
+    lastPrice?:       number;
+    lastPriceDate?:   string;
+    pledgedQuantity?: number;
+    pnl?:             number;
+    quantity?:        number;
+    tradingsymbol?:   string;
 }
 
 // Converts JSON strings to/from your types
@@ -216,56 +170,18 @@ function r(name: string) {
 
 const typeMap: any = {
     "MFHoldings": o([
-        { json: "$ref", js: "$ref", typ: "" },
-        { json: "$schema", js: "$schema", typ: "" },
-        { json: "definitions", js: "definitions", typ: r("Definitions") },
-    ], false),
-    "Definitions": o([
-        { json: "Datum", js: "Datum", typ: r("Datum") },
-        { json: "MFHoldings", js: "MFHoldings", typ: r("MFHoldingsClass") },
+        { json: "data", js: "data", typ: u(undefined, a(r("Datum"))) },
+        { json: "status", js: "status", typ: u(undefined, "") },
     ], false),
     "Datum": o([
-        { json: "additionalProperties", js: "additionalProperties", typ: true },
-        { json: "properties", js: "properties", typ: r("DatumProperties") },
-        { json: "required", js: "required", typ: a("") },
-        { json: "title", js: "title", typ: "" },
-        { json: "type", js: "type", typ: "" },
+        { json: "average_price", js: "averagePrice", typ: u(undefined, 3.14) },
+        { json: "folio", js: "folio", typ: u(undefined, "") },
+        { json: "fund", js: "fund", typ: u(undefined, "") },
+        { json: "last_price", js: "lastPrice", typ: u(undefined, 3.14) },
+        { json: "last_price_date", js: "lastPriceDate", typ: u(undefined, "") },
+        { json: "pledged_quantity", js: "pledgedQuantity", typ: u(undefined, 0) },
+        { json: "pnl", js: "pnl", typ: u(undefined, 0) },
+        { json: "quantity", js: "quantity", typ: u(undefined, 3.14) },
+        { json: "tradingsymbol", js: "tradingsymbol", typ: u(undefined, "") },
     ], false),
-    "DatumProperties": o([
-        { json: "average_price", js: "average_price", typ: r("AveragePrice") },
-        { json: "folio", js: "folio", typ: r("AveragePrice") },
-        { json: "fund", js: "fund", typ: r("AveragePrice") },
-        { json: "last_price", js: "last_price", typ: r("AveragePrice") },
-        { json: "last_price_date", js: "last_price_date", typ: r("AveragePrice") },
-        { json: "pledged_quantity", js: "pledged_quantity", typ: r("AveragePrice") },
-        { json: "pnl", js: "pnl", typ: r("AveragePrice") },
-        { json: "quantity", js: "quantity", typ: r("AveragePrice") },
-        { json: "tradingsymbol", js: "tradingsymbol", typ: r("AveragePrice") },
-    ], false),
-    "AveragePrice": o([
-        { json: "type", js: "type", typ: r("Type") },
-    ], false),
-    "MFHoldingsClass": o([
-        { json: "additionalProperties", js: "additionalProperties", typ: true },
-        { json: "properties", js: "properties", typ: r("MFHoldingsProperties") },
-        { json: "required", js: "required", typ: a("") },
-        { json: "title", js: "title", typ: "" },
-        { json: "type", js: "type", typ: "" },
-    ], false),
-    "MFHoldingsProperties": o([
-        { json: "data", js: "data", typ: r("Data") },
-        { json: "status", js: "status", typ: r("AveragePrice") },
-    ], false),
-    "Data": o([
-        { json: "items", js: "items", typ: r("Items") },
-        { json: "type", js: "type", typ: "" },
-    ], false),
-    "Items": o([
-        { json: "$ref", js: "$ref", typ: "" },
-    ], false),
-    "Type": [
-        "integer",
-        "number",
-        "string",
-    ],
 };

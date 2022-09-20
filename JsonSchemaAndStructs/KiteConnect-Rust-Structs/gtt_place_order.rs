@@ -13,86 +13,13 @@
 
 extern crate serde_derive;
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct GttPlaceOrder {
-    #[serde(rename = "$ref")]
-    gtt_place_order_ref: String,
-
-    #[serde(rename = "$schema")]
-    schema: String,
-
-    #[serde(rename = "definitions")]
-    definitions: Definitions,
+    pub data: Option<Data>,
+    pub status: Option<String>,
 }
 
-#[derive(Serialize, Deserialize)]
-pub struct Definitions {
-    #[serde(rename = "Data")]
-    data: Data,
-
-    #[serde(rename = "GttPlaceOrder")]
-    gtt_place_order: GttPlaceOrderClass,
-}
-
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Data {
-    #[serde(rename = "additionalProperties")]
-    additional_properties: bool,
-
-    #[serde(rename = "properties")]
-    properties: DataProperties,
-
-    #[serde(rename = "required")]
-    required: Vec<String>,
-
-    #[serde(rename = "title")]
-    title: String,
-
-    #[serde(rename = "type")]
-    data_type: String,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct DataProperties {
-    #[serde(rename = "trigger_id")]
-    trigger_id: TriggerId,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct TriggerId {
-    #[serde(rename = "type")]
-    trigger_id_type: String,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct GttPlaceOrderClass {
-    #[serde(rename = "additionalProperties")]
-    additional_properties: bool,
-
-    #[serde(rename = "properties")]
-    properties: GttPlaceOrderProperties,
-
-    #[serde(rename = "required")]
-    required: Vec<String>,
-
-    #[serde(rename = "title")]
-    title: String,
-
-    #[serde(rename = "type")]
-    gtt_place_order_class_type: String,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct GttPlaceOrderProperties {
-    #[serde(rename = "data")]
-    data: DataClass,
-
-    #[serde(rename = "status")]
-    status: TriggerId,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct DataClass {
-    #[serde(rename = "$ref")]
-    data_class_ref: String,
+    pub trigger_id: Option<i64>,
 }

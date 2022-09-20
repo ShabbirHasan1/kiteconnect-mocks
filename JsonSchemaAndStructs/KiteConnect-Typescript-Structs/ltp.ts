@@ -8,61 +8,13 @@
 // match the expected interface, even if the JSON is valid.
 
 export interface Ltp {
-    $ref:        string;
-    $schema:     string;
-    definitions: Definitions;
+    data?:   { [key: string]: Datum };
+    status?: string;
 }
 
-export interface Definitions {
-    Data:    Data;
-    Ltp:     LtpClass;
-    NseInfy: NseInfyClass;
-}
-
-export interface Data {
-    additionalProperties: boolean;
-    properties:           DataProperties;
-    required:             string[];
-    title:                string;
-    type:                 string;
-}
-
-export interface DataProperties {
-    "NSE:INFY": NseInfy;
-}
-
-export interface NseInfy {
-    $ref: string;
-}
-
-export interface LtpClass {
-    additionalProperties: boolean;
-    properties:           LtpProperties;
-    required:             string[];
-    title:                string;
-    type:                 string;
-}
-
-export interface LtpProperties {
-    data:   NseInfy;
-    status: Status;
-}
-
-export interface Status {
-    type: string;
-}
-
-export interface NseInfyClass {
-    additionalProperties: boolean;
-    properties:           NseInfyProperties;
-    required:             string[];
-    title:                string;
-    type:                 string;
-}
-
-export interface NseInfyProperties {
-    instrument_token: Status;
-    last_price:       Status;
+export interface Datum {
+    instrumentToken?: number;
+    lastPrice?:       number;
 }
 
 // Converts JSON strings to/from your types
@@ -211,51 +163,11 @@ function r(name: string) {
 
 const typeMap: any = {
     "Ltp": o([
-        { json: "$ref", js: "$ref", typ: "" },
-        { json: "$schema", js: "$schema", typ: "" },
-        { json: "definitions", js: "definitions", typ: r("Definitions") },
+        { json: "data", js: "data", typ: u(undefined, m(r("Datum"))) },
+        { json: "status", js: "status", typ: u(undefined, "") },
     ], false),
-    "Definitions": o([
-        { json: "Data", js: "Data", typ: r("Data") },
-        { json: "Ltp", js: "Ltp", typ: r("LtpClass") },
-        { json: "NseInfy", js: "NseInfy", typ: r("NseInfyClass") },
-    ], false),
-    "Data": o([
-        { json: "additionalProperties", js: "additionalProperties", typ: true },
-        { json: "properties", js: "properties", typ: r("DataProperties") },
-        { json: "required", js: "required", typ: a("") },
-        { json: "title", js: "title", typ: "" },
-        { json: "type", js: "type", typ: "" },
-    ], false),
-    "DataProperties": o([
-        { json: "NSE:INFY", js: "NSE:INFY", typ: r("NseInfy") },
-    ], false),
-    "NseInfy": o([
-        { json: "$ref", js: "$ref", typ: "" },
-    ], false),
-    "LtpClass": o([
-        { json: "additionalProperties", js: "additionalProperties", typ: true },
-        { json: "properties", js: "properties", typ: r("LtpProperties") },
-        { json: "required", js: "required", typ: a("") },
-        { json: "title", js: "title", typ: "" },
-        { json: "type", js: "type", typ: "" },
-    ], false),
-    "LtpProperties": o([
-        { json: "data", js: "data", typ: r("NseInfy") },
-        { json: "status", js: "status", typ: r("Status") },
-    ], false),
-    "Status": o([
-        { json: "type", js: "type", typ: "" },
-    ], false),
-    "NseInfyClass": o([
-        { json: "additionalProperties", js: "additionalProperties", typ: true },
-        { json: "properties", js: "properties", typ: r("NseInfyProperties") },
-        { json: "required", js: "required", typ: a("") },
-        { json: "title", js: "title", typ: "" },
-        { json: "type", js: "type", typ: "" },
-    ], false),
-    "NseInfyProperties": o([
-        { json: "instrument_token", js: "instrument_token", typ: r("Status") },
-        { json: "last_price", js: "last_price", typ: r("Status") },
+    "Datum": o([
+        { json: "instrument_token", js: "instrumentToken", typ: u(undefined, 0) },
+        { json: "last_price", js: "lastPrice", typ: u(undefined, 3.14) },
     ], false),
 };

@@ -13,167 +13,32 @@
 
 extern crate serde_derive;
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct MfOrdersInfo {
-    #[serde(rename = "$ref")]
-    mf_orders_info_ref: String,
-
-    #[serde(rename = "$schema")]
-    schema: String,
-
-    #[serde(rename = "definitions")]
-    definitions: Definitions,
+    pub data: Option<Data>,
+    pub status: Option<String>,
 }
 
-#[derive(Serialize, Deserialize)]
-pub struct Definitions {
-    #[serde(rename = "Data")]
-    data: Data,
-
-    #[serde(rename = "MFOrdersInfo")]
-    mf_orders_info: MfOrdersInfoClass,
-}
-
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Data {
-    #[serde(rename = "additionalProperties")]
-    additional_properties: bool,
-
-    #[serde(rename = "properties")]
-    properties: DataProperties,
-
-    #[serde(rename = "required")]
-    required: Vec<String>,
-
-    #[serde(rename = "title")]
-    title: String,
-
-    #[serde(rename = "type")]
-    data_type: String,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct DataProperties {
-    #[serde(rename = "amount")]
-    amount: Amount,
-
-    #[serde(rename = "average_price")]
-    average_price: Amount,
-
-    #[serde(rename = "exchange_order_id")]
-    exchange_order_id: Amount,
-
-    #[serde(rename = "exchange_timestamp")]
-    exchange_timestamp: Amount,
-
-    #[serde(rename = "folio")]
-    folio: Amount,
-
-    #[serde(rename = "fund")]
-    fund: Amount,
-
-    #[serde(rename = "last_price")]
-    last_price: Amount,
-
-    #[serde(rename = "last_price_date")]
-    last_price_date: LastPriceDate,
-
-    #[serde(rename = "order_id")]
-    order_id: LastPriceDate,
-
-    #[serde(rename = "order_timestamp")]
-    order_timestamp: LastPriceDate,
-
-    #[serde(rename = "placed_by")]
-    placed_by: Amount,
-
-    #[serde(rename = "purchase_type")]
-    purchase_type: Amount,
-
-    #[serde(rename = "quantity")]
-    quantity: Amount,
-
-    #[serde(rename = "settlement_id")]
-    settlement_id: Amount,
-
-    #[serde(rename = "status")]
-    status: Amount,
-
-    #[serde(rename = "status_message")]
-    status_message: Amount,
-
-    #[serde(rename = "tag")]
-    tag: Amount,
-
-    #[serde(rename = "tradingsymbol")]
-    tradingsymbol: Amount,
-
-    #[serde(rename = "transaction_type")]
-    transaction_type: Amount,
-
-    #[serde(rename = "variety")]
-    variety: Amount,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct Amount {
-    #[serde(rename = "type")]
-    amount_type: Type,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct LastPriceDate {
-    #[serde(rename = "format")]
-    format: String,
-
-    #[serde(rename = "type")]
-    last_price_date_type: Type,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct MfOrdersInfoClass {
-    #[serde(rename = "additionalProperties")]
-    additional_properties: bool,
-
-    #[serde(rename = "properties")]
-    properties: MfOrdersInfoProperties,
-
-    #[serde(rename = "required")]
-    required: Vec<String>,
-
-    #[serde(rename = "title")]
-    title: String,
-
-    #[serde(rename = "type")]
-    mf_orders_info_class_type: String,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct MfOrdersInfoProperties {
-    #[serde(rename = "data")]
-    data: DataClass,
-
-    #[serde(rename = "status")]
-    status: Amount,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct DataClass {
-    #[serde(rename = "$ref")]
-    data_class_ref: String,
-}
-
-#[derive(Serialize, Deserialize)]
-pub enum Type {
-    #[serde(rename = "integer")]
-    Integer,
-
-    #[serde(rename = "null")]
-    Null,
-
-    #[serde(rename = "number")]
-    Number,
-
-    #[serde(rename = "string")]
-    String,
+    pub amount: Option<i64>,
+    pub average_price: Option<i64>,
+    pub exchange_order_id: Option<serde_json::Value>,
+    pub exchange_timestamp: Option<serde_json::Value>,
+    pub folio: Option<serde_json::Value>,
+    pub fund: Option<String>,
+    pub last_price: Option<f64>,
+    pub last_price_date: Option<String>,
+    pub order_id: Option<String>,
+    pub order_timestamp: Option<String>,
+    pub placed_by: Option<String>,
+    pub purchase_type: Option<String>,
+    pub quantity: Option<i64>,
+    pub settlement_id: Option<serde_json::Value>,
+    pub status: Option<String>,
+    pub status_message: Option<String>,
+    pub tag: Option<serde_json::Value>,
+    pub tradingsymbol: Option<String>,
+    pub transaction_type: Option<String>,
+    pub variety: Option<String>,
 }

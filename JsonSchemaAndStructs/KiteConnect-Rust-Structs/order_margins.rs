@@ -13,170 +13,31 @@
 
 extern crate serde_derive;
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct OrderMargins {
-    #[serde(rename = "$ref")]
-    order_margins_ref: String,
-
-    #[serde(rename = "$schema")]
-    schema: String,
-
-    #[serde(rename = "definitions")]
-    definitions: Definitions,
+    pub data: Option<Vec<Datum>>,
+    pub status: Option<String>,
 }
 
-#[derive(Serialize, Deserialize)]
-pub struct Definitions {
-    #[serde(rename = "Datum")]
-    datum: Datum,
-
-    #[serde(rename = "OrderMargins")]
-    order_margins: OrderMarginsClass,
-
-    #[serde(rename = "Pnl")]
-    pnl: PnlClass,
-}
-
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Datum {
-    #[serde(rename = "additionalProperties")]
-    additional_properties: bool,
-
-    #[serde(rename = "properties")]
-    properties: DatumProperties,
-
-    #[serde(rename = "required")]
-    required: Vec<String>,
-
-    #[serde(rename = "title")]
-    title: String,
-
+    pub additional: Option<i64>,
+    pub bo: Option<i64>,
+    pub cash: Option<i64>,
+    pub exchange: Option<String>,
+    pub exposure: Option<i64>,
+    pub option_premium: Option<i64>,
+    pub pnl: Option<Pnl>,
+    pub span: Option<i64>,
+    pub total: Option<f64>,
+    pub tradingsymbol: Option<String>,
     #[serde(rename = "type")]
-    datum_type: String,
+    pub datum_type: Option<String>,
+    pub var: Option<f64>,
 }
 
-#[derive(Serialize, Deserialize)]
-pub struct DatumProperties {
-    #[serde(rename = "additional")]
-    additional: Additional,
-
-    #[serde(rename = "bo")]
-    bo: Additional,
-
-    #[serde(rename = "cash")]
-    cash: Additional,
-
-    #[serde(rename = "exchange")]
-    exchange: Additional,
-
-    #[serde(rename = "exposure")]
-    exposure: Additional,
-
-    #[serde(rename = "option_premium")]
-    option_premium: Additional,
-
-    #[serde(rename = "pnl")]
-    pnl: Pnl,
-
-    #[serde(rename = "span")]
-    span: Additional,
-
-    #[serde(rename = "total")]
-    total: Additional,
-
-    #[serde(rename = "tradingsymbol")]
-    tradingsymbol: Additional,
-
-    #[serde(rename = "type")]
-    datum_properties_type: Additional,
-
-    #[serde(rename = "var")]
-    var: Additional,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct Additional {
-    #[serde(rename = "type")]
-    additional_type: Type,
-}
-
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Pnl {
-    #[serde(rename = "$ref")]
-    pnl_ref: String,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct OrderMarginsClass {
-    #[serde(rename = "additionalProperties")]
-    additional_properties: bool,
-
-    #[serde(rename = "properties")]
-    properties: OrderMarginsProperties,
-
-    #[serde(rename = "required")]
-    required: Vec<String>,
-
-    #[serde(rename = "title")]
-    title: String,
-
-    #[serde(rename = "type")]
-    order_margins_class_type: String,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct OrderMarginsProperties {
-    #[serde(rename = "data")]
-    data: Data,
-
-    #[serde(rename = "status")]
-    status: Additional,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct Data {
-    #[serde(rename = "items")]
-    items: Pnl,
-
-    #[serde(rename = "type")]
-    data_type: String,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct PnlClass {
-    #[serde(rename = "additionalProperties")]
-    additional_properties: bool,
-
-    #[serde(rename = "properties")]
-    properties: PnlProperties,
-
-    #[serde(rename = "required")]
-    required: Vec<String>,
-
-    #[serde(rename = "title")]
-    title: String,
-
-    #[serde(rename = "type")]
-    pnl_class_type: String,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct PnlProperties {
-    #[serde(rename = "realised")]
-    realised: Additional,
-
-    #[serde(rename = "unrealised")]
-    unrealised: Additional,
-}
-
-#[derive(Serialize, Deserialize)]
-pub enum Type {
-    #[serde(rename = "integer")]
-    Integer,
-
-    #[serde(rename = "number")]
-    Number,
-
-    #[serde(rename = "string")]
-    String,
+    pub realised: Option<i64>,
+    pub unrealised: Option<i64>,
 }

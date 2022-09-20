@@ -8,47 +8,12 @@
 // match the expected interface, even if the JSON is valid.
 
 export interface GttModifyOrder {
-    $ref:        string;
-    $schema:     string;
-    definitions: Definitions;
-}
-
-export interface Definitions {
-    Data:           Data;
-    GttModifyOrder: GttModifyOrderClass;
+    data?:   Data;
+    status?: string;
 }
 
 export interface Data {
-    additionalProperties: boolean;
-    properties:           DataProperties;
-    required:             string[];
-    title:                string;
-    type:                 string;
-}
-
-export interface DataProperties {
-    trigger_id: TriggerID;
-}
-
-export interface TriggerID {
-    type: string;
-}
-
-export interface GttModifyOrderClass {
-    additionalProperties: boolean;
-    properties:           GttModifyOrderProperties;
-    required:             string[];
-    title:                string;
-    type:                 string;
-}
-
-export interface GttModifyOrderProperties {
-    data:   DataClass;
-    status: TriggerID;
-}
-
-export interface DataClass {
-    $ref: string;
+    triggerID?: number;
 }
 
 // Converts JSON strings to/from your types
@@ -197,39 +162,10 @@ function r(name: string) {
 
 const typeMap: any = {
     "GttModifyOrder": o([
-        { json: "$ref", js: "$ref", typ: "" },
-        { json: "$schema", js: "$schema", typ: "" },
-        { json: "definitions", js: "definitions", typ: r("Definitions") },
-    ], false),
-    "Definitions": o([
-        { json: "Data", js: "Data", typ: r("Data") },
-        { json: "GttModifyOrder", js: "GttModifyOrder", typ: r("GttModifyOrderClass") },
+        { json: "data", js: "data", typ: u(undefined, r("Data")) },
+        { json: "status", js: "status", typ: u(undefined, "") },
     ], false),
     "Data": o([
-        { json: "additionalProperties", js: "additionalProperties", typ: true },
-        { json: "properties", js: "properties", typ: r("DataProperties") },
-        { json: "required", js: "required", typ: a("") },
-        { json: "title", js: "title", typ: "" },
-        { json: "type", js: "type", typ: "" },
-    ], false),
-    "DataProperties": o([
-        { json: "trigger_id", js: "trigger_id", typ: r("TriggerID") },
-    ], false),
-    "TriggerID": o([
-        { json: "type", js: "type", typ: "" },
-    ], false),
-    "GttModifyOrderClass": o([
-        { json: "additionalProperties", js: "additionalProperties", typ: true },
-        { json: "properties", js: "properties", typ: r("GttModifyOrderProperties") },
-        { json: "required", js: "required", typ: a("") },
-        { json: "title", js: "title", typ: "" },
-        { json: "type", js: "type", typ: "" },
-    ], false),
-    "GttModifyOrderProperties": o([
-        { json: "data", js: "data", typ: r("DataClass") },
-        { json: "status", js: "status", typ: r("TriggerID") },
-    ], false),
-    "DataClass": o([
-        { json: "$ref", js: "$ref", typ: "" },
+        { json: "trigger_id", js: "triggerID", typ: u(undefined, 0) },
     ], false),
 };

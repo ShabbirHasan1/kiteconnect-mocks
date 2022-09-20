@@ -12,291 +12,52 @@
 // }
 
 extern crate serde_derive;
+use std::collections::HashMap;
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Quote {
-    #[serde(rename = "$ref")]
-    quote_ref: String,
-
-    #[serde(rename = "$schema")]
-    schema: String,
-
-    #[serde(rename = "definitions")]
-    definitions: Definitions,
+    pub data: Option<HashMap<String, Datum>>,
+    pub status: Option<String>,
 }
 
-#[derive(Serialize, Deserialize)]
-pub struct Definitions {
-    #[serde(rename = "Buy")]
-    buy: Buy,
-
-    #[serde(rename = "Data")]
-    data: Data,
-
-    #[serde(rename = "Depth")]
-    depth: Depth,
-
-    #[serde(rename = "NseInfy")]
-    nse_infy: NseInfyClass,
-
-    #[serde(rename = "Ohlc")]
-    ohlc: Ohlc,
-
-    #[serde(rename = "Quote")]
-    quote: QuoteClass,
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Datum {
+    pub average_price: Option<f64>,
+    pub buy_quantity: Option<i64>,
+    pub depth: Option<Depth>,
+    pub instrument_token: Option<i64>,
+    pub last_price: Option<f64>,
+    pub last_quantity: Option<i64>,
+    pub last_trade_time: Option<String>,
+    pub lower_circuit_limit: Option<f64>,
+    pub net_change: Option<i64>,
+    pub ohlc: Option<Ohlc>,
+    pub oi: Option<i64>,
+    pub oi_day_high: Option<i64>,
+    pub oi_day_low: Option<i64>,
+    pub sell_quantity: Option<i64>,
+    pub timestamp: Option<String>,
+    pub upper_circuit_limit: Option<f64>,
+    pub volume: Option<i64>,
 }
 
-#[derive(Serialize, Deserialize)]
-pub struct Buy {
-    #[serde(rename = "additionalProperties")]
-    additional_properties: bool,
-
-    #[serde(rename = "properties")]
-    properties: BuyProperties,
-
-    #[serde(rename = "required")]
-    required: Vec<String>,
-
-    #[serde(rename = "title")]
-    title: String,
-
-    #[serde(rename = "type")]
-    buy_type: String,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct BuyProperties {
-    #[serde(rename = "orders")]
-    orders: Orders,
-
-    #[serde(rename = "price")]
-    price: Orders,
-
-    #[serde(rename = "quantity")]
-    quantity: Orders,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct Orders {
-    #[serde(rename = "type")]
-    orders_type: Type,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct Data {
-    #[serde(rename = "additionalProperties")]
-    additional_properties: bool,
-
-    #[serde(rename = "properties")]
-    properties: DataProperties,
-
-    #[serde(rename = "required")]
-    required: Vec<String>,
-
-    #[serde(rename = "title")]
-    title: String,
-
-    #[serde(rename = "type")]
-    data_type: String,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct DataProperties {
-    #[serde(rename = "NSE:INFY")]
-    nse_infy: NseInfy,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct NseInfy {
-    #[serde(rename = "$ref")]
-    nse_infy_ref: String,
-}
-
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Depth {
-    #[serde(rename = "additionalProperties")]
-    additional_properties: bool,
-
-    #[serde(rename = "properties")]
-    properties: DepthProperties,
-
-    #[serde(rename = "required")]
-    required: Vec<String>,
-
-    #[serde(rename = "title")]
-    title: String,
-
-    #[serde(rename = "type")]
-    depth_type: String,
+    pub buy: Option<Vec<Buy>>,
+    pub sell: Option<Vec<Buy>>,
 }
 
-#[derive(Serialize, Deserialize)]
-pub struct DepthProperties {
-    #[serde(rename = "buy")]
-    buy: BuyClass,
-
-    #[serde(rename = "sell")]
-    sell: BuyClass,
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Buy {
+    pub orders: Option<i64>,
+    pub price: Option<f64>,
+    pub quantity: Option<i64>,
 }
 
-#[derive(Serialize, Deserialize)]
-pub struct BuyClass {
-    #[serde(rename = "items")]
-    items: NseInfy,
-
-    #[serde(rename = "type")]
-    buy_class_type: String,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct NseInfyClass {
-    #[serde(rename = "additionalProperties")]
-    additional_properties: bool,
-
-    #[serde(rename = "properties")]
-    properties: NseInfyProperties,
-
-    #[serde(rename = "required")]
-    required: Vec<String>,
-
-    #[serde(rename = "title")]
-    title: String,
-
-    #[serde(rename = "type")]
-    nse_infy_class_type: String,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct NseInfyProperties {
-    #[serde(rename = "average_price")]
-    average_price: Orders,
-
-    #[serde(rename = "buy_quantity")]
-    buy_quantity: Orders,
-
-    #[serde(rename = "depth")]
-    depth: NseInfy,
-
-    #[serde(rename = "instrument_token")]
-    instrument_token: Orders,
-
-    #[serde(rename = "last_price")]
-    last_price: Orders,
-
-    #[serde(rename = "last_quantity")]
-    last_quantity: Orders,
-
-    #[serde(rename = "last_trade_time")]
-    last_trade_time: LastTradeTime,
-
-    #[serde(rename = "lower_circuit_limit")]
-    lower_circuit_limit: Orders,
-
-    #[serde(rename = "net_change")]
-    net_change: Orders,
-
-    #[serde(rename = "ohlc")]
-    ohlc: NseInfy,
-
-    #[serde(rename = "oi")]
-    oi: Orders,
-
-    #[serde(rename = "oi_day_high")]
-    oi_day_high: Orders,
-
-    #[serde(rename = "oi_day_low")]
-    oi_day_low: Orders,
-
-    #[serde(rename = "sell_quantity")]
-    sell_quantity: Orders,
-
-    #[serde(rename = "timestamp")]
-    timestamp: LastTradeTime,
-
-    #[serde(rename = "upper_circuit_limit")]
-    upper_circuit_limit: Orders,
-
-    #[serde(rename = "volume")]
-    volume: Orders,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct LastTradeTime {
-    #[serde(rename = "format")]
-    format: String,
-
-    #[serde(rename = "type")]
-    last_trade_time_type: Type,
-}
-
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Ohlc {
-    #[serde(rename = "additionalProperties")]
-    additional_properties: bool,
-
-    #[serde(rename = "properties")]
-    properties: OhlcProperties,
-
-    #[serde(rename = "required")]
-    required: Vec<String>,
-
-    #[serde(rename = "title")]
-    title: String,
-
-    #[serde(rename = "type")]
-    ohlc_type: String,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct OhlcProperties {
-    #[serde(rename = "close")]
-    close: Orders,
-
-    #[serde(rename = "high")]
-    high: Orders,
-
-    #[serde(rename = "low")]
-    low: Orders,
-
-    #[serde(rename = "open")]
-    open: Orders,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct QuoteClass {
-    #[serde(rename = "additionalProperties")]
-    additional_properties: bool,
-
-    #[serde(rename = "properties")]
-    properties: QuoteProperties,
-
-    #[serde(rename = "required")]
-    required: Vec<String>,
-
-    #[serde(rename = "title")]
-    title: String,
-
-    #[serde(rename = "type")]
-    quote_class_type: String,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct QuoteProperties {
-    #[serde(rename = "data")]
-    data: NseInfy,
-
-    #[serde(rename = "status")]
-    status: Orders,
-}
-
-#[derive(Serialize, Deserialize)]
-pub enum Type {
-    #[serde(rename = "integer")]
-    Integer,
-
-    #[serde(rename = "number")]
-    Number,
-
-    #[serde(rename = "string")]
-    String,
+    pub close: Option<f64>,
+    pub high: Option<f64>,
+    pub low: Option<f64>,
+    pub open: Option<i64>,
 }

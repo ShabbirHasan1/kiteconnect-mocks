@@ -13,203 +13,37 @@
 
 extern crate serde_derive;
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct OrderInfo {
-    #[serde(rename = "$ref")]
-    order_info_ref: String,
-
-    #[serde(rename = "$schema")]
-    schema: String,
-
-    #[serde(rename = "definitions")]
-    definitions: Definitions,
+    pub data: Option<Vec<Datum>>,
+    pub status: Option<String>,
 }
 
-#[derive(Serialize, Deserialize)]
-pub struct Definitions {
-    #[serde(rename = "Datum")]
-    datum: Datum,
-
-    #[serde(rename = "OrderInfo")]
-    order_info: OrderInfoClass,
-}
-
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Datum {
-    #[serde(rename = "additionalProperties")]
-    additional_properties: bool,
-
-    #[serde(rename = "properties")]
-    properties: DatumProperties,
-
-    #[serde(rename = "required")]
-    required: Vec<String>,
-
-    #[serde(rename = "title")]
-    title: String,
-
-    #[serde(rename = "type")]
-    datum_type: String,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct DatumProperties {
-    #[serde(rename = "average_price")]
-    average_price: AveragePrice,
-
-    #[serde(rename = "cancelled_quantity")]
-    cancelled_quantity: AveragePrice,
-
-    #[serde(rename = "disclosed_quantity")]
-    disclosed_quantity: AveragePrice,
-
-    #[serde(rename = "exchange")]
-    exchange: AveragePrice,
-
-    #[serde(rename = "exchange_order_id")]
-    exchange_order_id: ExchangeOrderId,
-
-    #[serde(rename = "exchange_timestamp")]
-    exchange_timestamp: ExchangeTimestamp,
-
-    #[serde(rename = "filled_quantity")]
-    filled_quantity: AveragePrice,
-
-    #[serde(rename = "instrument_token")]
-    instrument_token: AveragePrice,
-
-    #[serde(rename = "order_id")]
-    order_id: AveragePrice,
-
-    #[serde(rename = "order_timestamp")]
-    order_timestamp: OrderTimestamp,
-
-    #[serde(rename = "order_type")]
-    order_type: AveragePrice,
-
-    #[serde(rename = "parent_order_id")]
-    parent_order_id: AveragePrice,
-
-    #[serde(rename = "pending_quantity")]
-    pending_quantity: AveragePrice,
-
-    #[serde(rename = "placed_by")]
-    placed_by: AveragePrice,
-
-    #[serde(rename = "price")]
-    price: AveragePrice,
-
-    #[serde(rename = "product")]
-    product: AveragePrice,
-
-    #[serde(rename = "quantity")]
-    quantity: AveragePrice,
-
-    #[serde(rename = "status")]
-    status: AveragePrice,
-
-    #[serde(rename = "status_message")]
-    status_message: AveragePrice,
-
-    #[serde(rename = "tag")]
-    tag: AveragePrice,
-
-    #[serde(rename = "tradingsymbol")]
-    tradingsymbol: AveragePrice,
-
-    #[serde(rename = "transaction_type")]
-    transaction_type: AveragePrice,
-
-    #[serde(rename = "trigger_price")]
-    trigger_price: AveragePrice,
-
-    #[serde(rename = "validity")]
-    validity: AveragePrice,
-
-    #[serde(rename = "variety")]
-    variety: AveragePrice,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct AveragePrice {
-    #[serde(rename = "type")]
-    average_price_type: Type,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct ExchangeOrderId {
-    #[serde(rename = "anyOf")]
-    any_of: Vec<AveragePrice>,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct ExchangeTimestamp {
-    #[serde(rename = "anyOf")]
-    any_of: Vec<OrderTimestamp>,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct OrderTimestamp {
-    #[serde(rename = "format")]
-    format: Option<String>,
-
-    #[serde(rename = "type")]
-    order_timestamp_type: Type,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct OrderInfoClass {
-    #[serde(rename = "additionalProperties")]
-    additional_properties: bool,
-
-    #[serde(rename = "properties")]
-    properties: OrderInfoProperties,
-
-    #[serde(rename = "required")]
-    required: Vec<String>,
-
-    #[serde(rename = "title")]
-    title: String,
-
-    #[serde(rename = "type")]
-    order_info_class_type: String,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct OrderInfoProperties {
-    #[serde(rename = "data")]
-    data: Data,
-
-    #[serde(rename = "status")]
-    status: AveragePrice,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct Data {
-    #[serde(rename = "items")]
-    items: Items,
-
-    #[serde(rename = "type")]
-    data_type: String,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct Items {
-    #[serde(rename = "$ref")]
-    items_ref: String,
-}
-
-#[derive(Serialize, Deserialize)]
-pub enum Type {
-    #[serde(rename = "integer")]
-    Integer,
-
-    #[serde(rename = "null")]
-    Null,
-
-    #[serde(rename = "number")]
-    Number,
-
-    #[serde(rename = "string")]
-    String,
+    pub average_price: Option<i64>,
+    pub cancelled_quantity: Option<i64>,
+    pub disclosed_quantity: Option<i64>,
+    pub exchange: Option<String>,
+    pub exchange_order_id: Option<String>,
+    pub exchange_timestamp: Option<String>,
+    pub filled_quantity: Option<i64>,
+    pub instrument_token: Option<i64>,
+    pub order_id: Option<String>,
+    pub order_timestamp: Option<String>,
+    pub order_type: Option<String>,
+    pub parent_order_id: Option<serde_json::Value>,
+    pub pending_quantity: Option<i64>,
+    pub placed_by: Option<String>,
+    pub price: Option<f64>,
+    pub product: Option<String>,
+    pub quantity: Option<i64>,
+    pub status: Option<String>,
+    pub status_message: Option<serde_json::Value>,
+    pub tag: Option<serde_json::Value>,
+    pub tradingsymbol: Option<String>,
+    pub transaction_type: Option<String>,
+    pub trigger_price: Option<i64>,
+    pub validity: Option<String>,
+    pub variety: Option<String>,
 }

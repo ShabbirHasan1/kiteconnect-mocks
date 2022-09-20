@@ -8,30 +8,8 @@
 // match the expected interface, even if the JSON is valid.
 
 export interface ConvertPosition {
-    $ref:        string;
-    $schema:     string;
-    definitions: Definitions;
-}
-
-export interface Definitions {
-    ConvertPosition: ConvertPositionClass;
-}
-
-export interface ConvertPositionClass {
-    additionalProperties: boolean;
-    properties:           Properties;
-    required:             string[];
-    title:                string;
-    type:                 string;
-}
-
-export interface Properties {
-    data:   Data;
-    status: Data;
-}
-
-export interface Data {
-    type: string;
+    data?:   boolean;
+    status?: string;
 }
 
 // Converts JSON strings to/from your types
@@ -180,25 +158,7 @@ function r(name: string) {
 
 const typeMap: any = {
     "ConvertPosition": o([
-        { json: "$ref", js: "$ref", typ: "" },
-        { json: "$schema", js: "$schema", typ: "" },
-        { json: "definitions", js: "definitions", typ: r("Definitions") },
-    ], false),
-    "Definitions": o([
-        { json: "ConvertPosition", js: "ConvertPosition", typ: r("ConvertPositionClass") },
-    ], false),
-    "ConvertPositionClass": o([
-        { json: "additionalProperties", js: "additionalProperties", typ: true },
-        { json: "properties", js: "properties", typ: r("Properties") },
-        { json: "required", js: "required", typ: a("") },
-        { json: "title", js: "title", typ: "" },
-        { json: "type", js: "type", typ: "" },
-    ], false),
-    "Properties": o([
-        { json: "data", js: "data", typ: r("Data") },
-        { json: "status", js: "status", typ: r("Data") },
-    ], false),
-    "Data": o([
-        { json: "type", js: "type", typ: "" },
+        { json: "data", js: "data", typ: u(undefined, true) },
+        { json: "status", js: "status", typ: u(undefined, "") },
     ], false),
 };

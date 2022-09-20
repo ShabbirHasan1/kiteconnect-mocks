@@ -8,74 +8,24 @@
 // match the expected interface, even if the JSON is valid.
 
 export interface OrderTrades {
-    $ref:        string;
-    $schema:     string;
-    definitions: Definitions;
-}
-
-export interface Definitions {
-    Datum:       Datum;
-    OrderTrades: OrderTradesClass;
+    data?:   Datum[];
+    status?: string;
 }
 
 export interface Datum {
-    additionalProperties: boolean;
-    properties:           DatumProperties;
-    required:             string[];
-    title:                string;
-    type:                 string;
-}
-
-export interface DatumProperties {
-    average_price:      AveragePrice;
-    exchange:           AveragePrice;
-    exchange_order_id:  AveragePrice;
-    exchange_timestamp: ExchangeTimestamp;
-    fill_timestamp:     ExchangeTimestamp;
-    instrument_token:   AveragePrice;
-    order_id:           AveragePrice;
-    order_timestamp:    ExchangeTimestamp;
-    product:            AveragePrice;
-    quantity:           AveragePrice;
-    trade_id:           ExchangeTimestamp;
-    tradingsymbol:      AveragePrice;
-    transaction_type:   AveragePrice;
-}
-
-export interface AveragePrice {
-    type: Type;
-}
-
-export enum Type {
-    Integer = "integer",
-    String = "string",
-}
-
-export interface ExchangeTimestamp {
-    format: string;
-    type:   Type;
-}
-
-export interface OrderTradesClass {
-    additionalProperties: boolean;
-    properties:           OrderTradesProperties;
-    required:             string[];
-    title:                string;
-    type:                 string;
-}
-
-export interface OrderTradesProperties {
-    data:   Data;
-    status: AveragePrice;
-}
-
-export interface Data {
-    items: Items;
-    type:  string;
-}
-
-export interface Items {
-    $ref: string;
+    averagePrice?:      number;
+    exchange?:          string;
+    exchangeOrderID?:   string;
+    exchangeTimestamp?: Date;
+    fillTimestamp?:     Date;
+    instrumentToken?:   number;
+    orderID?:           string;
+    orderTimestamp?:    string;
+    product?:           string;
+    quantity?:          number;
+    tradeID?:           string;
+    tradingsymbol?:     string;
+    transactionType?:   string;
 }
 
 // Converts JSON strings to/from your types
@@ -224,63 +174,22 @@ function r(name: string) {
 
 const typeMap: any = {
     "OrderTrades": o([
-        { json: "$ref", js: "$ref", typ: "" },
-        { json: "$schema", js: "$schema", typ: "" },
-        { json: "definitions", js: "definitions", typ: r("Definitions") },
-    ], false),
-    "Definitions": o([
-        { json: "Datum", js: "Datum", typ: r("Datum") },
-        { json: "OrderTrades", js: "OrderTrades", typ: r("OrderTradesClass") },
+        { json: "data", js: "data", typ: u(undefined, a(r("Datum"))) },
+        { json: "status", js: "status", typ: u(undefined, "") },
     ], false),
     "Datum": o([
-        { json: "additionalProperties", js: "additionalProperties", typ: true },
-        { json: "properties", js: "properties", typ: r("DatumProperties") },
-        { json: "required", js: "required", typ: a("") },
-        { json: "title", js: "title", typ: "" },
-        { json: "type", js: "type", typ: "" },
+        { json: "average_price", js: "averagePrice", typ: u(undefined, 0) },
+        { json: "exchange", js: "exchange", typ: u(undefined, "") },
+        { json: "exchange_order_id", js: "exchangeOrderID", typ: u(undefined, "") },
+        { json: "exchange_timestamp", js: "exchangeTimestamp", typ: u(undefined, Date) },
+        { json: "fill_timestamp", js: "fillTimestamp", typ: u(undefined, Date) },
+        { json: "instrument_token", js: "instrumentToken", typ: u(undefined, 0) },
+        { json: "order_id", js: "orderID", typ: u(undefined, "") },
+        { json: "order_timestamp", js: "orderTimestamp", typ: u(undefined, "") },
+        { json: "product", js: "product", typ: u(undefined, "") },
+        { json: "quantity", js: "quantity", typ: u(undefined, 0) },
+        { json: "trade_id", js: "tradeID", typ: u(undefined, "") },
+        { json: "tradingsymbol", js: "tradingsymbol", typ: u(undefined, "") },
+        { json: "transaction_type", js: "transactionType", typ: u(undefined, "") },
     ], false),
-    "DatumProperties": o([
-        { json: "average_price", js: "average_price", typ: r("AveragePrice") },
-        { json: "exchange", js: "exchange", typ: r("AveragePrice") },
-        { json: "exchange_order_id", js: "exchange_order_id", typ: r("AveragePrice") },
-        { json: "exchange_timestamp", js: "exchange_timestamp", typ: r("ExchangeTimestamp") },
-        { json: "fill_timestamp", js: "fill_timestamp", typ: r("ExchangeTimestamp") },
-        { json: "instrument_token", js: "instrument_token", typ: r("AveragePrice") },
-        { json: "order_id", js: "order_id", typ: r("AveragePrice") },
-        { json: "order_timestamp", js: "order_timestamp", typ: r("ExchangeTimestamp") },
-        { json: "product", js: "product", typ: r("AveragePrice") },
-        { json: "quantity", js: "quantity", typ: r("AveragePrice") },
-        { json: "trade_id", js: "trade_id", typ: r("ExchangeTimestamp") },
-        { json: "tradingsymbol", js: "tradingsymbol", typ: r("AveragePrice") },
-        { json: "transaction_type", js: "transaction_type", typ: r("AveragePrice") },
-    ], false),
-    "AveragePrice": o([
-        { json: "type", js: "type", typ: r("Type") },
-    ], false),
-    "ExchangeTimestamp": o([
-        { json: "format", js: "format", typ: "" },
-        { json: "type", js: "type", typ: r("Type") },
-    ], false),
-    "OrderTradesClass": o([
-        { json: "additionalProperties", js: "additionalProperties", typ: true },
-        { json: "properties", js: "properties", typ: r("OrderTradesProperties") },
-        { json: "required", js: "required", typ: a("") },
-        { json: "title", js: "title", typ: "" },
-        { json: "type", js: "type", typ: "" },
-    ], false),
-    "OrderTradesProperties": o([
-        { json: "data", js: "data", typ: r("Data") },
-        { json: "status", js: "status", typ: r("AveragePrice") },
-    ], false),
-    "Data": o([
-        { json: "items", js: "items", typ: r("Items") },
-        { json: "type", js: "type", typ: "" },
-    ], false),
-    "Items": o([
-        { json: "$ref", js: "$ref", typ: "" },
-    ], false),
-    "Type": [
-        "integer",
-        "string",
-    ],
 };

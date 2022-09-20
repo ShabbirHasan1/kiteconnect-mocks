@@ -13,116 +13,20 @@
 
 extern crate serde_derive;
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct HistoricalOi {
-    #[serde(rename = "$ref")]
-    historical_oi_ref: String,
-
-    #[serde(rename = "$schema")]
-    schema: String,
-
-    #[serde(rename = "definitions")]
-    definitions: Definitions,
+    pub data: Option<Data>,
+    pub status: Option<String>,
 }
 
-#[derive(Serialize, Deserialize)]
-pub struct Definitions {
-    #[serde(rename = "Candle")]
-    candle: Candle,
-
-    #[serde(rename = "Data")]
-    data: Data,
-
-    #[serde(rename = "HistoricalOi")]
-    historical_oi: HistoricalOiClass,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct Candle {
-    #[serde(rename = "anyOf")]
-    any_of: Vec<AnyOf>,
-
-    #[serde(rename = "title")]
-    title: String,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct AnyOf {
-    #[serde(rename = "type")]
-    any_of_type: String,
-}
-
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Data {
-    #[serde(rename = "additionalProperties")]
-    additional_properties: bool,
-
-    #[serde(rename = "properties")]
-    properties: DataProperties,
-
-    #[serde(rename = "required")]
-    required: Vec<String>,
-
-    #[serde(rename = "title")]
-    title: String,
-
-    #[serde(rename = "type")]
-    data_type: String,
+    pub candles: Option<Vec<Vec<Candle>>>,
 }
 
-#[derive(Serialize, Deserialize)]
-pub struct DataProperties {
-    #[serde(rename = "candles")]
-    candles: Candles,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct Candles {
-    #[serde(rename = "items")]
-    items: Items,
-
-    #[serde(rename = "type")]
-    candles_type: String,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct Items {
-    #[serde(rename = "items")]
-    items: DataClass,
-
-    #[serde(rename = "type")]
-    items_type: String,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct DataClass {
-    #[serde(rename = "$ref")]
-    data_class_ref: String,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct HistoricalOiClass {
-    #[serde(rename = "additionalProperties")]
-    additional_properties: bool,
-
-    #[serde(rename = "properties")]
-    properties: HistoricalOiProperties,
-
-    #[serde(rename = "required")]
-    required: Vec<String>,
-
-    #[serde(rename = "title")]
-    title: String,
-
-    #[serde(rename = "type")]
-    historical_oi_class_type: String,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct HistoricalOiProperties {
-    #[serde(rename = "data")]
-    data: DataClass,
-
-    #[serde(rename = "status")]
-    status: AnyOf,
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum Candle {
+    Double(f64),
+    String(String),
 }

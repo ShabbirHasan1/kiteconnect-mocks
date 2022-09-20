@@ -13,191 +13,44 @@
 
 extern crate serde_derive;
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Postback {
-    #[serde(rename = "$ref")]
-    postback_ref: String,
-
-    #[serde(rename = "$schema")]
-    schema: String,
-
-    #[serde(rename = "definitions")]
-    definitions: Definitions,
+    pub app_id: Option<i64>,
+    pub average_price: Option<i64>,
+    pub cancelled_quantity: Option<i64>,
+    pub checksum: Option<String>,
+    pub disclosed_quantity: Option<i64>,
+    pub exchange: Option<String>,
+    pub exchange_order_id: Option<String>,
+    pub exchange_timestamp: Option<String>,
+    pub exchange_update_timestamp: Option<String>,
+    pub filled_quantity: Option<i64>,
+    pub guid: Option<String>,
+    pub instrument_token: Option<i64>,
+    pub market_protection: Option<i64>,
+    pub meta: Option<Meta>,
+    pub order_id: Option<String>,
+    pub order_timestamp: Option<String>,
+    pub order_type: Option<String>,
+    pub parent_order_id: Option<serde_json::Value>,
+    pub pending_quantity: Option<i64>,
+    pub placed_by: Option<String>,
+    pub price: Option<i64>,
+    pub product: Option<String>,
+    pub quantity: Option<i64>,
+    pub status: Option<String>,
+    pub status_message: Option<serde_json::Value>,
+    pub status_message_raw: Option<serde_json::Value>,
+    pub tag: Option<serde_json::Value>,
+    pub tradingsymbol: Option<String>,
+    pub transaction_type: Option<String>,
+    pub trigger_price: Option<i64>,
+    pub unfilled_quantity: Option<i64>,
+    pub user_id: Option<String>,
+    pub validity: Option<String>,
+    pub variety: Option<String>,
 }
 
-#[derive(Serialize, Deserialize)]
-pub struct Definitions {
-    #[serde(rename = "Meta")]
-    meta: Meta,
-
-    #[serde(rename = "Postback")]
-    postback: PostbackClass,
-}
-
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Meta {
-    #[serde(rename = "additionalProperties")]
-    additional_properties: bool,
-
-    #[serde(rename = "title")]
-    title: String,
-
-    #[serde(rename = "type")]
-    meta_type: String,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct PostbackClass {
-    #[serde(rename = "additionalProperties")]
-    additional_properties: bool,
-
-    #[serde(rename = "properties")]
-    properties: Properties,
-
-    #[serde(rename = "required")]
-    required: Vec<String>,
-
-    #[serde(rename = "title")]
-    title: String,
-
-    #[serde(rename = "type")]
-    postback_class_type: String,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct Properties {
-    #[serde(rename = "app_id")]
-    app_id: AppId,
-
-    #[serde(rename = "average_price")]
-    average_price: AppId,
-
-    #[serde(rename = "cancelled_quantity")]
-    cancelled_quantity: AppId,
-
-    #[serde(rename = "checksum")]
-    checksum: AppId,
-
-    #[serde(rename = "disclosed_quantity")]
-    disclosed_quantity: AppId,
-
-    #[serde(rename = "exchange")]
-    exchange: AppId,
-
-    #[serde(rename = "exchange_order_id")]
-    exchange_order_id: AppId,
-
-    #[serde(rename = "exchange_timestamp")]
-    exchange_timestamp: Timestamp,
-
-    #[serde(rename = "exchange_update_timestamp")]
-    exchange_update_timestamp: Timestamp,
-
-    #[serde(rename = "filled_quantity")]
-    filled_quantity: AppId,
-
-    #[serde(rename = "guid")]
-    guid: AppId,
-
-    #[serde(rename = "instrument_token")]
-    instrument_token: AppId,
-
-    #[serde(rename = "market_protection")]
-    market_protection: AppId,
-
-    #[serde(rename = "meta")]
-    meta: MetaClass,
-
-    #[serde(rename = "order_id")]
-    order_id: AppId,
-
-    #[serde(rename = "order_timestamp")]
-    order_timestamp: Timestamp,
-
-    #[serde(rename = "order_type")]
-    order_type: AppId,
-
-    #[serde(rename = "parent_order_id")]
-    parent_order_id: AppId,
-
-    #[serde(rename = "pending_quantity")]
-    pending_quantity: AppId,
-
-    #[serde(rename = "placed_by")]
-    placed_by: AppId,
-
-    #[serde(rename = "price")]
-    price: AppId,
-
-    #[serde(rename = "product")]
-    product: AppId,
-
-    #[serde(rename = "quantity")]
-    quantity: AppId,
-
-    #[serde(rename = "status")]
-    status: AppId,
-
-    #[serde(rename = "status_message")]
-    status_message: AppId,
-
-    #[serde(rename = "status_message_raw")]
-    status_message_raw: AppId,
-
-    #[serde(rename = "tag")]
-    tag: AppId,
-
-    #[serde(rename = "tradingsymbol")]
-    tradingsymbol: AppId,
-
-    #[serde(rename = "transaction_type")]
-    transaction_type: AppId,
-
-    #[serde(rename = "trigger_price")]
-    trigger_price: AppId,
-
-    #[serde(rename = "unfilled_quantity")]
-    unfilled_quantity: AppId,
-
-    #[serde(rename = "user_id")]
-    user_id: AppId,
-
-    #[serde(rename = "validity")]
-    validity: AppId,
-
-    #[serde(rename = "variety")]
-    variety: AppId,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct AppId {
-    #[serde(rename = "type")]
-    app_id_type: Type,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct Timestamp {
-    #[serde(rename = "format")]
-    format: String,
-
-    #[serde(rename = "type")]
-    timestamp_type: Type,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct MetaClass {
-    #[serde(rename = "$ref")]
-    meta_class_ref: String,
-}
-
-#[derive(Serialize, Deserialize)]
-pub enum Type {
-    #[serde(rename = "integer")]
-    Integer,
-
-    #[serde(rename = "null")]
-    Null,
-
-    #[serde(rename = "string")]
-    String,
 }

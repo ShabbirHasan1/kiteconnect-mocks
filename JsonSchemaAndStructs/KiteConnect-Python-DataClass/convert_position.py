@@ -6,10 +6,30 @@
 #
 #     result = convert_position_from_dict(json.loads(json_string))
 
-from typing import Any, List, TypeVar, Type, cast, Callable
+from dataclasses import dataclass
+from typing import Optional, Any, TypeVar, Type, cast
 
 
 T = TypeVar("T")
+
+
+def from_bool(x: Any) -> bool:
+    assert isinstance(x, bool)
+    return x
+
+
+def from_none(x: Any) -> Any:
+    assert x is None
+    return x
+
+
+def from_union(fs, x):
+    for f in fs:
+        try:
+            return f(x)
+        except:
+            pass
+    assert False
 
 
 def from_str(x: Any) -> str:
@@ -22,131 +42,22 @@ def to_class(c: Type[T], x: Any) -> dict:
     return cast(Any, x).to_dict()
 
 
-def from_bool(x: Any) -> bool:
-    assert isinstance(x, bool)
-    return x
-
-
-def from_list(f: Callable[[Any], T], x: Any) -> List[T]:
-    assert isinstance(x, list)
-    return [f(y) for y in x]
-
-
-class Data:
-    type: str
-
-    def __init__(self, type: str) -> None:
-        self.type = type
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'Data':
-        assert isinstance(obj, dict)
-        type = from_str(obj.get("type"))
-        return Data(type)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["type"] = from_str(self.type)
-        return result
-
-
-class Properties:
-    data: Data
-    status: Data
-
-    def __init__(self, data: Data, status: Data) -> None:
-        self.data = data
-        self.status = status
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'Properties':
-        assert isinstance(obj, dict)
-        data = Data.from_dict(obj.get("data"))
-        status = Data.from_dict(obj.get("status"))
-        return Properties(data, status)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["data"] = to_class(Data, self.data)
-        result["status"] = to_class(Data, self.status)
-        return result
-
-
-class ConvertPositionClass:
-    additional_properties: bool
-    properties: Properties
-    required: List[str]
-    title: str
-    type: str
-
-    def __init__(self, additional_properties: bool, properties: Properties, required: List[str], title: str, type: str) -> None:
-        self.additional_properties = additional_properties
-        self.properties = properties
-        self.required = required
-        self.title = title
-        self.type = type
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'ConvertPositionClass':
-        assert isinstance(obj, dict)
-        additional_properties = from_bool(obj.get("additionalProperties"))
-        properties = Properties.from_dict(obj.get("properties"))
-        required = from_list(from_str, obj.get("required"))
-        title = from_str(obj.get("title"))
-        type = from_str(obj.get("type"))
-        return ConvertPositionClass(additional_properties, properties, required, title, type)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["additionalProperties"] = from_bool(self.additional_properties)
-        result["properties"] = to_class(Properties, self.properties)
-        result["required"] = from_list(from_str, self.required)
-        result["title"] = from_str(self.title)
-        result["type"] = from_str(self.type)
-        return result
-
-
-class Definitions:
-    convert_position: ConvertPositionClass
-
-    def __init__(self, convert_position: ConvertPositionClass) -> None:
-        self.convert_position = convert_position
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'Definitions':
-        assert isinstance(obj, dict)
-        convert_position = ConvertPositionClass.from_dict(obj.get("ConvertPosition"))
-        return Definitions(convert_position)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["ConvertPosition"] = to_class(ConvertPositionClass, self.convert_position)
-        return result
-
-
+@dataclass(slots=True)
 class ConvertPosition:
-    ref: str
-    schema: str
-    definitions: Definitions
-
-    def __init__(self, ref: str, schema: str, definitions: Definitions) -> None:
-        self.ref = ref
-        self.schema = schema
-        self.definitions = definitions
+    data: Optional[bool] = None
+    status: Optional[str] = None
 
     @staticmethod
     def from_dict(obj: Any) -> 'ConvertPosition':
         assert isinstance(obj, dict)
-        ref = from_str(obj.get("$ref"))
-        schema = from_str(obj.get("$schema"))
-        definitions = Definitions.from_dict(obj.get("definitions"))
-        return ConvertPosition(ref, schema, definitions)
+        data = from_union([from_bool, from_none], obj.get("data"))
+        status = from_union([from_str, from_none], obj.get("status"))
+        return ConvertPosition(data, status)
 
     def to_dict(self) -> dict:
         result: dict = {}
-        result["$ref"] = from_str(self.ref)
-        result["$schema"] = from_str(self.schema)
-        result["definitions"] = to_class(Definitions, self.definitions)
+        result["data"] = from_union([from_bool, from_none], self.data)
+        result["status"] = from_union([from_str, from_none], self.status)
         return result
 
 

@@ -6,12 +6,30 @@
 #
 #     result = basket_margins_from_dict(json.loads(json_string))
 
-from typing import Any, List, TypeVar, Type, cast, Callable
-from enum import Enum
+from dataclasses import dataclass
+from typing import Optional, Any, List, TypeVar, Type, cast, Callable
 
 
 T = TypeVar("T")
-EnumT = TypeVar("EnumT", bound=Enum)
+
+
+def from_int(x: Any) -> int:
+    assert isinstance(x, int) and not isinstance(x, bool)
+    return x
+
+
+def from_none(x: Any) -> Any:
+    assert x is None
+    return x
+
+
+def from_union(fs, x):
+    for f in fs:
+        try:
+            return f(x)
+        except:
+            pass
+    assert False
 
 
 def from_str(x: Any) -> str:
@@ -19,9 +37,14 @@ def from_str(x: Any) -> str:
     return x
 
 
-def to_enum(c: Type[EnumT], x: Any) -> EnumT:
-    assert isinstance(x, c)
-    return x.value
+def from_float(x: Any) -> float:
+    assert isinstance(x, (float, int)) and not isinstance(x, bool)
+    return float(x)
+
+
+def to_float(x: Any) -> float:
+    assert isinstance(x, float)
+    return x
 
 
 def to_class(c: Type[T], x: Any) -> dict:
@@ -29,401 +52,117 @@ def to_class(c: Type[T], x: Any) -> dict:
     return cast(Any, x).to_dict()
 
 
-def from_bool(x: Any) -> bool:
-    assert isinstance(x, bool)
-    return x
-
-
 def from_list(f: Callable[[Any], T], x: Any) -> List[T]:
     assert isinstance(x, list)
     return [f(y) for y in x]
 
 
-class Data:
-    ref: str
-
-    def __init__(self, ref: str) -> None:
-        self.ref = ref
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'Data':
-        assert isinstance(obj, dict)
-        ref = from_str(obj.get("$ref"))
-        return Data(ref)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["$ref"] = from_str(self.ref)
-        return result
-
-
-class TypeEnum(Enum):
-    INTEGER = "integer"
-    NUMBER = "number"
-    STRING = "string"
-
-
-class Status:
-    type: TypeEnum
-
-    def __init__(self, type: TypeEnum) -> None:
-        self.type = type
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'Status':
-        assert isinstance(obj, dict)
-        type = TypeEnum(obj.get("type"))
-        return Status(type)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["type"] = to_enum(TypeEnum, self.type)
-        return result
-
-
-class BasketMarginsProperties:
-    data: Data
-    status: Status
-
-    def __init__(self, data: Data, status: Status) -> None:
-        self.data = data
-        self.status = status
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'BasketMarginsProperties':
-        assert isinstance(obj, dict)
-        data = Data.from_dict(obj.get("data"))
-        status = Status.from_dict(obj.get("status"))
-        return BasketMarginsProperties(data, status)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["data"] = to_class(Data, self.data)
-        result["status"] = to_class(Status, self.status)
-        return result
-
-
-class BasketMarginsClass:
-    additional_properties: bool
-    properties: BasketMarginsProperties
-    required: List[str]
-    title: str
-    type: str
-
-    def __init__(self, additional_properties: bool, properties: BasketMarginsProperties, required: List[str], title: str, type: str) -> None:
-        self.additional_properties = additional_properties
-        self.properties = properties
-        self.required = required
-        self.title = title
-        self.type = type
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'BasketMarginsClass':
-        assert isinstance(obj, dict)
-        additional_properties = from_bool(obj.get("additionalProperties"))
-        properties = BasketMarginsProperties.from_dict(obj.get("properties"))
-        required = from_list(from_str, obj.get("required"))
-        title = from_str(obj.get("title"))
-        type = from_str(obj.get("type"))
-        return BasketMarginsClass(additional_properties, properties, required, title, type)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["additionalProperties"] = from_bool(self.additional_properties)
-        result["properties"] = to_class(BasketMarginsProperties, self.properties)
-        result["required"] = from_list(from_str, self.required)
-        result["title"] = from_str(self.title)
-        result["type"] = from_str(self.type)
-        return result
-
-
-class Orders:
-    items: Data
-    type: str
-
-    def __init__(self, items: Data, type: str) -> None:
-        self.items = items
-        self.type = type
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'Orders':
-        assert isinstance(obj, dict)
-        items = Data.from_dict(obj.get("items"))
-        type = from_str(obj.get("type"))
-        return Orders(items, type)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["items"] = to_class(Data, self.items)
-        result["type"] = from_str(self.type)
-        return result
-
-
-class DataProperties:
-    final: Data
-    initial: Data
-    orders: Orders
-
-    def __init__(self, final: Data, initial: Data, orders: Orders) -> None:
-        self.final = final
-        self.initial = initial
-        self.orders = orders
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'DataProperties':
-        assert isinstance(obj, dict)
-        final = Data.from_dict(obj.get("final"))
-        initial = Data.from_dict(obj.get("initial"))
-        orders = Orders.from_dict(obj.get("orders"))
-        return DataProperties(final, initial, orders)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["final"] = to_class(Data, self.final)
-        result["initial"] = to_class(Data, self.initial)
-        result["orders"] = to_class(Orders, self.orders)
-        return result
-
-
-class DataClass:
-    additional_properties: bool
-    properties: DataProperties
-    required: List[str]
-    title: str
-    type: str
-
-    def __init__(self, additional_properties: bool, properties: DataProperties, required: List[str], title: str, type: str) -> None:
-        self.additional_properties = additional_properties
-        self.properties = properties
-        self.required = required
-        self.title = title
-        self.type = type
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'DataClass':
-        assert isinstance(obj, dict)
-        additional_properties = from_bool(obj.get("additionalProperties"))
-        properties = DataProperties.from_dict(obj.get("properties"))
-        required = from_list(from_str, obj.get("required"))
-        title = from_str(obj.get("title"))
-        type = from_str(obj.get("type"))
-        return DataClass(additional_properties, properties, required, title, type)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["additionalProperties"] = from_bool(self.additional_properties)
-        result["properties"] = to_class(DataProperties, self.properties)
-        result["required"] = from_list(from_str, self.required)
-        result["title"] = from_str(self.title)
-        result["type"] = from_str(self.type)
-        return result
-
-
-class FinalProperties:
-    additional: Status
-    bo: Status
-    cash: Status
-    exchange: Status
-    exposure: Status
-    option_premium: Status
-    pnl: Data
-    span: Status
-    total: Status
-    tradingsymbol: Status
-    type: Status
-    var: Status
-
-    def __init__(self, additional: Status, bo: Status, cash: Status, exchange: Status, exposure: Status, option_premium: Status, pnl: Data, span: Status, total: Status, tradingsymbol: Status, type: Status, var: Status) -> None:
-        self.additional = additional
-        self.bo = bo
-        self.cash = cash
-        self.exchange = exchange
-        self.exposure = exposure
-        self.option_premium = option_premium
-        self.pnl = pnl
-        self.span = span
-        self.total = total
-        self.tradingsymbol = tradingsymbol
-        self.type = type
-        self.var = var
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'FinalProperties':
-        assert isinstance(obj, dict)
-        additional = Status.from_dict(obj.get("additional"))
-        bo = Status.from_dict(obj.get("bo"))
-        cash = Status.from_dict(obj.get("cash"))
-        exchange = Status.from_dict(obj.get("exchange"))
-        exposure = Status.from_dict(obj.get("exposure"))
-        option_premium = Status.from_dict(obj.get("option_premium"))
-        pnl = Data.from_dict(obj.get("pnl"))
-        span = Status.from_dict(obj.get("span"))
-        total = Status.from_dict(obj.get("total"))
-        tradingsymbol = Status.from_dict(obj.get("tradingsymbol"))
-        type = Status.from_dict(obj.get("type"))
-        var = Status.from_dict(obj.get("var"))
-        return FinalProperties(additional, bo, cash, exchange, exposure, option_premium, pnl, span, total, tradingsymbol, type, var)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["additional"] = to_class(Status, self.additional)
-        result["bo"] = to_class(Status, self.bo)
-        result["cash"] = to_class(Status, self.cash)
-        result["exchange"] = to_class(Status, self.exchange)
-        result["exposure"] = to_class(Status, self.exposure)
-        result["option_premium"] = to_class(Status, self.option_premium)
-        result["pnl"] = to_class(Data, self.pnl)
-        result["span"] = to_class(Status, self.span)
-        result["total"] = to_class(Status, self.total)
-        result["tradingsymbol"] = to_class(Status, self.tradingsymbol)
-        result["type"] = to_class(Status, self.type)
-        result["var"] = to_class(Status, self.var)
-        return result
-
-
-class Final:
-    additional_properties: bool
-    properties: FinalProperties
-    required: List[str]
-    title: str
-    type: str
-
-    def __init__(self, additional_properties: bool, properties: FinalProperties, required: List[str], title: str, type: str) -> None:
-        self.additional_properties = additional_properties
-        self.properties = properties
-        self.required = required
-        self.title = title
-        self.type = type
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'Final':
-        assert isinstance(obj, dict)
-        additional_properties = from_bool(obj.get("additionalProperties"))
-        properties = FinalProperties.from_dict(obj.get("properties"))
-        required = from_list(from_str, obj.get("required"))
-        title = from_str(obj.get("title"))
-        type = from_str(obj.get("type"))
-        return Final(additional_properties, properties, required, title, type)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["additionalProperties"] = from_bool(self.additional_properties)
-        result["properties"] = to_class(FinalProperties, self.properties)
-        result["required"] = from_list(from_str, self.required)
-        result["title"] = from_str(self.title)
-        result["type"] = from_str(self.type)
-        return result
-
-
-class PnlProperties:
-    realised: Status
-    unrealised: Status
-
-    def __init__(self, realised: Status, unrealised: Status) -> None:
-        self.realised = realised
-        self.unrealised = unrealised
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'PnlProperties':
-        assert isinstance(obj, dict)
-        realised = Status.from_dict(obj.get("realised"))
-        unrealised = Status.from_dict(obj.get("unrealised"))
-        return PnlProperties(realised, unrealised)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["realised"] = to_class(Status, self.realised)
-        result["unrealised"] = to_class(Status, self.unrealised)
-        return result
-
-
+@dataclass(slots=True)
 class Pnl:
-    additional_properties: bool
-    properties: PnlProperties
-    required: List[str]
-    title: str
-    type: str
-
-    def __init__(self, additional_properties: bool, properties: PnlProperties, required: List[str], title: str, type: str) -> None:
-        self.additional_properties = additional_properties
-        self.properties = properties
-        self.required = required
-        self.title = title
-        self.type = type
+    realised: Optional[int] = None
+    unrealised: Optional[int] = None
 
     @staticmethod
     def from_dict(obj: Any) -> 'Pnl':
         assert isinstance(obj, dict)
-        additional_properties = from_bool(obj.get("additionalProperties"))
-        properties = PnlProperties.from_dict(obj.get("properties"))
-        required = from_list(from_str, obj.get("required"))
-        title = from_str(obj.get("title"))
-        type = from_str(obj.get("type"))
-        return Pnl(additional_properties, properties, required, title, type)
+        realised = from_union([from_int, from_none], obj.get("realised"))
+        unrealised = from_union([from_int, from_none], obj.get("unrealised"))
+        return Pnl(realised, unrealised)
 
     def to_dict(self) -> dict:
         result: dict = {}
-        result["additionalProperties"] = from_bool(self.additional_properties)
-        result["properties"] = to_class(PnlProperties, self.properties)
-        result["required"] = from_list(from_str, self.required)
-        result["title"] = from_str(self.title)
-        result["type"] = from_str(self.type)
+        result["realised"] = from_union([from_int, from_none], self.realised)
+        result["unrealised"] = from_union([from_int, from_none], self.unrealised)
         return result
 
 
-class Definitions:
-    basket_margins: BasketMarginsClass
-    data: DataClass
-    final: Final
-    pnl: Pnl
-
-    def __init__(self, basket_margins: BasketMarginsClass, data: DataClass, final: Final, pnl: Pnl) -> None:
-        self.basket_margins = basket_margins
-        self.data = data
-        self.final = final
-        self.pnl = pnl
+@dataclass(slots=True)
+class Final:
+    additional: Optional[int] = None
+    bo: Optional[int] = None
+    cash: Optional[int] = None
+    exchange: Optional[str] = None
+    exposure: Optional[float] = None
+    option_premium: Optional[float] = None
+    pnl: Optional[Pnl] = None
+    span: Optional[float] = None
+    total: Optional[float] = None
+    tradingsymbol: Optional[str] = None
+    type: Optional[str] = None
+    var: Optional[int] = None
 
     @staticmethod
-    def from_dict(obj: Any) -> 'Definitions':
+    def from_dict(obj: Any) -> 'Final':
         assert isinstance(obj, dict)
-        basket_margins = BasketMarginsClass.from_dict(obj.get("BasketMargins"))
-        data = DataClass.from_dict(obj.get("Data"))
-        final = Final.from_dict(obj.get("Final"))
-        pnl = Pnl.from_dict(obj.get("Pnl"))
-        return Definitions(basket_margins, data, final, pnl)
+        additional = from_union([from_int, from_none], obj.get("additional"))
+        bo = from_union([from_int, from_none], obj.get("bo"))
+        cash = from_union([from_int, from_none], obj.get("cash"))
+        exchange = from_union([from_str, from_none], obj.get("exchange"))
+        exposure = from_union([from_float, from_none], obj.get("exposure"))
+        option_premium = from_union([from_float, from_none], obj.get("option_premium"))
+        pnl = from_union([Pnl.from_dict, from_none], obj.get("pnl"))
+        span = from_union([from_float, from_none], obj.get("span"))
+        total = from_union([from_float, from_none], obj.get("total"))
+        tradingsymbol = from_union([from_str, from_none], obj.get("tradingsymbol"))
+        type = from_union([from_str, from_none], obj.get("type"))
+        var = from_union([from_int, from_none], obj.get("var"))
+        return Final(additional, bo, cash, exchange, exposure, option_premium, pnl, span, total, tradingsymbol, type, var)
 
     def to_dict(self) -> dict:
         result: dict = {}
-        result["BasketMargins"] = to_class(BasketMarginsClass, self.basket_margins)
-        result["Data"] = to_class(DataClass, self.data)
-        result["Final"] = to_class(Final, self.final)
-        result["Pnl"] = to_class(Pnl, self.pnl)
+        result["additional"] = from_union([from_int, from_none], self.additional)
+        result["bo"] = from_union([from_int, from_none], self.bo)
+        result["cash"] = from_union([from_int, from_none], self.cash)
+        result["exchange"] = from_union([from_str, from_none], self.exchange)
+        result["exposure"] = from_union([to_float, from_none], self.exposure)
+        result["option_premium"] = from_union([to_float, from_none], self.option_premium)
+        result["pnl"] = from_union([lambda x: to_class(Pnl, x), from_none], self.pnl)
+        result["span"] = from_union([to_float, from_none], self.span)
+        result["total"] = from_union([to_float, from_none], self.total)
+        result["tradingsymbol"] = from_union([from_str, from_none], self.tradingsymbol)
+        result["type"] = from_union([from_str, from_none], self.type)
+        result["var"] = from_union([from_int, from_none], self.var)
         return result
 
 
-class BasketMargins:
-    ref: str
-    schema: str
-    definitions: Definitions
+@dataclass(slots=True)
+class Data:
+    final: Optional[Final] = None
+    initial: Optional[Final] = None
+    orders: Optional[List[Final]] = None
 
-    def __init__(self, ref: str, schema: str, definitions: Definitions) -> None:
-        self.ref = ref
-        self.schema = schema
-        self.definitions = definitions
+    @staticmethod
+    def from_dict(obj: Any) -> 'Data':
+        assert isinstance(obj, dict)
+        final = from_union([Final.from_dict, from_none], obj.get("final"))
+        initial = from_union([Final.from_dict, from_none], obj.get("initial"))
+        orders = from_union([lambda x: from_list(Final.from_dict, x), from_none], obj.get("orders"))
+        return Data(final, initial, orders)
+
+    def to_dict(self) -> dict:
+        result: dict = {}
+        result["final"] = from_union([lambda x: to_class(Final, x), from_none], self.final)
+        result["initial"] = from_union([lambda x: to_class(Final, x), from_none], self.initial)
+        result["orders"] = from_union([lambda x: from_list(lambda x: to_class(Final, x), x), from_none], self.orders)
+        return result
+
+
+@dataclass(slots=True)
+class BasketMargins:
+    data: Optional[Data] = None
+    status: Optional[str] = None
 
     @staticmethod
     def from_dict(obj: Any) -> 'BasketMargins':
         assert isinstance(obj, dict)
-        ref = from_str(obj.get("$ref"))
-        schema = from_str(obj.get("$schema"))
-        definitions = Definitions.from_dict(obj.get("definitions"))
-        return BasketMargins(ref, schema, definitions)
+        data = from_union([Data.from_dict, from_none], obj.get("data"))
+        status = from_union([from_str, from_none], obj.get("status"))
+        return BasketMargins(data, status)
 
     def to_dict(self) -> dict:
         result: dict = {}
-        result["$ref"] = from_str(self.ref)
-        result["$schema"] = from_str(self.schema)
-        result["definitions"] = to_class(Definitions, self.definitions)
+        result["data"] = from_union([lambda x: to_class(Data, x), from_none], self.data)
+        result["status"] = from_union([from_str, from_none], self.status)
         return result
 
 

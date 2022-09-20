@@ -4,7 +4,7 @@
 # To parse this JSON, add 'dry-struct' and 'dry-types' gems, then do:
 #
 #   mfsip_info = MFSIPInfo.from_json! "{…}"
-#   puts mfsip_info.definitions.step_up.required.first
+#   puts mfsip_info.data&.step_up&.the_1502.even?
 #
 # If from_json! succeeds, the value returned matches the schema.
 
@@ -15,79 +15,19 @@ require 'dry-struct'
 module Types
   include Dry::Types.module
 
-  Bool   = Strict::Bool
+  Int    = Strict::Int
+  Nil    = Strict::Nil
   Hash   = Strict::Hash
   String = Strict::String
-  Type   = Strict::String.enum("integer", "null", "number", "string")
-end
-
-module Type
-  Integer = "integer"
-  Null    = "null"
-  Number  = "number"
-  String  = "string"
-end
-
-class CompletedInstalments < Dry::Struct
-  attribute :completed_instalments_type, Types::Type
-
-  def self.from_dynamic!(d)
-    d = Types::Hash[d]
-    new(
-      completed_instalments_type: d.fetch("type"),
-    )
-  end
-
-  def self.from_json!(json)
-    from_dynamic!(JSON.parse(json))
-  end
-
-  def to_dynamic
-    {
-      "type" => @completed_instalments_type,
-    }
-  end
-
-  def to_json(options = nil)
-    JSON.generate(to_dynamic, options)
-  end
-end
-
-class Created < Dry::Struct
-  attribute :created_format, Types::String
-  attribute :created_type,   Types::Type
-
-  def self.from_dynamic!(d)
-    d = Types::Hash[d]
-    new(
-      created_format: d.fetch("format"),
-      created_type:   d.fetch("type"),
-    )
-  end
-
-  def self.from_json!(json)
-    from_dynamic!(JSON.parse(json))
-  end
-
-  def to_dynamic
-    {
-      "format" => @created_format,
-      "type"   => @created_type,
-    }
-  end
-
-  def to_json(options = nil)
-    JSON.generate(to_dynamic, options)
-  end
 end
 
 class StepUp < Dry::Struct
-  attribute :ref, Types::String
+  attribute :the_1502, Types::Int.optional
 
   def self.from_dynamic!(d)
     d = Types::Hash[d]
     new(
-      ref: d.fetch("$ref"),
+      the_1502: d["15-02"],
     )
   end
 
@@ -97,92 +37,7 @@ class StepUp < Dry::Struct
 
   def to_dynamic
     {
-      "$ref" => @ref,
-    }
-  end
-
-  def to_json(options = nil)
-    JSON.generate(to_dynamic, options)
-  end
-end
-
-class DataProperties < Dry::Struct
-  attribute :completed_instalments, CompletedInstalments
-  attribute :created,               Created
-  attribute :dividend_type,         CompletedInstalments
-  attribute :frequency,             CompletedInstalments
-  attribute :fund,                  CompletedInstalments
-  attribute :fund_source,           CompletedInstalments
-  attribute :instalment_amount,     CompletedInstalments
-  attribute :instalment_day,        CompletedInstalments
-  attribute :instalments,           CompletedInstalments
-  attribute :last_instalment,       Created
-  attribute :next_instalment,       Created
-  attribute :pending_instalments,   CompletedInstalments
-  attribute :sip_id,                CompletedInstalments
-  attribute :sip_reg_num,           CompletedInstalments
-  attribute :sip_type,              CompletedInstalments
-  attribute :status,                CompletedInstalments
-  attribute :step_up,               StepUp
-  attribute :tag,                   CompletedInstalments
-  attribute :tradingsymbol,         CompletedInstalments
-  attribute :transaction_type,      CompletedInstalments
-  attribute :trigger_price,         CompletedInstalments
-
-  def self.from_dynamic!(d)
-    d = Types::Hash[d]
-    new(
-      completed_instalments: CompletedInstalments.from_dynamic!(d.fetch("completed_instalments")),
-      created:               Created.from_dynamic!(d.fetch("created")),
-      dividend_type:         CompletedInstalments.from_dynamic!(d.fetch("dividend_type")),
-      frequency:             CompletedInstalments.from_dynamic!(d.fetch("frequency")),
-      fund:                  CompletedInstalments.from_dynamic!(d.fetch("fund")),
-      fund_source:           CompletedInstalments.from_dynamic!(d.fetch("fund_source")),
-      instalment_amount:     CompletedInstalments.from_dynamic!(d.fetch("instalment_amount")),
-      instalment_day:        CompletedInstalments.from_dynamic!(d.fetch("instalment_day")),
-      instalments:           CompletedInstalments.from_dynamic!(d.fetch("instalments")),
-      last_instalment:       Created.from_dynamic!(d.fetch("last_instalment")),
-      next_instalment:       Created.from_dynamic!(d.fetch("next_instalment")),
-      pending_instalments:   CompletedInstalments.from_dynamic!(d.fetch("pending_instalments")),
-      sip_id:                CompletedInstalments.from_dynamic!(d.fetch("sip_id")),
-      sip_reg_num:           CompletedInstalments.from_dynamic!(d.fetch("sip_reg_num")),
-      sip_type:              CompletedInstalments.from_dynamic!(d.fetch("sip_type")),
-      status:                CompletedInstalments.from_dynamic!(d.fetch("status")),
-      step_up:               StepUp.from_dynamic!(d.fetch("step_up")),
-      tag:                   CompletedInstalments.from_dynamic!(d.fetch("tag")),
-      tradingsymbol:         CompletedInstalments.from_dynamic!(d.fetch("tradingsymbol")),
-      transaction_type:      CompletedInstalments.from_dynamic!(d.fetch("transaction_type")),
-      trigger_price:         CompletedInstalments.from_dynamic!(d.fetch("trigger_price")),
-    )
-  end
-
-  def self.from_json!(json)
-    from_dynamic!(JSON.parse(json))
-  end
-
-  def to_dynamic
-    {
-      "completed_instalments" => @completed_instalments.to_dynamic,
-      "created"               => @created.to_dynamic,
-      "dividend_type"         => @dividend_type.to_dynamic,
-      "frequency"             => @frequency.to_dynamic,
-      "fund"                  => @fund.to_dynamic,
-      "fund_source"           => @fund_source.to_dynamic,
-      "instalment_amount"     => @instalment_amount.to_dynamic,
-      "instalment_day"        => @instalment_day.to_dynamic,
-      "instalments"           => @instalments.to_dynamic,
-      "last_instalment"       => @last_instalment.to_dynamic,
-      "next_instalment"       => @next_instalment.to_dynamic,
-      "pending_instalments"   => @pending_instalments.to_dynamic,
-      "sip_id"                => @sip_id.to_dynamic,
-      "sip_reg_num"           => @sip_reg_num.to_dynamic,
-      "sip_type"              => @sip_type.to_dynamic,
-      "status"                => @status.to_dynamic,
-      "step_up"               => @step_up.to_dynamic,
-      "tag"                   => @tag.to_dynamic,
-      "tradingsymbol"         => @tradingsymbol.to_dynamic,
-      "transaction_type"      => @transaction_type.to_dynamic,
-      "trigger_price"         => @trigger_price.to_dynamic,
+      "15-02" => @the_1502,
     }
   end
 
@@ -192,20 +47,52 @@ class DataProperties < Dry::Struct
 end
 
 class DataClass < Dry::Struct
-  attribute :additional_properties, Types::Bool
-  attribute :properties,            DataProperties
-  attribute :required,              Types.Array(Types::String)
-  attribute :title,                 Types::String
-  attribute :data_type,             Types::String
+  attribute :completed_instalments, Types::Int.optional
+  attribute :created,               Types::String.optional
+  attribute :dividend_type,         Types::String.optional
+  attribute :frequency,             Types::String.optional
+  attribute :fund,                  Types::String.optional
+  attribute :fund_source,           Types::String.optional
+  attribute :instalment_amount,     Types::Int.optional
+  attribute :instalment_day,        Types::Int.optional
+  attribute :instalments,           Types::Int.optional
+  attribute :last_instalment,       Types::String.optional
+  attribute :next_instalment,       Types::String.optional
+  attribute :pending_instalments,   Types::Int.optional
+  attribute :sip_id,                Types::String.optional
+  attribute :sip_reg_num,           Types::Nil.optional
+  attribute :sip_type,              Types::String.optional
+  attribute :status,                Types::String.optional
+  attribute :step_up,               StepUp.optional
+  attribute :tag,                   Types::String.optional
+  attribute :tradingsymbol,         Types::String.optional
+  attribute :transaction_type,      Types::String.optional
+  attribute :trigger_price,         Types::Int.optional
 
   def self.from_dynamic!(d)
     d = Types::Hash[d]
     new(
-      additional_properties: d.fetch("additionalProperties"),
-      properties:            DataProperties.from_dynamic!(d.fetch("properties")),
-      required:              d.fetch("required"),
-      title:                 d.fetch("title"),
-      data_type:             d.fetch("type"),
+      completed_instalments: d["completed_instalments"],
+      created:               d["created"],
+      dividend_type:         d["dividend_type"],
+      frequency:             d["frequency"],
+      fund:                  d["fund"],
+      fund_source:           d["fund_source"],
+      instalment_amount:     d["instalment_amount"],
+      instalment_day:        d["instalment_day"],
+      instalments:           d["instalments"],
+      last_instalment:       d["last_instalment"],
+      next_instalment:       d["next_instalment"],
+      pending_instalments:   d["pending_instalments"],
+      sip_id:                d["sip_id"],
+      sip_reg_num:           d["sip_reg_num"],
+      sip_type:              d["sip_type"],
+      status:                d["status"],
+      step_up:               d["step_up"] ? StepUp.from_dynamic!(d["step_up"]) : nil,
+      tag:                   d["tag"],
+      tradingsymbol:         d["tradingsymbol"],
+      transaction_type:      d["transaction_type"],
+      trigger_price:         d["trigger_price"],
     )
   end
 
@@ -215,169 +102,27 @@ class DataClass < Dry::Struct
 
   def to_dynamic
     {
-      "additionalProperties" => @additional_properties,
-      "properties"           => @properties.to_dynamic,
-      "required"             => @required,
-      "title"                => @title,
-      "type"                 => @data_type,
-    }
-  end
-
-  def to_json(options = nil)
-    JSON.generate(to_dynamic, options)
-  end
-end
-
-class MFSIPInfoProperties < Dry::Struct
-  attribute :data,   StepUp
-  attribute :status, CompletedInstalments
-
-  def self.from_dynamic!(d)
-    d = Types::Hash[d]
-    new(
-      data:   StepUp.from_dynamic!(d.fetch("data")),
-      status: CompletedInstalments.from_dynamic!(d.fetch("status")),
-    )
-  end
-
-  def self.from_json!(json)
-    from_dynamic!(JSON.parse(json))
-  end
-
-  def to_dynamic
-    {
-      "data"   => @data.to_dynamic,
-      "status" => @status.to_dynamic,
-    }
-  end
-
-  def to_json(options = nil)
-    JSON.generate(to_dynamic, options)
-  end
-end
-
-class MFSIPInfoClass < Dry::Struct
-  attribute :additional_properties, Types::Bool
-  attribute :properties,            MFSIPInfoProperties
-  attribute :required,              Types.Array(Types::String)
-  attribute :title,                 Types::String
-  attribute :mfsip_info_class_type, Types::String
-
-  def self.from_dynamic!(d)
-    d = Types::Hash[d]
-    new(
-      additional_properties: d.fetch("additionalProperties"),
-      properties:            MFSIPInfoProperties.from_dynamic!(d.fetch("properties")),
-      required:              d.fetch("required"),
-      title:                 d.fetch("title"),
-      mfsip_info_class_type: d.fetch("type"),
-    )
-  end
-
-  def self.from_json!(json)
-    from_dynamic!(JSON.parse(json))
-  end
-
-  def to_dynamic
-    {
-      "additionalProperties" => @additional_properties,
-      "properties"           => @properties.to_dynamic,
-      "required"             => @required,
-      "title"                => @title,
-      "type"                 => @mfsip_info_class_type,
-    }
-  end
-
-  def to_json(options = nil)
-    JSON.generate(to_dynamic, options)
-  end
-end
-
-class StepUpProperties < Dry::Struct
-  attribute :the_1502, CompletedInstalments
-
-  def self.from_dynamic!(d)
-    d = Types::Hash[d]
-    new(
-      the_1502: CompletedInstalments.from_dynamic!(d.fetch("15-02")),
-    )
-  end
-
-  def self.from_json!(json)
-    from_dynamic!(JSON.parse(json))
-  end
-
-  def to_dynamic
-    {
-      "15-02" => @the_1502.to_dynamic,
-    }
-  end
-
-  def to_json(options = nil)
-    JSON.generate(to_dynamic, options)
-  end
-end
-
-class StepUpClass < Dry::Struct
-  attribute :additional_properties, Types::Bool
-  attribute :properties,            StepUpProperties
-  attribute :required,              Types.Array(Types::String)
-  attribute :title,                 Types::String
-  attribute :step_up_class_type,    Types::String
-
-  def self.from_dynamic!(d)
-    d = Types::Hash[d]
-    new(
-      additional_properties: d.fetch("additionalProperties"),
-      properties:            StepUpProperties.from_dynamic!(d.fetch("properties")),
-      required:              d.fetch("required"),
-      title:                 d.fetch("title"),
-      step_up_class_type:    d.fetch("type"),
-    )
-  end
-
-  def self.from_json!(json)
-    from_dynamic!(JSON.parse(json))
-  end
-
-  def to_dynamic
-    {
-      "additionalProperties" => @additional_properties,
-      "properties"           => @properties.to_dynamic,
-      "required"             => @required,
-      "title"                => @title,
-      "type"                 => @step_up_class_type,
-    }
-  end
-
-  def to_json(options = nil)
-    JSON.generate(to_dynamic, options)
-  end
-end
-
-class Definitions < Dry::Struct
-  attribute :data,       DataClass
-  attribute :mfsip_info, MFSIPInfoClass
-  attribute :step_up,    StepUpClass
-
-  def self.from_dynamic!(d)
-    d = Types::Hash[d]
-    new(
-      data:       DataClass.from_dynamic!(d.fetch("Data")),
-      mfsip_info: MFSIPInfoClass.from_dynamic!(d.fetch("MFSIPInfo")),
-      step_up:    StepUpClass.from_dynamic!(d.fetch("StepUp")),
-    )
-  end
-
-  def self.from_json!(json)
-    from_dynamic!(JSON.parse(json))
-  end
-
-  def to_dynamic
-    {
-      "Data"      => @data.to_dynamic,
-      "MFSIPInfo" => @mfsip_info.to_dynamic,
-      "StepUp"    => @step_up.to_dynamic,
+      "completed_instalments" => @completed_instalments,
+      "created"               => @created,
+      "dividend_type"         => @dividend_type,
+      "frequency"             => @frequency,
+      "fund"                  => @fund,
+      "fund_source"           => @fund_source,
+      "instalment_amount"     => @instalment_amount,
+      "instalment_day"        => @instalment_day,
+      "instalments"           => @instalments,
+      "last_instalment"       => @last_instalment,
+      "next_instalment"       => @next_instalment,
+      "pending_instalments"   => @pending_instalments,
+      "sip_id"                => @sip_id,
+      "sip_reg_num"           => @sip_reg_num,
+      "sip_type"              => @sip_type,
+      "status"                => @status,
+      "step_up"               => @step_up&.to_dynamic,
+      "tag"                   => @tag,
+      "tradingsymbol"         => @tradingsymbol,
+      "transaction_type"      => @transaction_type,
+      "trigger_price"         => @trigger_price,
     }
   end
 
@@ -387,16 +132,14 @@ class Definitions < Dry::Struct
 end
 
 class MFSIPInfo < Dry::Struct
-  attribute :ref,         Types::String
-  attribute :schema,      Types::String
-  attribute :definitions, Definitions
+  attribute :data,   DataClass.optional
+  attribute :status, Types::String.optional
 
   def self.from_dynamic!(d)
     d = Types::Hash[d]
     new(
-      ref:         d.fetch("$ref"),
-      schema:      d.fetch("$schema"),
-      definitions: Definitions.from_dynamic!(d.fetch("definitions")),
+      data:   d["data"] ? DataClass.from_dynamic!(d["data"]) : nil,
+      status: d["status"],
     )
   end
 
@@ -406,9 +149,8 @@ class MFSIPInfo < Dry::Struct
 
   def to_dynamic
     {
-      "$ref"        => @ref,
-      "$schema"     => @schema,
-      "definitions" => @definitions.to_dynamic,
+      "data"   => @data&.to_dynamic,
+      "status" => @status,
     }
   end
 

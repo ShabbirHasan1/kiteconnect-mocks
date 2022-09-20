@@ -6,20 +6,40 @@
 #
 #     result = margin_commodity_from_dict(json.loads(json_string))
 
-from typing import Any, List, TypeVar, Type, cast, Callable
+from dataclasses import dataclass
+from typing import Optional, Any, Dict, TypeVar, Callable, Type, cast
 
 
 T = TypeVar("T")
 
 
-def from_str(x: Any) -> str:
-    assert isinstance(x, str)
+def from_int(x: Any) -> int:
+    assert isinstance(x, int) and not isinstance(x, bool)
     return x
 
 
-def to_class(c: Type[T], x: Any) -> dict:
-    assert isinstance(x, c)
-    return cast(Any, x).to_dict()
+def from_none(x: Any) -> Any:
+    assert x is None
+    return x
+
+
+def from_union(fs, x):
+    for f in fs:
+        try:
+            return f(x)
+        except:
+            pass
+    assert False
+
+
+def from_float(x: Any) -> float:
+    assert isinstance(x, (float, int)) and not isinstance(x, bool)
+    return float(x)
+
+
+def to_float(x: Any) -> float:
+    assert isinstance(x, float)
+    return x
 
 
 def from_bool(x: Any) -> bool:
@@ -27,310 +47,93 @@ def from_bool(x: Any) -> bool:
     return x
 
 
-def from_list(f: Callable[[Any], T], x: Any) -> List[T]:
-    assert isinstance(x, list)
-    return [f(y) for y in x]
+def from_dict(f: Callable[[Any], T], x: Any) -> Dict[str, T]:
+    assert isinstance(x, dict)
+    return { k: f(v) for (k, v) in x.items() }
 
 
-class AdhocMargin:
-    type: str
-
-    def __init__(self, type: str) -> None:
-        self.type = type
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'AdhocMargin':
-        assert isinstance(obj, dict)
-        type = from_str(obj.get("type"))
-        return AdhocMargin(type)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["type"] = from_str(self.type)
-        return result
+def to_class(c: Type[T], x: Any) -> dict:
+    assert isinstance(x, c)
+    return cast(Any, x).to_dict()
 
 
-class AvailableProperties:
-    adhoc_margin: AdhocMargin
-    cash: AdhocMargin
-    collateral: AdhocMargin
-    intraday_payin: AdhocMargin
-    live_balance: AdhocMargin
-    opening_balance: AdhocMargin
-
-    def __init__(self, adhoc_margin: AdhocMargin, cash: AdhocMargin, collateral: AdhocMargin, intraday_payin: AdhocMargin, live_balance: AdhocMargin, opening_balance: AdhocMargin) -> None:
-        self.adhoc_margin = adhoc_margin
-        self.cash = cash
-        self.collateral = collateral
-        self.intraday_payin = intraday_payin
-        self.live_balance = live_balance
-        self.opening_balance = opening_balance
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'AvailableProperties':
-        assert isinstance(obj, dict)
-        adhoc_margin = AdhocMargin.from_dict(obj.get("adhoc_margin"))
-        cash = AdhocMargin.from_dict(obj.get("cash"))
-        collateral = AdhocMargin.from_dict(obj.get("collateral"))
-        intraday_payin = AdhocMargin.from_dict(obj.get("intraday_payin"))
-        live_balance = AdhocMargin.from_dict(obj.get("live_balance"))
-        opening_balance = AdhocMargin.from_dict(obj.get("opening_balance"))
-        return AvailableProperties(adhoc_margin, cash, collateral, intraday_payin, live_balance, opening_balance)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["adhoc_margin"] = to_class(AdhocMargin, self.adhoc_margin)
-        result["cash"] = to_class(AdhocMargin, self.cash)
-        result["collateral"] = to_class(AdhocMargin, self.collateral)
-        result["intraday_payin"] = to_class(AdhocMargin, self.intraday_payin)
-        result["live_balance"] = to_class(AdhocMargin, self.live_balance)
-        result["opening_balance"] = to_class(AdhocMargin, self.opening_balance)
-        return result
+def from_str(x: Any) -> str:
+    assert isinstance(x, str)
+    return x
 
 
+@dataclass(slots=True)
 class Available:
-    additional_properties: bool
-    properties: AvailableProperties
-    required: List[str]
-    title: str
-    type: str
-
-    def __init__(self, additional_properties: bool, properties: AvailableProperties, required: List[str], title: str, type: str) -> None:
-        self.additional_properties = additional_properties
-        self.properties = properties
-        self.required = required
-        self.title = title
-        self.type = type
+    adhoc_margin: Optional[int] = None
+    cash: Optional[float] = None
+    collateral: Optional[int] = None
+    intraday_payin: Optional[int] = None
+    live_balance: Optional[float] = None
+    opening_balance: Optional[float] = None
 
     @staticmethod
     def from_dict(obj: Any) -> 'Available':
         assert isinstance(obj, dict)
-        additional_properties = from_bool(obj.get("additionalProperties"))
-        properties = AvailableProperties.from_dict(obj.get("properties"))
-        required = from_list(from_str, obj.get("required"))
-        title = from_str(obj.get("title"))
-        type = from_str(obj.get("type"))
-        return Available(additional_properties, properties, required, title, type)
+        adhoc_margin = from_union([from_int, from_none], obj.get("adhoc_margin"))
+        cash = from_union([from_float, from_none], obj.get("cash"))
+        collateral = from_union([from_int, from_none], obj.get("collateral"))
+        intraday_payin = from_union([from_int, from_none], obj.get("intraday_payin"))
+        live_balance = from_union([from_float, from_none], obj.get("live_balance"))
+        opening_balance = from_union([from_float, from_none], obj.get("opening_balance"))
+        return Available(adhoc_margin, cash, collateral, intraday_payin, live_balance, opening_balance)
 
     def to_dict(self) -> dict:
         result: dict = {}
-        result["additionalProperties"] = from_bool(self.additional_properties)
-        result["properties"] = to_class(AvailableProperties, self.properties)
-        result["required"] = from_list(from_str, self.required)
-        result["title"] = from_str(self.title)
-        result["type"] = from_str(self.type)
+        result["adhoc_margin"] = from_union([from_int, from_none], self.adhoc_margin)
+        result["cash"] = from_union([to_float, from_none], self.cash)
+        result["collateral"] = from_union([from_int, from_none], self.collateral)
+        result["intraday_payin"] = from_union([from_int, from_none], self.intraday_payin)
+        result["live_balance"] = from_union([to_float, from_none], self.live_balance)
+        result["opening_balance"] = from_union([to_float, from_none], self.opening_balance)
         return result
 
 
-class AvailableClass:
-    ref: str
-
-    def __init__(self, ref: str) -> None:
-        self.ref = ref
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'AvailableClass':
-        assert isinstance(obj, dict)
-        ref = from_str(obj.get("$ref"))
-        return AvailableClass(ref)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["$ref"] = from_str(self.ref)
-        return result
-
-
-class Utilised:
-    additional_properties: AdhocMargin
-    type: str
-
-    def __init__(self, additional_properties: AdhocMargin, type: str) -> None:
-        self.additional_properties = additional_properties
-        self.type = type
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'Utilised':
-        assert isinstance(obj, dict)
-        additional_properties = AdhocMargin.from_dict(obj.get("additionalProperties"))
-        type = from_str(obj.get("type"))
-        return Utilised(additional_properties, type)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["additionalProperties"] = to_class(AdhocMargin, self.additional_properties)
-        result["type"] = from_str(self.type)
-        return result
-
-
-class DataProperties:
-    available: AvailableClass
-    enabled: AdhocMargin
-    net: AdhocMargin
-    utilised: Utilised
-
-    def __init__(self, available: AvailableClass, enabled: AdhocMargin, net: AdhocMargin, utilised: Utilised) -> None:
-        self.available = available
-        self.enabled = enabled
-        self.net = net
-        self.utilised = utilised
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'DataProperties':
-        assert isinstance(obj, dict)
-        available = AvailableClass.from_dict(obj.get("available"))
-        enabled = AdhocMargin.from_dict(obj.get("enabled"))
-        net = AdhocMargin.from_dict(obj.get("net"))
-        utilised = Utilised.from_dict(obj.get("utilised"))
-        return DataProperties(available, enabled, net, utilised)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["available"] = to_class(AvailableClass, self.available)
-        result["enabled"] = to_class(AdhocMargin, self.enabled)
-        result["net"] = to_class(AdhocMargin, self.net)
-        result["utilised"] = to_class(Utilised, self.utilised)
-        return result
-
-
+@dataclass(slots=True)
 class Data:
-    additional_properties: bool
-    properties: DataProperties
-    required: List[str]
-    title: str
-    type: str
-
-    def __init__(self, additional_properties: bool, properties: DataProperties, required: List[str], title: str, type: str) -> None:
-        self.additional_properties = additional_properties
-        self.properties = properties
-        self.required = required
-        self.title = title
-        self.type = type
+    available: Optional[Available] = None
+    enabled: Optional[bool] = None
+    net: Optional[float] = None
+    utilised: Optional[Dict[str, float]] = None
 
     @staticmethod
     def from_dict(obj: Any) -> 'Data':
         assert isinstance(obj, dict)
-        additional_properties = from_bool(obj.get("additionalProperties"))
-        properties = DataProperties.from_dict(obj.get("properties"))
-        required = from_list(from_str, obj.get("required"))
-        title = from_str(obj.get("title"))
-        type = from_str(obj.get("type"))
-        return Data(additional_properties, properties, required, title, type)
+        available = from_union([Available.from_dict, from_none], obj.get("available"))
+        enabled = from_union([from_bool, from_none], obj.get("enabled"))
+        net = from_union([from_float, from_none], obj.get("net"))
+        utilised = from_union([lambda x: from_dict(from_float, x), from_none], obj.get("utilised"))
+        return Data(available, enabled, net, utilised)
 
     def to_dict(self) -> dict:
         result: dict = {}
-        result["additionalProperties"] = from_bool(self.additional_properties)
-        result["properties"] = to_class(DataProperties, self.properties)
-        result["required"] = from_list(from_str, self.required)
-        result["title"] = from_str(self.title)
-        result["type"] = from_str(self.type)
+        result["available"] = from_union([lambda x: to_class(Available, x), from_none], self.available)
+        result["enabled"] = from_union([from_bool, from_none], self.enabled)
+        result["net"] = from_union([to_float, from_none], self.net)
+        result["utilised"] = from_union([lambda x: from_dict(to_float, x), from_none], self.utilised)
         return result
 
 
-class MarginCommodityProperties:
-    data: AvailableClass
-    status: AdhocMargin
-
-    def __init__(self, data: AvailableClass, status: AdhocMargin) -> None:
-        self.data = data
-        self.status = status
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'MarginCommodityProperties':
-        assert isinstance(obj, dict)
-        data = AvailableClass.from_dict(obj.get("data"))
-        status = AdhocMargin.from_dict(obj.get("status"))
-        return MarginCommodityProperties(data, status)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["data"] = to_class(AvailableClass, self.data)
-        result["status"] = to_class(AdhocMargin, self.status)
-        return result
-
-
-class MarginCommodityClass:
-    additional_properties: bool
-    properties: MarginCommodityProperties
-    required: List[str]
-    title: str
-    type: str
-
-    def __init__(self, additional_properties: bool, properties: MarginCommodityProperties, required: List[str], title: str, type: str) -> None:
-        self.additional_properties = additional_properties
-        self.properties = properties
-        self.required = required
-        self.title = title
-        self.type = type
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'MarginCommodityClass':
-        assert isinstance(obj, dict)
-        additional_properties = from_bool(obj.get("additionalProperties"))
-        properties = MarginCommodityProperties.from_dict(obj.get("properties"))
-        required = from_list(from_str, obj.get("required"))
-        title = from_str(obj.get("title"))
-        type = from_str(obj.get("type"))
-        return MarginCommodityClass(additional_properties, properties, required, title, type)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["additionalProperties"] = from_bool(self.additional_properties)
-        result["properties"] = to_class(MarginCommodityProperties, self.properties)
-        result["required"] = from_list(from_str, self.required)
-        result["title"] = from_str(self.title)
-        result["type"] = from_str(self.type)
-        return result
-
-
-class Definitions:
-    available: Available
-    data: Data
-    margin_commodity: MarginCommodityClass
-
-    def __init__(self, available: Available, data: Data, margin_commodity: MarginCommodityClass) -> None:
-        self.available = available
-        self.data = data
-        self.margin_commodity = margin_commodity
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'Definitions':
-        assert isinstance(obj, dict)
-        available = Available.from_dict(obj.get("Available"))
-        data = Data.from_dict(obj.get("Data"))
-        margin_commodity = MarginCommodityClass.from_dict(obj.get("MarginCommodity"))
-        return Definitions(available, data, margin_commodity)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["Available"] = to_class(Available, self.available)
-        result["Data"] = to_class(Data, self.data)
-        result["MarginCommodity"] = to_class(MarginCommodityClass, self.margin_commodity)
-        return result
-
-
+@dataclass(slots=True)
 class MarginCommodity:
-    ref: str
-    schema: str
-    definitions: Definitions
-
-    def __init__(self, ref: str, schema: str, definitions: Definitions) -> None:
-        self.ref = ref
-        self.schema = schema
-        self.definitions = definitions
+    data: Optional[Data] = None
+    status: Optional[str] = None
 
     @staticmethod
     def from_dict(obj: Any) -> 'MarginCommodity':
         assert isinstance(obj, dict)
-        ref = from_str(obj.get("$ref"))
-        schema = from_str(obj.get("$schema"))
-        definitions = Definitions.from_dict(obj.get("definitions"))
-        return MarginCommodity(ref, schema, definitions)
+        data = from_union([Data.from_dict, from_none], obj.get("data"))
+        status = from_union([from_str, from_none], obj.get("status"))
+        return MarginCommodity(data, status)
 
     def to_dict(self) -> dict:
         result: dict = {}
-        result["$ref"] = from_str(self.ref)
-        result["$schema"] = from_str(self.schema)
-        result["definitions"] = to_class(Definitions, self.definitions)
+        result["data"] = from_union([lambda x: to_class(Data, x), from_none], self.data)
+        result["status"] = from_union([from_str, from_none], self.status)
         return result
 
 

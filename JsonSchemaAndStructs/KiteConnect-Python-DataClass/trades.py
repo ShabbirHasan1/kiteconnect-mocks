@@ -1,3 +1,7 @@
+# This code parses date/times, so please
+#
+#     pip install python-dateutil
+#
 # To use this code, make sure you
 #
 #     import json
@@ -6,17 +10,18 @@
 #
 #     result = trades_from_dict(json.loads(json_string))
 
-from enum import Enum
-from typing import Any, List, TypeVar, Type, cast, Callable
+from dataclasses import dataclass
+from typing import Optional, Any, List, TypeVar, Type, Callable, cast
+from datetime import datetime
+import dateutil.parser
 
 
 T = TypeVar("T")
-EnumT = TypeVar("EnumT", bound=Enum)
 
 
-def to_enum(c: Type[EnumT], x: Any) -> EnumT:
-    assert isinstance(x, c)
-    return x.value
+def from_none(x: Any) -> Any:
+    assert x is None
+    return x
 
 
 def from_str(x: Any) -> str:
@@ -24,13 +29,36 @@ def from_str(x: Any) -> str:
     return x
 
 
-def to_class(c: Type[T], x: Any) -> dict:
-    assert isinstance(x, c)
-    return cast(Any, x).to_dict()
+def from_union(fs, x):
+    for f in fs:
+        try:
+            return f(x)
+        except:
+            pass
+    assert False
 
 
-def from_bool(x: Any) -> bool:
-    assert isinstance(x, bool)
+def from_float(x: Any) -> float:
+    assert isinstance(x, (float, int)) and not isinstance(x, bool)
+    return float(x)
+
+
+def from_datetime(x: Any) -> datetime:
+    return dateutil.parser.parse(x)
+
+
+def from_int(x: Any) -> int:
+    assert isinstance(x, int) and not isinstance(x, bool)
+    return x
+
+
+def is_type(t: Type[T], x: Any) -> T:
+    assert isinstance(x, t)
+    return x
+
+
+def to_float(x: Any) -> float:
+    assert isinstance(x, float)
     return x
 
 
@@ -39,293 +67,79 @@ def from_list(f: Callable[[Any], T], x: Any) -> List[T]:
     return [f(y) for y in x]
 
 
-class TypeEnum(Enum):
-    INTEGER = "integer"
-    NUMBER = "number"
-    STRING = "string"
+def to_class(c: Type[T], x: Any) -> dict:
+    assert isinstance(x, c)
+    return cast(Any, x).to_dict()
 
 
-class AveragePrice:
-    type: TypeEnum
-
-    def __init__(self, type: TypeEnum) -> None:
-        self.type = type
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'AveragePrice':
-        assert isinstance(obj, dict)
-        type = TypeEnum(obj.get("type"))
-        return AveragePrice(type)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["type"] = to_enum(TypeEnum, self.type)
-        return result
-
-
-class ExchangeTimestamp:
-    format: str
-    type: TypeEnum
-
-    def __init__(self, format: str, type: TypeEnum) -> None:
-        self.format = format
-        self.type = type
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'ExchangeTimestamp':
-        assert isinstance(obj, dict)
-        format = from_str(obj.get("format"))
-        type = TypeEnum(obj.get("type"))
-        return ExchangeTimestamp(format, type)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["format"] = from_str(self.format)
-        result["type"] = to_enum(TypeEnum, self.type)
-        return result
-
-
-class DatumProperties:
-    average_price: AveragePrice
-    exchange: AveragePrice
-    exchange_order_id: AveragePrice
-    exchange_timestamp: ExchangeTimestamp
-    fill_timestamp: ExchangeTimestamp
-    instrument_token: AveragePrice
-    order_id: AveragePrice
-    order_timestamp: ExchangeTimestamp
-    product: AveragePrice
-    quantity: AveragePrice
-    trade_id: ExchangeTimestamp
-    tradingsymbol: AveragePrice
-    transaction_type: AveragePrice
-
-    def __init__(self, average_price: AveragePrice, exchange: AveragePrice, exchange_order_id: AveragePrice, exchange_timestamp: ExchangeTimestamp, fill_timestamp: ExchangeTimestamp, instrument_token: AveragePrice, order_id: AveragePrice, order_timestamp: ExchangeTimestamp, product: AveragePrice, quantity: AveragePrice, trade_id: ExchangeTimestamp, tradingsymbol: AveragePrice, transaction_type: AveragePrice) -> None:
-        self.average_price = average_price
-        self.exchange = exchange
-        self.exchange_order_id = exchange_order_id
-        self.exchange_timestamp = exchange_timestamp
-        self.fill_timestamp = fill_timestamp
-        self.instrument_token = instrument_token
-        self.order_id = order_id
-        self.order_timestamp = order_timestamp
-        self.product = product
-        self.quantity = quantity
-        self.trade_id = trade_id
-        self.tradingsymbol = tradingsymbol
-        self.transaction_type = transaction_type
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'DatumProperties':
-        assert isinstance(obj, dict)
-        average_price = AveragePrice.from_dict(obj.get("average_price"))
-        exchange = AveragePrice.from_dict(obj.get("exchange"))
-        exchange_order_id = AveragePrice.from_dict(obj.get("exchange_order_id"))
-        exchange_timestamp = ExchangeTimestamp.from_dict(obj.get("exchange_timestamp"))
-        fill_timestamp = ExchangeTimestamp.from_dict(obj.get("fill_timestamp"))
-        instrument_token = AveragePrice.from_dict(obj.get("instrument_token"))
-        order_id = AveragePrice.from_dict(obj.get("order_id"))
-        order_timestamp = ExchangeTimestamp.from_dict(obj.get("order_timestamp"))
-        product = AveragePrice.from_dict(obj.get("product"))
-        quantity = AveragePrice.from_dict(obj.get("quantity"))
-        trade_id = ExchangeTimestamp.from_dict(obj.get("trade_id"))
-        tradingsymbol = AveragePrice.from_dict(obj.get("tradingsymbol"))
-        transaction_type = AveragePrice.from_dict(obj.get("transaction_type"))
-        return DatumProperties(average_price, exchange, exchange_order_id, exchange_timestamp, fill_timestamp, instrument_token, order_id, order_timestamp, product, quantity, trade_id, tradingsymbol, transaction_type)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["average_price"] = to_class(AveragePrice, self.average_price)
-        result["exchange"] = to_class(AveragePrice, self.exchange)
-        result["exchange_order_id"] = to_class(AveragePrice, self.exchange_order_id)
-        result["exchange_timestamp"] = to_class(ExchangeTimestamp, self.exchange_timestamp)
-        result["fill_timestamp"] = to_class(ExchangeTimestamp, self.fill_timestamp)
-        result["instrument_token"] = to_class(AveragePrice, self.instrument_token)
-        result["order_id"] = to_class(AveragePrice, self.order_id)
-        result["order_timestamp"] = to_class(ExchangeTimestamp, self.order_timestamp)
-        result["product"] = to_class(AveragePrice, self.product)
-        result["quantity"] = to_class(AveragePrice, self.quantity)
-        result["trade_id"] = to_class(ExchangeTimestamp, self.trade_id)
-        result["tradingsymbol"] = to_class(AveragePrice, self.tradingsymbol)
-        result["transaction_type"] = to_class(AveragePrice, self.transaction_type)
-        return result
-
-
+@dataclass(slots=True)
 class Datum:
-    additional_properties: bool
-    properties: DatumProperties
-    required: List[str]
-    title: str
-    type: str
-
-    def __init__(self, additional_properties: bool, properties: DatumProperties, required: List[str], title: str, type: str) -> None:
-        self.additional_properties = additional_properties
-        self.properties = properties
-        self.required = required
-        self.title = title
-        self.type = type
+    trade_id: Optional[int] = None
+    average_price: Optional[float] = None
+    exchange: Optional[str] = None
+    exchange_order_id: Optional[str] = None
+    exchange_timestamp: Optional[datetime] = None
+    fill_timestamp: Optional[datetime] = None
+    instrument_token: Optional[int] = None
+    order_id: Optional[str] = None
+    order_timestamp: Optional[datetime] = None
+    product: Optional[str] = None
+    quantity: Optional[int] = None
+    tradingsymbol: Optional[str] = None
+    transaction_type: Optional[str] = None
 
     @staticmethod
     def from_dict(obj: Any) -> 'Datum':
         assert isinstance(obj, dict)
-        additional_properties = from_bool(obj.get("additionalProperties"))
-        properties = DatumProperties.from_dict(obj.get("properties"))
-        required = from_list(from_str, obj.get("required"))
-        title = from_str(obj.get("title"))
-        type = from_str(obj.get("type"))
-        return Datum(additional_properties, properties, required, title, type)
+        trade_id = from_union([from_none, lambda x: int(from_str(x))], obj.get("trade_id"))
+        average_price = from_union([from_float, from_none], obj.get("average_price"))
+        exchange = from_union([from_str, from_none], obj.get("exchange"))
+        exchange_order_id = from_union([from_str, from_none], obj.get("exchange_order_id"))
+        exchange_timestamp = from_union([from_datetime, from_none], obj.get("exchange_timestamp"))
+        fill_timestamp = from_union([from_datetime, from_none], obj.get("fill_timestamp"))
+        instrument_token = from_union([from_int, from_none], obj.get("instrument_token"))
+        order_id = from_union([from_str, from_none], obj.get("order_id"))
+        order_timestamp = from_union([from_datetime, from_none], obj.get("order_timestamp"))
+        product = from_union([from_str, from_none], obj.get("product"))
+        quantity = from_union([from_int, from_none], obj.get("quantity"))
+        tradingsymbol = from_union([from_str, from_none], obj.get("tradingsymbol"))
+        transaction_type = from_union([from_str, from_none], obj.get("transaction_type"))
+        return Datum(trade_id, average_price, exchange, exchange_order_id, exchange_timestamp, fill_timestamp, instrument_token, order_id, order_timestamp, product, quantity, tradingsymbol, transaction_type)
 
     def to_dict(self) -> dict:
         result: dict = {}
-        result["additionalProperties"] = from_bool(self.additional_properties)
-        result["properties"] = to_class(DatumProperties, self.properties)
-        result["required"] = from_list(from_str, self.required)
-        result["title"] = from_str(self.title)
-        result["type"] = from_str(self.type)
+        result["trade_id"] = from_union([lambda x: from_none((lambda x: is_type(type(None), x))(x)), lambda x: from_str((lambda x: str((lambda x: is_type(int, x))(x)))(x))], self.trade_id)
+        result["average_price"] = from_union([to_float, from_none], self.average_price)
+        result["exchange"] = from_union([from_str, from_none], self.exchange)
+        result["exchange_order_id"] = from_union([from_str, from_none], self.exchange_order_id)
+        result["exchange_timestamp"] = from_union([lambda x: x.isoformat(), from_none], self.exchange_timestamp)
+        result["fill_timestamp"] = from_union([lambda x: x.isoformat(), from_none], self.fill_timestamp)
+        result["instrument_token"] = from_union([from_int, from_none], self.instrument_token)
+        result["order_id"] = from_union([from_str, from_none], self.order_id)
+        result["order_timestamp"] = from_union([lambda x: x.isoformat(), from_none], self.order_timestamp)
+        result["product"] = from_union([from_str, from_none], self.product)
+        result["quantity"] = from_union([from_int, from_none], self.quantity)
+        result["tradingsymbol"] = from_union([from_str, from_none], self.tradingsymbol)
+        result["transaction_type"] = from_union([from_str, from_none], self.transaction_type)
         return result
 
 
-class Items:
-    ref: str
-
-    def __init__(self, ref: str) -> None:
-        self.ref = ref
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'Items':
-        assert isinstance(obj, dict)
-        ref = from_str(obj.get("$ref"))
-        return Items(ref)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["$ref"] = from_str(self.ref)
-        return result
-
-
-class Data:
-    items: Items
-    type: str
-
-    def __init__(self, items: Items, type: str) -> None:
-        self.items = items
-        self.type = type
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'Data':
-        assert isinstance(obj, dict)
-        items = Items.from_dict(obj.get("items"))
-        type = from_str(obj.get("type"))
-        return Data(items, type)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["items"] = to_class(Items, self.items)
-        result["type"] = from_str(self.type)
-        return result
-
-
-class TradesProperties:
-    data: Data
-    status: AveragePrice
-
-    def __init__(self, data: Data, status: AveragePrice) -> None:
-        self.data = data
-        self.status = status
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'TradesProperties':
-        assert isinstance(obj, dict)
-        data = Data.from_dict(obj.get("data"))
-        status = AveragePrice.from_dict(obj.get("status"))
-        return TradesProperties(data, status)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["data"] = to_class(Data, self.data)
-        result["status"] = to_class(AveragePrice, self.status)
-        return result
-
-
-class TradesClass:
-    additional_properties: bool
-    properties: TradesProperties
-    required: List[str]
-    title: str
-    type: str
-
-    def __init__(self, additional_properties: bool, properties: TradesProperties, required: List[str], title: str, type: str) -> None:
-        self.additional_properties = additional_properties
-        self.properties = properties
-        self.required = required
-        self.title = title
-        self.type = type
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'TradesClass':
-        assert isinstance(obj, dict)
-        additional_properties = from_bool(obj.get("additionalProperties"))
-        properties = TradesProperties.from_dict(obj.get("properties"))
-        required = from_list(from_str, obj.get("required"))
-        title = from_str(obj.get("title"))
-        type = from_str(obj.get("type"))
-        return TradesClass(additional_properties, properties, required, title, type)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["additionalProperties"] = from_bool(self.additional_properties)
-        result["properties"] = to_class(TradesProperties, self.properties)
-        result["required"] = from_list(from_str, self.required)
-        result["title"] = from_str(self.title)
-        result["type"] = from_str(self.type)
-        return result
-
-
-class Definitions:
-    datum: Datum
-    trades: TradesClass
-
-    def __init__(self, datum: Datum, trades: TradesClass) -> None:
-        self.datum = datum
-        self.trades = trades
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'Definitions':
-        assert isinstance(obj, dict)
-        datum = Datum.from_dict(obj.get("Datum"))
-        trades = TradesClass.from_dict(obj.get("Trades"))
-        return Definitions(datum, trades)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["Datum"] = to_class(Datum, self.datum)
-        result["Trades"] = to_class(TradesClass, self.trades)
-        return result
-
-
+@dataclass(slots=True)
 class Trades:
-    ref: str
-    schema: str
-    definitions: Definitions
-
-    def __init__(self, ref: str, schema: str, definitions: Definitions) -> None:
-        self.ref = ref
-        self.schema = schema
-        self.definitions = definitions
+    data: Optional[List[Datum]] = None
+    status: Optional[str] = None
 
     @staticmethod
     def from_dict(obj: Any) -> 'Trades':
         assert isinstance(obj, dict)
-        ref = from_str(obj.get("$ref"))
-        schema = from_str(obj.get("$schema"))
-        definitions = Definitions.from_dict(obj.get("definitions"))
-        return Trades(ref, schema, definitions)
+        data = from_union([lambda x: from_list(Datum.from_dict, x), from_none], obj.get("data"))
+        status = from_union([from_str, from_none], obj.get("status"))
+        return Trades(data, status)
 
     def to_dict(self) -> dict:
         result: dict = {}
-        result["$ref"] = from_str(self.ref)
-        result["$schema"] = from_str(self.schema)
-        result["definitions"] = to_class(Definitions, self.definitions)
+        result["data"] = from_union([lambda x: from_list(lambda x: to_class(Datum, x), x), from_none], self.data)
+        result["status"] = from_union([from_str, from_none], self.status)
         return result
 
 

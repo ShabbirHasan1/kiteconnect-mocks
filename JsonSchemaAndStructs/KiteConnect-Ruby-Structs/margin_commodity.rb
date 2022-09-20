@@ -4,7 +4,7 @@
 # To parse this JSON, add 'dry-struct' and 'dry-types' gems, then do:
 #
 #   margin_commodity = MarginCommodity.from_json! "{…}"
-#   puts margin_commodity.definitions.margin_commodity.required.first
+#   puts margin_commodity.data&.utilised&["…"]
 #
 # If from_json! succeeds, the value returned matches the schema.
 
@@ -15,91 +15,30 @@ require 'dry-struct'
 module Types
   include Dry::Types.module
 
+  Int    = Strict::Int
   Bool   = Strict::Bool
   Hash   = Strict::Hash
   String = Strict::String
-end
-
-class AdhocMargin < Dry::Struct
-  attribute :adhoc_margin_type, Types::String
-
-  def self.from_dynamic!(d)
-    d = Types::Hash[d]
-    new(
-      adhoc_margin_type: d.fetch("type"),
-    )
-  end
-
-  def self.from_json!(json)
-    from_dynamic!(JSON.parse(json))
-  end
-
-  def to_dynamic
-    {
-      "type" => @adhoc_margin_type,
-    }
-  end
-
-  def to_json(options = nil)
-    JSON.generate(to_dynamic, options)
-  end
-end
-
-class AvailableProperties < Dry::Struct
-  attribute :adhoc_margin,    AdhocMargin
-  attribute :cash,            AdhocMargin
-  attribute :collateral,      AdhocMargin
-  attribute :intraday_payin,  AdhocMargin
-  attribute :live_balance,    AdhocMargin
-  attribute :opening_balance, AdhocMargin
-
-  def self.from_dynamic!(d)
-    d = Types::Hash[d]
-    new(
-      adhoc_margin:    AdhocMargin.from_dynamic!(d.fetch("adhoc_margin")),
-      cash:            AdhocMargin.from_dynamic!(d.fetch("cash")),
-      collateral:      AdhocMargin.from_dynamic!(d.fetch("collateral")),
-      intraday_payin:  AdhocMargin.from_dynamic!(d.fetch("intraday_payin")),
-      live_balance:    AdhocMargin.from_dynamic!(d.fetch("live_balance")),
-      opening_balance: AdhocMargin.from_dynamic!(d.fetch("opening_balance")),
-    )
-  end
-
-  def self.from_json!(json)
-    from_dynamic!(JSON.parse(json))
-  end
-
-  def to_dynamic
-    {
-      "adhoc_margin"    => @adhoc_margin.to_dynamic,
-      "cash"            => @cash.to_dynamic,
-      "collateral"      => @collateral.to_dynamic,
-      "intraday_payin"  => @intraday_payin.to_dynamic,
-      "live_balance"    => @live_balance.to_dynamic,
-      "opening_balance" => @opening_balance.to_dynamic,
-    }
-  end
-
-  def to_json(options = nil)
-    JSON.generate(to_dynamic, options)
-  end
+  Double = Strict::Float | Strict::Int
 end
 
 class Available < Dry::Struct
-  attribute :additional_properties, Types::Bool
-  attribute :properties,            AvailableProperties
-  attribute :required,              Types.Array(Types::String)
-  attribute :title,                 Types::String
-  attribute :available_type,        Types::String
+  attribute :adhoc_margin,    Types::Int.optional
+  attribute :cash,            Types::Double.optional
+  attribute :collateral,      Types::Int.optional
+  attribute :intraday_payin,  Types::Int.optional
+  attribute :live_balance,    Types::Double.optional
+  attribute :opening_balance, Types::Double.optional
 
   def self.from_dynamic!(d)
     d = Types::Hash[d]
     new(
-      additional_properties: d.fetch("additionalProperties"),
-      properties:            AvailableProperties.from_dynamic!(d.fetch("properties")),
-      required:              d.fetch("required"),
-      title:                 d.fetch("title"),
-      available_type:        d.fetch("type"),
+      adhoc_margin:    d["adhoc_margin"],
+      cash:            d["cash"],
+      collateral:      d["collateral"],
+      intraday_payin:  d["intraday_payin"],
+      live_balance:    d["live_balance"],
+      opening_balance: d["opening_balance"],
     )
   end
 
@@ -109,98 +48,12 @@ class Available < Dry::Struct
 
   def to_dynamic
     {
-      "additionalProperties" => @additional_properties,
-      "properties"           => @properties.to_dynamic,
-      "required"             => @required,
-      "title"                => @title,
-      "type"                 => @available_type,
-    }
-  end
-
-  def to_json(options = nil)
-    JSON.generate(to_dynamic, options)
-  end
-end
-
-class AvailableClass < Dry::Struct
-  attribute :ref, Types::String
-
-  def self.from_dynamic!(d)
-    d = Types::Hash[d]
-    new(
-      ref: d.fetch("$ref"),
-    )
-  end
-
-  def self.from_json!(json)
-    from_dynamic!(JSON.parse(json))
-  end
-
-  def to_dynamic
-    {
-      "$ref" => @ref,
-    }
-  end
-
-  def to_json(options = nil)
-    JSON.generate(to_dynamic, options)
-  end
-end
-
-class Utilised < Dry::Struct
-  attribute :additional_properties, AdhocMargin
-  attribute :utilised_type,         Types::String
-
-  def self.from_dynamic!(d)
-    d = Types::Hash[d]
-    new(
-      additional_properties: AdhocMargin.from_dynamic!(d.fetch("additionalProperties")),
-      utilised_type:         d.fetch("type"),
-    )
-  end
-
-  def self.from_json!(json)
-    from_dynamic!(JSON.parse(json))
-  end
-
-  def to_dynamic
-    {
-      "additionalProperties" => @additional_properties.to_dynamic,
-      "type"                 => @utilised_type,
-    }
-  end
-
-  def to_json(options = nil)
-    JSON.generate(to_dynamic, options)
-  end
-end
-
-class DataProperties < Dry::Struct
-  attribute :available, AvailableClass
-  attribute :enabled,   AdhocMargin
-  attribute :net,       AdhocMargin
-  attribute :utilised,  Utilised
-
-  def self.from_dynamic!(d)
-    d = Types::Hash[d]
-    new(
-      available: AvailableClass.from_dynamic!(d.fetch("available")),
-      enabled:   AdhocMargin.from_dynamic!(d.fetch("enabled")),
-      net:       AdhocMargin.from_dynamic!(d.fetch("net")),
-      utilised:  Utilised.from_dynamic!(d.fetch("utilised")),
-    )
-  end
-
-  def self.from_json!(json)
-    from_dynamic!(JSON.parse(json))
-  end
-
-  def to_dynamic
-    {
-      "available" => @available.to_dynamic,
-      "enabled"   => @enabled.to_dynamic,
-      "net"       => @net.to_dynamic,
-      "utilised"  => @utilised.to_dynamic,
+      "adhoc_margin"    => @adhoc_margin,
+      "cash"            => @cash,
+      "collateral"      => @collateral,
+      "intraday_payin"  => @intraday_payin,
+      "live_balance"    => @live_balance,
+      "opening_balance" => @opening_balance,
     }
   end
 
@@ -210,20 +63,18 @@ class DataProperties < Dry::Struct
 end
 
 class DataClass < Dry::Struct
-  attribute :additional_properties, Types::Bool
-  attribute :properties,            DataProperties
-  attribute :required,              Types.Array(Types::String)
-  attribute :title,                 Types::String
-  attribute :data_type,             Types::String
+  attribute :available, Available.optional
+  attribute :enabled,   Types::Bool.optional
+  attribute :net,       Types::Double.optional
+  attribute :utilised,  Types::Hash.meta(of: Types::Double).optional
 
   def self.from_dynamic!(d)
     d = Types::Hash[d]
     new(
-      additional_properties: d.fetch("additionalProperties"),
-      properties:            DataProperties.from_dynamic!(d.fetch("properties")),
-      required:              d.fetch("required"),
-      title:                 d.fetch("title"),
-      data_type:             d.fetch("type"),
+      available: d["available"] ? Available.from_dynamic!(d["available"]) : nil,
+      enabled:   d["enabled"],
+      net:       d["net"],
+      utilised:  Types::Hash.optional[d["utilised"]]&.map { |k, v| [k, Types::Double[v]] }&.to_h,
     )
   end
 
@@ -233,107 +84,10 @@ class DataClass < Dry::Struct
 
   def to_dynamic
     {
-      "additionalProperties" => @additional_properties,
-      "properties"           => @properties.to_dynamic,
-      "required"             => @required,
-      "title"                => @title,
-      "type"                 => @data_type,
-    }
-  end
-
-  def to_json(options = nil)
-    JSON.generate(to_dynamic, options)
-  end
-end
-
-class MarginCommodityProperties < Dry::Struct
-  attribute :data,   AvailableClass
-  attribute :status, AdhocMargin
-
-  def self.from_dynamic!(d)
-    d = Types::Hash[d]
-    new(
-      data:   AvailableClass.from_dynamic!(d.fetch("data")),
-      status: AdhocMargin.from_dynamic!(d.fetch("status")),
-    )
-  end
-
-  def self.from_json!(json)
-    from_dynamic!(JSON.parse(json))
-  end
-
-  def to_dynamic
-    {
-      "data"   => @data.to_dynamic,
-      "status" => @status.to_dynamic,
-    }
-  end
-
-  def to_json(options = nil)
-    JSON.generate(to_dynamic, options)
-  end
-end
-
-class MarginCommodityClass < Dry::Struct
-  attribute :additional_properties,       Types::Bool
-  attribute :properties,                  MarginCommodityProperties
-  attribute :required,                    Types.Array(Types::String)
-  attribute :title,                       Types::String
-  attribute :margin_commodity_class_type, Types::String
-
-  def self.from_dynamic!(d)
-    d = Types::Hash[d]
-    new(
-      additional_properties:       d.fetch("additionalProperties"),
-      properties:                  MarginCommodityProperties.from_dynamic!(d.fetch("properties")),
-      required:                    d.fetch("required"),
-      title:                       d.fetch("title"),
-      margin_commodity_class_type: d.fetch("type"),
-    )
-  end
-
-  def self.from_json!(json)
-    from_dynamic!(JSON.parse(json))
-  end
-
-  def to_dynamic
-    {
-      "additionalProperties" => @additional_properties,
-      "properties"           => @properties.to_dynamic,
-      "required"             => @required,
-      "title"                => @title,
-      "type"                 => @margin_commodity_class_type,
-    }
-  end
-
-  def to_json(options = nil)
-    JSON.generate(to_dynamic, options)
-  end
-end
-
-class Definitions < Dry::Struct
-  attribute :available,        Available
-  attribute :data,             DataClass
-  attribute :margin_commodity, MarginCommodityClass
-
-  def self.from_dynamic!(d)
-    d = Types::Hash[d]
-    new(
-      available:        Available.from_dynamic!(d.fetch("Available")),
-      data:             DataClass.from_dynamic!(d.fetch("Data")),
-      margin_commodity: MarginCommodityClass.from_dynamic!(d.fetch("MarginCommodity")),
-    )
-  end
-
-  def self.from_json!(json)
-    from_dynamic!(JSON.parse(json))
-  end
-
-  def to_dynamic
-    {
-      "Available"       => @available.to_dynamic,
-      "Data"            => @data.to_dynamic,
-      "MarginCommodity" => @margin_commodity.to_dynamic,
+      "available" => @available&.to_dynamic,
+      "enabled"   => @enabled,
+      "net"       => @net,
+      "utilised"  => @utilised,
     }
   end
 
@@ -343,16 +97,14 @@ class Definitions < Dry::Struct
 end
 
 class MarginCommodity < Dry::Struct
-  attribute :ref,         Types::String
-  attribute :schema,      Types::String
-  attribute :definitions, Definitions
+  attribute :data,   DataClass.optional
+  attribute :status, Types::String.optional
 
   def self.from_dynamic!(d)
     d = Types::Hash[d]
     new(
-      ref:         d.fetch("$ref"),
-      schema:      d.fetch("$schema"),
-      definitions: Definitions.from_dynamic!(d.fetch("definitions")),
+      data:   d["data"] ? DataClass.from_dynamic!(d["data"]) : nil,
+      status: d["status"],
     )
   end
 
@@ -362,9 +114,8 @@ class MarginCommodity < Dry::Struct
 
   def to_dynamic
     {
-      "$ref"        => @ref,
-      "$schema"     => @schema,
-      "definitions" => @definitions.to_dynamic,
+      "data"   => @data&.to_dynamic,
+      "status" => @status,
     }
   end
 

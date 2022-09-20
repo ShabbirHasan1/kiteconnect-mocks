@@ -4,7 +4,7 @@
 # To parse this JSON, add 'dry-struct' and 'dry-types' gems, then do:
 #
 #   trades = Trades.from_json! "{…}"
-#   puts trades.definitions.trades.required.first
+#   puts trades.data&.first.average_price
 #
 # If from_json! succeeds, the value returned matches the schema.
 
@@ -15,147 +15,43 @@ require 'dry-struct'
 module Types
   include Dry::Types.module
 
-  Bool   = Strict::Bool
+  Int    = Strict::Int
   Hash   = Strict::Hash
   String = Strict::String
-  Type   = Strict::String.enum("integer", "number", "string")
-end
-
-module Type
-  Integer = "integer"
-  Number  = "number"
-  String  = "string"
-end
-
-class AveragePrice < Dry::Struct
-  attribute :average_price_type, Types::Type
-
-  def self.from_dynamic!(d)
-    d = Types::Hash[d]
-    new(
-      average_price_type: d.fetch("type"),
-    )
-  end
-
-  def self.from_json!(json)
-    from_dynamic!(JSON.parse(json))
-  end
-
-  def to_dynamic
-    {
-      "type" => @average_price_type,
-    }
-  end
-
-  def to_json(options = nil)
-    JSON.generate(to_dynamic, options)
-  end
-end
-
-class ExchangeTimestamp < Dry::Struct
-  attribute :exchange_timestamp_format, Types::String
-  attribute :exchange_timestamp_type,   Types::Type
-
-  def self.from_dynamic!(d)
-    d = Types::Hash[d]
-    new(
-      exchange_timestamp_format: d.fetch("format"),
-      exchange_timestamp_type:   d.fetch("type"),
-    )
-  end
-
-  def self.from_json!(json)
-    from_dynamic!(JSON.parse(json))
-  end
-
-  def to_dynamic
-    {
-      "format" => @exchange_timestamp_format,
-      "type"   => @exchange_timestamp_type,
-    }
-  end
-
-  def to_json(options = nil)
-    JSON.generate(to_dynamic, options)
-  end
-end
-
-class DatumProperties < Dry::Struct
-  attribute :average_price,      AveragePrice
-  attribute :exchange,           AveragePrice
-  attribute :exchange_order_id,  AveragePrice
-  attribute :exchange_timestamp, ExchangeTimestamp
-  attribute :fill_timestamp,     ExchangeTimestamp
-  attribute :instrument_token,   AveragePrice
-  attribute :order_id,           AveragePrice
-  attribute :order_timestamp,    ExchangeTimestamp
-  attribute :product,            AveragePrice
-  attribute :quantity,           AveragePrice
-  attribute :trade_id,           ExchangeTimestamp
-  attribute :tradingsymbol,      AveragePrice
-  attribute :transaction_type,   AveragePrice
-
-  def self.from_dynamic!(d)
-    d = Types::Hash[d]
-    new(
-      average_price:      AveragePrice.from_dynamic!(d.fetch("average_price")),
-      exchange:           AveragePrice.from_dynamic!(d.fetch("exchange")),
-      exchange_order_id:  AveragePrice.from_dynamic!(d.fetch("exchange_order_id")),
-      exchange_timestamp: ExchangeTimestamp.from_dynamic!(d.fetch("exchange_timestamp")),
-      fill_timestamp:     ExchangeTimestamp.from_dynamic!(d.fetch("fill_timestamp")),
-      instrument_token:   AveragePrice.from_dynamic!(d.fetch("instrument_token")),
-      order_id:           AveragePrice.from_dynamic!(d.fetch("order_id")),
-      order_timestamp:    ExchangeTimestamp.from_dynamic!(d.fetch("order_timestamp")),
-      product:            AveragePrice.from_dynamic!(d.fetch("product")),
-      quantity:           AveragePrice.from_dynamic!(d.fetch("quantity")),
-      trade_id:           ExchangeTimestamp.from_dynamic!(d.fetch("trade_id")),
-      tradingsymbol:      AveragePrice.from_dynamic!(d.fetch("tradingsymbol")),
-      transaction_type:   AveragePrice.from_dynamic!(d.fetch("transaction_type")),
-    )
-  end
-
-  def self.from_json!(json)
-    from_dynamic!(JSON.parse(json))
-  end
-
-  def to_dynamic
-    {
-      "average_price"      => @average_price.to_dynamic,
-      "exchange"           => @exchange.to_dynamic,
-      "exchange_order_id"  => @exchange_order_id.to_dynamic,
-      "exchange_timestamp" => @exchange_timestamp.to_dynamic,
-      "fill_timestamp"     => @fill_timestamp.to_dynamic,
-      "instrument_token"   => @instrument_token.to_dynamic,
-      "order_id"           => @order_id.to_dynamic,
-      "order_timestamp"    => @order_timestamp.to_dynamic,
-      "product"            => @product.to_dynamic,
-      "quantity"           => @quantity.to_dynamic,
-      "trade_id"           => @trade_id.to_dynamic,
-      "tradingsymbol"      => @tradingsymbol.to_dynamic,
-      "transaction_type"   => @transaction_type.to_dynamic,
-    }
-  end
-
-  def to_json(options = nil)
-    JSON.generate(to_dynamic, options)
-  end
+  Double = Strict::Float | Strict::Int
 end
 
 class Datum < Dry::Struct
-  attribute :additional_properties, Types::Bool
-  attribute :properties,            DatumProperties
-  attribute :required,              Types.Array(Types::String)
-  attribute :title,                 Types::String
-  attribute :datum_type,            Types::String
+  attribute :average_price,      Types::Double.optional
+  attribute :exchange,           Types::String.optional
+  attribute :exchange_order_id,  Types::String.optional
+  attribute :exchange_timestamp, Types::String.optional
+  attribute :fill_timestamp,     Types::String.optional
+  attribute :instrument_token,   Types::Int.optional
+  attribute :order_id,           Types::String.optional
+  attribute :order_timestamp,    Types::String.optional
+  attribute :product,            Types::String.optional
+  attribute :quantity,           Types::Int.optional
+  attribute :trade_id,           Types::String.optional
+  attribute :tradingsymbol,      Types::String.optional
+  attribute :transaction_type,   Types::String.optional
 
   def self.from_dynamic!(d)
     d = Types::Hash[d]
     new(
-      additional_properties: d.fetch("additionalProperties"),
-      properties:            DatumProperties.from_dynamic!(d.fetch("properties")),
-      required:              d.fetch("required"),
-      title:                 d.fetch("title"),
-      datum_type:            d.fetch("type"),
+      average_price:      d["average_price"],
+      exchange:           d["exchange"],
+      exchange_order_id:  d["exchange_order_id"],
+      exchange_timestamp: d["exchange_timestamp"],
+      fill_timestamp:     d["fill_timestamp"],
+      instrument_token:   d["instrument_token"],
+      order_id:           d["order_id"],
+      order_timestamp:    d["order_timestamp"],
+      product:            d["product"],
+      quantity:           d["quantity"],
+      trade_id:           d["trade_id"],
+      tradingsymbol:      d["tradingsymbol"],
+      transaction_type:   d["transaction_type"],
     )
   end
 
@@ -165,157 +61,19 @@ class Datum < Dry::Struct
 
   def to_dynamic
     {
-      "additionalProperties" => @additional_properties,
-      "properties"           => @properties.to_dynamic,
-      "required"             => @required,
-      "title"                => @title,
-      "type"                 => @datum_type,
-    }
-  end
-
-  def to_json(options = nil)
-    JSON.generate(to_dynamic, options)
-  end
-end
-
-class Items < Dry::Struct
-  attribute :ref, Types::String
-
-  def self.from_dynamic!(d)
-    d = Types::Hash[d]
-    new(
-      ref: d.fetch("$ref"),
-    )
-  end
-
-  def self.from_json!(json)
-    from_dynamic!(JSON.parse(json))
-  end
-
-  def to_dynamic
-    {
-      "$ref" => @ref,
-    }
-  end
-
-  def to_json(options = nil)
-    JSON.generate(to_dynamic, options)
-  end
-end
-
-class DataClass < Dry::Struct
-  attribute :items,     Items
-  attribute :data_type, Types::String
-
-  def self.from_dynamic!(d)
-    d = Types::Hash[d]
-    new(
-      items:     Items.from_dynamic!(d.fetch("items")),
-      data_type: d.fetch("type"),
-    )
-  end
-
-  def self.from_json!(json)
-    from_dynamic!(JSON.parse(json))
-  end
-
-  def to_dynamic
-    {
-      "items" => @items.to_dynamic,
-      "type"  => @data_type,
-    }
-  end
-
-  def to_json(options = nil)
-    JSON.generate(to_dynamic, options)
-  end
-end
-
-class TradesProperties < Dry::Struct
-  attribute :data,   DataClass
-  attribute :status, AveragePrice
-
-  def self.from_dynamic!(d)
-    d = Types::Hash[d]
-    new(
-      data:   DataClass.from_dynamic!(d.fetch("data")),
-      status: AveragePrice.from_dynamic!(d.fetch("status")),
-    )
-  end
-
-  def self.from_json!(json)
-    from_dynamic!(JSON.parse(json))
-  end
-
-  def to_dynamic
-    {
-      "data"   => @data.to_dynamic,
-      "status" => @status.to_dynamic,
-    }
-  end
-
-  def to_json(options = nil)
-    JSON.generate(to_dynamic, options)
-  end
-end
-
-class TradesClass < Dry::Struct
-  attribute :additional_properties, Types::Bool
-  attribute :properties,            TradesProperties
-  attribute :required,              Types.Array(Types::String)
-  attribute :title,                 Types::String
-  attribute :trades_class_type,     Types::String
-
-  def self.from_dynamic!(d)
-    d = Types::Hash[d]
-    new(
-      additional_properties: d.fetch("additionalProperties"),
-      properties:            TradesProperties.from_dynamic!(d.fetch("properties")),
-      required:              d.fetch("required"),
-      title:                 d.fetch("title"),
-      trades_class_type:     d.fetch("type"),
-    )
-  end
-
-  def self.from_json!(json)
-    from_dynamic!(JSON.parse(json))
-  end
-
-  def to_dynamic
-    {
-      "additionalProperties" => @additional_properties,
-      "properties"           => @properties.to_dynamic,
-      "required"             => @required,
-      "title"                => @title,
-      "type"                 => @trades_class_type,
-    }
-  end
-
-  def to_json(options = nil)
-    JSON.generate(to_dynamic, options)
-  end
-end
-
-class Definitions < Dry::Struct
-  attribute :datum,  Datum
-  attribute :trades, TradesClass
-
-  def self.from_dynamic!(d)
-    d = Types::Hash[d]
-    new(
-      datum:  Datum.from_dynamic!(d.fetch("Datum")),
-      trades: TradesClass.from_dynamic!(d.fetch("Trades")),
-    )
-  end
-
-  def self.from_json!(json)
-    from_dynamic!(JSON.parse(json))
-  end
-
-  def to_dynamic
-    {
-      "Datum"  => @datum.to_dynamic,
-      "Trades" => @trades.to_dynamic,
+      "average_price"      => @average_price,
+      "exchange"           => @exchange,
+      "exchange_order_id"  => @exchange_order_id,
+      "exchange_timestamp" => @exchange_timestamp,
+      "fill_timestamp"     => @fill_timestamp,
+      "instrument_token"   => @instrument_token,
+      "order_id"           => @order_id,
+      "order_timestamp"    => @order_timestamp,
+      "product"            => @product,
+      "quantity"           => @quantity,
+      "trade_id"           => @trade_id,
+      "tradingsymbol"      => @tradingsymbol,
+      "transaction_type"   => @transaction_type,
     }
   end
 
@@ -325,16 +83,14 @@ class Definitions < Dry::Struct
 end
 
 class Trades < Dry::Struct
-  attribute :ref,         Types::String
-  attribute :schema,      Types::String
-  attribute :definitions, Definitions
+  attribute :data,   Types.Array(Datum).optional
+  attribute :status, Types::String.optional
 
   def self.from_dynamic!(d)
     d = Types::Hash[d]
     new(
-      ref:         d.fetch("$ref"),
-      schema:      d.fetch("$schema"),
-      definitions: Definitions.from_dynamic!(d.fetch("definitions")),
+      data:   d["data"]&.map { |x| Datum.from_dynamic!(x) },
+      status: d["status"],
     )
   end
 
@@ -344,9 +100,8 @@ class Trades < Dry::Struct
 
   def to_dynamic
     {
-      "$ref"        => @ref,
-      "$schema"     => @schema,
-      "definitions" => @definitions.to_dynamic,
+      "data"   => @data&.map { |x| x.to_dynamic },
+      "status" => @status,
     }
   end
 

@@ -6,10 +6,45 @@
 #
 #     result = trigger_range_from_dict(json.loads(json_string))
 
-from typing import Any, List, TypeVar, Type, cast, Callable
+from dataclasses import dataclass
+from typing import Optional, Any, Dict, TypeVar, Callable, Type, cast
 
 
 T = TypeVar("T")
+
+
+def from_int(x: Any) -> int:
+    assert isinstance(x, int) and not isinstance(x, bool)
+    return x
+
+
+def from_none(x: Any) -> Any:
+    assert x is None
+    return x
+
+
+def from_union(fs, x):
+    for f in fs:
+        try:
+            return f(x)
+        except:
+            pass
+    assert False
+
+
+def from_float(x: Any) -> float:
+    assert isinstance(x, (float, int)) and not isinstance(x, bool)
+    return float(x)
+
+
+def to_float(x: Any) -> float:
+    assert isinstance(x, float)
+    return x
+
+
+def from_dict(f: Callable[[Any], T], x: Any) -> Dict[str, T]:
+    assert isinstance(x, dict)
+    return { k: f(v) for (k, v) in x.items() }
 
 
 def from_str(x: Any) -> str:
@@ -22,273 +57,44 @@ def to_class(c: Type[T], x: Any) -> dict:
     return cast(Any, x).to_dict()
 
 
-def from_bool(x: Any) -> bool:
-    assert isinstance(x, bool)
-    return x
-
-
-def from_list(f: Callable[[Any], T], x: Any) -> List[T]:
-    assert isinstance(x, list)
-    return [f(y) for y in x]
-
-
-class NseInfy:
-    ref: str
-
-    def __init__(self, ref: str) -> None:
-        self.ref = ref
+@dataclass(slots=True)
+class Datum:
+    instrument_token: Optional[int] = None
+    lower: Optional[float] = None
+    upper: Optional[float] = None
 
     @staticmethod
-    def from_dict(obj: Any) -> 'NseInfy':
+    def from_dict(obj: Any) -> 'Datum':
         assert isinstance(obj, dict)
-        ref = from_str(obj.get("$ref"))
-        return NseInfy(ref)
+        instrument_token = from_union([from_int, from_none], obj.get("instrument_token"))
+        lower = from_union([from_float, from_none], obj.get("lower"))
+        upper = from_union([from_float, from_none], obj.get("upper"))
+        return Datum(instrument_token, lower, upper)
 
     def to_dict(self) -> dict:
         result: dict = {}
-        result["$ref"] = from_str(self.ref)
+        result["instrument_token"] = from_union([from_int, from_none], self.instrument_token)
+        result["lower"] = from_union([to_float, from_none], self.lower)
+        result["upper"] = from_union([to_float, from_none], self.upper)
         return result
 
 
-class DataProperties:
-    nse_infy: NseInfy
-    nse_reliance: NseInfy
-
-    def __init__(self, nse_infy: NseInfy, nse_reliance: NseInfy) -> None:
-        self.nse_infy = nse_infy
-        self.nse_reliance = nse_reliance
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'DataProperties':
-        assert isinstance(obj, dict)
-        nse_infy = NseInfy.from_dict(obj.get("NSE:INFY"))
-        nse_reliance = NseInfy.from_dict(obj.get("NSE:RELIANCE"))
-        return DataProperties(nse_infy, nse_reliance)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["NSE:INFY"] = to_class(NseInfy, self.nse_infy)
-        result["NSE:RELIANCE"] = to_class(NseInfy, self.nse_reliance)
-        return result
-
-
-class Data:
-    additional_properties: bool
-    properties: DataProperties
-    required: List[str]
-    title: str
-    type: str
-
-    def __init__(self, additional_properties: bool, properties: DataProperties, required: List[str], title: str, type: str) -> None:
-        self.additional_properties = additional_properties
-        self.properties = properties
-        self.required = required
-        self.title = title
-        self.type = type
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'Data':
-        assert isinstance(obj, dict)
-        additional_properties = from_bool(obj.get("additionalProperties"))
-        properties = DataProperties.from_dict(obj.get("properties"))
-        required = from_list(from_str, obj.get("required"))
-        title = from_str(obj.get("title"))
-        type = from_str(obj.get("type"))
-        return Data(additional_properties, properties, required, title, type)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["additionalProperties"] = from_bool(self.additional_properties)
-        result["properties"] = to_class(DataProperties, self.properties)
-        result["required"] = from_list(from_str, self.required)
-        result["title"] = from_str(self.title)
-        result["type"] = from_str(self.type)
-        return result
-
-
-class InstrumentToken:
-    type: str
-
-    def __init__(self, type: str) -> None:
-        self.type = type
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'InstrumentToken':
-        assert isinstance(obj, dict)
-        type = from_str(obj.get("type"))
-        return InstrumentToken(type)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["type"] = from_str(self.type)
-        return result
-
-
-class NseProperties:
-    instrument_token: InstrumentToken
-    lower: InstrumentToken
-    upper: InstrumentToken
-
-    def __init__(self, instrument_token: InstrumentToken, lower: InstrumentToken, upper: InstrumentToken) -> None:
-        self.instrument_token = instrument_token
-        self.lower = lower
-        self.upper = upper
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'NseProperties':
-        assert isinstance(obj, dict)
-        instrument_token = InstrumentToken.from_dict(obj.get("instrument_token"))
-        lower = InstrumentToken.from_dict(obj.get("lower"))
-        upper = InstrumentToken.from_dict(obj.get("upper"))
-        return NseProperties(instrument_token, lower, upper)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["instrument_token"] = to_class(InstrumentToken, self.instrument_token)
-        result["lower"] = to_class(InstrumentToken, self.lower)
-        result["upper"] = to_class(InstrumentToken, self.upper)
-        return result
-
-
-class Nse:
-    additional_properties: bool
-    properties: NseProperties
-    required: List[str]
-    title: str
-    type: str
-
-    def __init__(self, additional_properties: bool, properties: NseProperties, required: List[str], title: str, type: str) -> None:
-        self.additional_properties = additional_properties
-        self.properties = properties
-        self.required = required
-        self.title = title
-        self.type = type
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'Nse':
-        assert isinstance(obj, dict)
-        additional_properties = from_bool(obj.get("additionalProperties"))
-        properties = NseProperties.from_dict(obj.get("properties"))
-        required = from_list(from_str, obj.get("required"))
-        title = from_str(obj.get("title"))
-        type = from_str(obj.get("type"))
-        return Nse(additional_properties, properties, required, title, type)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["additionalProperties"] = from_bool(self.additional_properties)
-        result["properties"] = to_class(NseProperties, self.properties)
-        result["required"] = from_list(from_str, self.required)
-        result["title"] = from_str(self.title)
-        result["type"] = from_str(self.type)
-        return result
-
-
-class TriggerRangeProperties:
-    data: NseInfy
-    status: InstrumentToken
-
-    def __init__(self, data: NseInfy, status: InstrumentToken) -> None:
-        self.data = data
-        self.status = status
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'TriggerRangeProperties':
-        assert isinstance(obj, dict)
-        data = NseInfy.from_dict(obj.get("data"))
-        status = InstrumentToken.from_dict(obj.get("status"))
-        return TriggerRangeProperties(data, status)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["data"] = to_class(NseInfy, self.data)
-        result["status"] = to_class(InstrumentToken, self.status)
-        return result
-
-
-class TriggerRangeClass:
-    additional_properties: bool
-    properties: TriggerRangeProperties
-    required: List[str]
-    title: str
-    type: str
-
-    def __init__(self, additional_properties: bool, properties: TriggerRangeProperties, required: List[str], title: str, type: str) -> None:
-        self.additional_properties = additional_properties
-        self.properties = properties
-        self.required = required
-        self.title = title
-        self.type = type
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'TriggerRangeClass':
-        assert isinstance(obj, dict)
-        additional_properties = from_bool(obj.get("additionalProperties"))
-        properties = TriggerRangeProperties.from_dict(obj.get("properties"))
-        required = from_list(from_str, obj.get("required"))
-        title = from_str(obj.get("title"))
-        type = from_str(obj.get("type"))
-        return TriggerRangeClass(additional_properties, properties, required, title, type)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["additionalProperties"] = from_bool(self.additional_properties)
-        result["properties"] = to_class(TriggerRangeProperties, self.properties)
-        result["required"] = from_list(from_str, self.required)
-        result["title"] = from_str(self.title)
-        result["type"] = from_str(self.type)
-        return result
-
-
-class Definitions:
-    data: Data
-    nse: Nse
-    trigger_range: TriggerRangeClass
-
-    def __init__(self, data: Data, nse: Nse, trigger_range: TriggerRangeClass) -> None:
-        self.data = data
-        self.nse = nse
-        self.trigger_range = trigger_range
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'Definitions':
-        assert isinstance(obj, dict)
-        data = Data.from_dict(obj.get("Data"))
-        nse = Nse.from_dict(obj.get("Nse"))
-        trigger_range = TriggerRangeClass.from_dict(obj.get("TriggerRange"))
-        return Definitions(data, nse, trigger_range)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["Data"] = to_class(Data, self.data)
-        result["Nse"] = to_class(Nse, self.nse)
-        result["TriggerRange"] = to_class(TriggerRangeClass, self.trigger_range)
-        return result
-
-
+@dataclass(slots=True)
 class TriggerRange:
-    ref: str
-    schema: str
-    definitions: Definitions
-
-    def __init__(self, ref: str, schema: str, definitions: Definitions) -> None:
-        self.ref = ref
-        self.schema = schema
-        self.definitions = definitions
+    data: Optional[Dict[str, Datum]] = None
+    status: Optional[str] = None
 
     @staticmethod
     def from_dict(obj: Any) -> 'TriggerRange':
         assert isinstance(obj, dict)
-        ref = from_str(obj.get("$ref"))
-        schema = from_str(obj.get("$schema"))
-        definitions = Definitions.from_dict(obj.get("definitions"))
-        return TriggerRange(ref, schema, definitions)
+        data = from_union([lambda x: from_dict(Datum.from_dict, x), from_none], obj.get("data"))
+        status = from_union([from_str, from_none], obj.get("status"))
+        return TriggerRange(data, status)
 
     def to_dict(self) -> dict:
         result: dict = {}
-        result["$ref"] = from_str(self.ref)
-        result["$schema"] = from_str(self.schema)
-        result["definitions"] = to_class(Definitions, self.definitions)
+        result["data"] = from_union([lambda x: from_dict(lambda x: to_class(Datum, x), x), from_none], self.data)
+        result["status"] = from_union([from_str, from_none], self.status)
         return result
 
 

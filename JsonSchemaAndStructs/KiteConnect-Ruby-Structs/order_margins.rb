@@ -4,7 +4,7 @@
 # To parse this JSON, add 'dry-struct' and 'dry-types' gems, then do:
 #
 #   order_margins = OrderMargins.from_json! "{…}"
-#   puts order_margins.definitions.pnl.required.first
+#   puts order_margins.data&.first.pnl&.realised.even?
 #
 # If from_json! succeeds, the value returned matches the schema.
 
@@ -15,50 +15,21 @@ require 'dry-struct'
 module Types
   include Dry::Types.module
 
-  Bool   = Strict::Bool
+  Int    = Strict::Int
   Hash   = Strict::Hash
   String = Strict::String
-  Type   = Strict::String.enum("integer", "number", "string")
-end
-
-module Type
-  Integer = "integer"
-  Number  = "number"
-  String  = "string"
-end
-
-class Additional < Dry::Struct
-  attribute :additional_type, Types::Type
-
-  def self.from_dynamic!(d)
-    d = Types::Hash[d]
-    new(
-      additional_type: d.fetch("type"),
-    )
-  end
-
-  def self.from_json!(json)
-    from_dynamic!(JSON.parse(json))
-  end
-
-  def to_dynamic
-    {
-      "type" => @additional_type,
-    }
-  end
-
-  def to_json(options = nil)
-    JSON.generate(to_dynamic, options)
-  end
+  Double = Strict::Float | Strict::Int
 end
 
 class Pnl < Dry::Struct
-  attribute :ref, Types::String
+  attribute :realised,   Types::Int.optional
+  attribute :unrealised, Types::Int.optional
 
   def self.from_dynamic!(d)
     d = Types::Hash[d]
     new(
-      ref: d.fetch("$ref"),
+      realised:   d["realised"],
+      unrealised: d["unrealised"],
     )
   end
 
@@ -68,65 +39,8 @@ class Pnl < Dry::Struct
 
   def to_dynamic
     {
-      "$ref" => @ref,
-    }
-  end
-
-  def to_json(options = nil)
-    JSON.generate(to_dynamic, options)
-  end
-end
-
-class DatumProperties < Dry::Struct
-  attribute :additional,            Additional
-  attribute :bo,                    Additional
-  attribute :cash,                  Additional
-  attribute :exchange,              Additional
-  attribute :exposure,              Additional
-  attribute :option_premium,        Additional
-  attribute :pnl,                   Pnl
-  attribute :span,                  Additional
-  attribute :total,                 Additional
-  attribute :tradingsymbol,         Additional
-  attribute :datum_properties_type, Additional
-  attribute :var,                   Additional
-
-  def self.from_dynamic!(d)
-    d = Types::Hash[d]
-    new(
-      additional:            Additional.from_dynamic!(d.fetch("additional")),
-      bo:                    Additional.from_dynamic!(d.fetch("bo")),
-      cash:                  Additional.from_dynamic!(d.fetch("cash")),
-      exchange:              Additional.from_dynamic!(d.fetch("exchange")),
-      exposure:              Additional.from_dynamic!(d.fetch("exposure")),
-      option_premium:        Additional.from_dynamic!(d.fetch("option_premium")),
-      pnl:                   Pnl.from_dynamic!(d.fetch("pnl")),
-      span:                  Additional.from_dynamic!(d.fetch("span")),
-      total:                 Additional.from_dynamic!(d.fetch("total")),
-      tradingsymbol:         Additional.from_dynamic!(d.fetch("tradingsymbol")),
-      datum_properties_type: Additional.from_dynamic!(d.fetch("type")),
-      var:                   Additional.from_dynamic!(d.fetch("var")),
-    )
-  end
-
-  def self.from_json!(json)
-    from_dynamic!(JSON.parse(json))
-  end
-
-  def to_dynamic
-    {
-      "additional"     => @additional.to_dynamic,
-      "bo"             => @bo.to_dynamic,
-      "cash"           => @cash.to_dynamic,
-      "exchange"       => @exchange.to_dynamic,
-      "exposure"       => @exposure.to_dynamic,
-      "option_premium" => @option_premium.to_dynamic,
-      "pnl"            => @pnl.to_dynamic,
-      "span"           => @span.to_dynamic,
-      "total"          => @total.to_dynamic,
-      "tradingsymbol"  => @tradingsymbol.to_dynamic,
-      "type"           => @datum_properties_type.to_dynamic,
-      "var"            => @var.to_dynamic,
+      "realised"   => @realised,
+      "unrealised" => @unrealised,
     }
   end
 
@@ -136,20 +50,34 @@ class DatumProperties < Dry::Struct
 end
 
 class Datum < Dry::Struct
-  attribute :additional_properties, Types::Bool
-  attribute :properties,            DatumProperties
-  attribute :required,              Types.Array(Types::String)
-  attribute :title,                 Types::String
-  attribute :datum_type,            Types::String
+  attribute :additional,     Types::Int.optional
+  attribute :bo,             Types::Int.optional
+  attribute :cash,           Types::Int.optional
+  attribute :exchange,       Types::String.optional
+  attribute :exposure,       Types::Int.optional
+  attribute :option_premium, Types::Int.optional
+  attribute :pnl,            Pnl.optional
+  attribute :span,           Types::Int.optional
+  attribute :total,          Types::Double.optional
+  attribute :tradingsymbol,  Types::String.optional
+  attribute :datum_type,     Types::String.optional
+  attribute :var,            Types::Double.optional
 
   def self.from_dynamic!(d)
     d = Types::Hash[d]
     new(
-      additional_properties: d.fetch("additionalProperties"),
-      properties:            DatumProperties.from_dynamic!(d.fetch("properties")),
-      required:              d.fetch("required"),
-      title:                 d.fetch("title"),
-      datum_type:            d.fetch("type"),
+      additional:     d["additional"],
+      bo:             d["bo"],
+      cash:           d["cash"],
+      exchange:       d["exchange"],
+      exposure:       d["exposure"],
+      option_premium: d["option_premium"],
+      pnl:            d["pnl"] ? Pnl.from_dynamic!(d["pnl"]) : nil,
+      span:           d["span"],
+      total:          d["total"],
+      tradingsymbol:  d["tradingsymbol"],
+      datum_type:     d["type"],
+      var:            d["var"],
     )
   end
 
@@ -159,200 +87,18 @@ class Datum < Dry::Struct
 
   def to_dynamic
     {
-      "additionalProperties" => @additional_properties,
-      "properties"           => @properties.to_dynamic,
-      "required"             => @required,
-      "title"                => @title,
-      "type"                 => @datum_type,
-    }
-  end
-
-  def to_json(options = nil)
-    JSON.generate(to_dynamic, options)
-  end
-end
-
-class DataClass < Dry::Struct
-  attribute :items,     Pnl
-  attribute :data_type, Types::String
-
-  def self.from_dynamic!(d)
-    d = Types::Hash[d]
-    new(
-      items:     Pnl.from_dynamic!(d.fetch("items")),
-      data_type: d.fetch("type"),
-    )
-  end
-
-  def self.from_json!(json)
-    from_dynamic!(JSON.parse(json))
-  end
-
-  def to_dynamic
-    {
-      "items" => @items.to_dynamic,
-      "type"  => @data_type,
-    }
-  end
-
-  def to_json(options = nil)
-    JSON.generate(to_dynamic, options)
-  end
-end
-
-class OrderMarginsProperties < Dry::Struct
-  attribute :data,   DataClass
-  attribute :status, Additional
-
-  def self.from_dynamic!(d)
-    d = Types::Hash[d]
-    new(
-      data:   DataClass.from_dynamic!(d.fetch("data")),
-      status: Additional.from_dynamic!(d.fetch("status")),
-    )
-  end
-
-  def self.from_json!(json)
-    from_dynamic!(JSON.parse(json))
-  end
-
-  def to_dynamic
-    {
-      "data"   => @data.to_dynamic,
-      "status" => @status.to_dynamic,
-    }
-  end
-
-  def to_json(options = nil)
-    JSON.generate(to_dynamic, options)
-  end
-end
-
-class OrderMarginsClass < Dry::Struct
-  attribute :additional_properties,    Types::Bool
-  attribute :properties,               OrderMarginsProperties
-  attribute :required,                 Types.Array(Types::String)
-  attribute :title,                    Types::String
-  attribute :order_margins_class_type, Types::String
-
-  def self.from_dynamic!(d)
-    d = Types::Hash[d]
-    new(
-      additional_properties:    d.fetch("additionalProperties"),
-      properties:               OrderMarginsProperties.from_dynamic!(d.fetch("properties")),
-      required:                 d.fetch("required"),
-      title:                    d.fetch("title"),
-      order_margins_class_type: d.fetch("type"),
-    )
-  end
-
-  def self.from_json!(json)
-    from_dynamic!(JSON.parse(json))
-  end
-
-  def to_dynamic
-    {
-      "additionalProperties" => @additional_properties,
-      "properties"           => @properties.to_dynamic,
-      "required"             => @required,
-      "title"                => @title,
-      "type"                 => @order_margins_class_type,
-    }
-  end
-
-  def to_json(options = nil)
-    JSON.generate(to_dynamic, options)
-  end
-end
-
-class PnlProperties < Dry::Struct
-  attribute :realised,   Additional
-  attribute :unrealised, Additional
-
-  def self.from_dynamic!(d)
-    d = Types::Hash[d]
-    new(
-      realised:   Additional.from_dynamic!(d.fetch("realised")),
-      unrealised: Additional.from_dynamic!(d.fetch("unrealised")),
-    )
-  end
-
-  def self.from_json!(json)
-    from_dynamic!(JSON.parse(json))
-  end
-
-  def to_dynamic
-    {
-      "realised"   => @realised.to_dynamic,
-      "unrealised" => @unrealised.to_dynamic,
-    }
-  end
-
-  def to_json(options = nil)
-    JSON.generate(to_dynamic, options)
-  end
-end
-
-class PnlClass < Dry::Struct
-  attribute :additional_properties, Types::Bool
-  attribute :properties,            PnlProperties
-  attribute :required,              Types.Array(Types::String)
-  attribute :title,                 Types::String
-  attribute :pnl_class_type,        Types::String
-
-  def self.from_dynamic!(d)
-    d = Types::Hash[d]
-    new(
-      additional_properties: d.fetch("additionalProperties"),
-      properties:            PnlProperties.from_dynamic!(d.fetch("properties")),
-      required:              d.fetch("required"),
-      title:                 d.fetch("title"),
-      pnl_class_type:        d.fetch("type"),
-    )
-  end
-
-  def self.from_json!(json)
-    from_dynamic!(JSON.parse(json))
-  end
-
-  def to_dynamic
-    {
-      "additionalProperties" => @additional_properties,
-      "properties"           => @properties.to_dynamic,
-      "required"             => @required,
-      "title"                => @title,
-      "type"                 => @pnl_class_type,
-    }
-  end
-
-  def to_json(options = nil)
-    JSON.generate(to_dynamic, options)
-  end
-end
-
-class Definitions < Dry::Struct
-  attribute :datum,         Datum
-  attribute :order_margins, OrderMarginsClass
-  attribute :pnl,           PnlClass
-
-  def self.from_dynamic!(d)
-    d = Types::Hash[d]
-    new(
-      datum:         Datum.from_dynamic!(d.fetch("Datum")),
-      order_margins: OrderMarginsClass.from_dynamic!(d.fetch("OrderMargins")),
-      pnl:           PnlClass.from_dynamic!(d.fetch("Pnl")),
-    )
-  end
-
-  def self.from_json!(json)
-    from_dynamic!(JSON.parse(json))
-  end
-
-  def to_dynamic
-    {
-      "Datum"        => @datum.to_dynamic,
-      "OrderMargins" => @order_margins.to_dynamic,
-      "Pnl"          => @pnl.to_dynamic,
+      "additional"     => @additional,
+      "bo"             => @bo,
+      "cash"           => @cash,
+      "exchange"       => @exchange,
+      "exposure"       => @exposure,
+      "option_premium" => @option_premium,
+      "pnl"            => @pnl&.to_dynamic,
+      "span"           => @span,
+      "total"          => @total,
+      "tradingsymbol"  => @tradingsymbol,
+      "type"           => @datum_type,
+      "var"            => @var,
     }
   end
 
@@ -362,16 +108,14 @@ class Definitions < Dry::Struct
 end
 
 class OrderMargins < Dry::Struct
-  attribute :ref,         Types::String
-  attribute :schema,      Types::String
-  attribute :definitions, Definitions
+  attribute :data,   Types.Array(Datum).optional
+  attribute :status, Types::String.optional
 
   def self.from_dynamic!(d)
     d = Types::Hash[d]
     new(
-      ref:         d.fetch("$ref"),
-      schema:      d.fetch("$schema"),
-      definitions: Definitions.from_dynamic!(d.fetch("definitions")),
+      data:   d["data"]&.map { |x| Datum.from_dynamic!(x) },
+      status: d["status"],
     )
   end
 
@@ -381,9 +125,8 @@ class OrderMargins < Dry::Struct
 
   def to_dynamic
     {
-      "$ref"        => @ref,
-      "$schema"     => @schema,
-      "definitions" => @definitions.to_dynamic,
+      "data"   => @data&.map { |x| x.to_dynamic },
+      "status" => @status,
     }
   end
 

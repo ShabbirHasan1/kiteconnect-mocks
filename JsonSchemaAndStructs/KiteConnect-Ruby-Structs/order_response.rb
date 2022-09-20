@@ -4,7 +4,7 @@
 # To parse this JSON, add 'dry-struct' and 'dry-types' gems, then do:
 #
 #   order_response = OrderResponse.from_json! "{…}"
-#   puts order_response.definitions.order_response.required.first
+#   puts order_response.data&.order_id
 #
 # If from_json! succeeds, the value returned matches the schema.
 
@@ -15,76 +15,17 @@ require 'dry-struct'
 module Types
   include Dry::Types.module
 
-  Bool   = Strict::Bool
   Hash   = Strict::Hash
   String = Strict::String
 end
 
-class OrderID < Dry::Struct
-  attribute :order_id_type, Types::String
-
-  def self.from_dynamic!(d)
-    d = Types::Hash[d]
-    new(
-      order_id_type: d.fetch("type"),
-    )
-  end
-
-  def self.from_json!(json)
-    from_dynamic!(JSON.parse(json))
-  end
-
-  def to_dynamic
-    {
-      "type" => @order_id_type,
-    }
-  end
-
-  def to_json(options = nil)
-    JSON.generate(to_dynamic, options)
-  end
-end
-
-class DataProperties < Dry::Struct
-  attribute :order_id, OrderID
-
-  def self.from_dynamic!(d)
-    d = Types::Hash[d]
-    new(
-      order_id: OrderID.from_dynamic!(d.fetch("order_id")),
-    )
-  end
-
-  def self.from_json!(json)
-    from_dynamic!(JSON.parse(json))
-  end
-
-  def to_dynamic
-    {
-      "order_id" => @order_id.to_dynamic,
-    }
-  end
-
-  def to_json(options = nil)
-    JSON.generate(to_dynamic, options)
-  end
-end
-
 class DataClass < Dry::Struct
-  attribute :additional_properties, Types::Bool
-  attribute :properties,            DataProperties
-  attribute :required,              Types.Array(Types::String)
-  attribute :title,                 Types::String
-  attribute :data_type,             Types::String
+  attribute :order_id, Types::String.optional
 
   def self.from_dynamic!(d)
     d = Types::Hash[d]
     new(
-      additional_properties: d.fetch("additionalProperties"),
-      properties:            DataProperties.from_dynamic!(d.fetch("properties")),
-      required:              d.fetch("required"),
-      title:                 d.fetch("title"),
-      data_type:             d.fetch("type"),
+      order_id: d["order_id"],
     )
   end
 
@@ -94,129 +35,7 @@ class DataClass < Dry::Struct
 
   def to_dynamic
     {
-      "additionalProperties" => @additional_properties,
-      "properties"           => @properties.to_dynamic,
-      "required"             => @required,
-      "title"                => @title,
-      "type"                 => @data_type,
-    }
-  end
-
-  def to_json(options = nil)
-    JSON.generate(to_dynamic, options)
-  end
-end
-
-class PropertiesData < Dry::Struct
-  attribute :ref, Types::String
-
-  def self.from_dynamic!(d)
-    d = Types::Hash[d]
-    new(
-      ref: d.fetch("$ref"),
-    )
-  end
-
-  def self.from_json!(json)
-    from_dynamic!(JSON.parse(json))
-  end
-
-  def to_dynamic
-    {
-      "$ref" => @ref,
-    }
-  end
-
-  def to_json(options = nil)
-    JSON.generate(to_dynamic, options)
-  end
-end
-
-class OrderResponseProperties < Dry::Struct
-  attribute :data,   PropertiesData
-  attribute :status, OrderID
-
-  def self.from_dynamic!(d)
-    d = Types::Hash[d]
-    new(
-      data:   PropertiesData.from_dynamic!(d.fetch("data")),
-      status: OrderID.from_dynamic!(d.fetch("status")),
-    )
-  end
-
-  def self.from_json!(json)
-    from_dynamic!(JSON.parse(json))
-  end
-
-  def to_dynamic
-    {
-      "data"   => @data.to_dynamic,
-      "status" => @status.to_dynamic,
-    }
-  end
-
-  def to_json(options = nil)
-    JSON.generate(to_dynamic, options)
-  end
-end
-
-class OrderResponseClass < Dry::Struct
-  attribute :additional_properties,     Types::Bool
-  attribute :properties,                OrderResponseProperties
-  attribute :required,                  Types.Array(Types::String)
-  attribute :title,                     Types::String
-  attribute :order_response_class_type, Types::String
-
-  def self.from_dynamic!(d)
-    d = Types::Hash[d]
-    new(
-      additional_properties:     d.fetch("additionalProperties"),
-      properties:                OrderResponseProperties.from_dynamic!(d.fetch("properties")),
-      required:                  d.fetch("required"),
-      title:                     d.fetch("title"),
-      order_response_class_type: d.fetch("type"),
-    )
-  end
-
-  def self.from_json!(json)
-    from_dynamic!(JSON.parse(json))
-  end
-
-  def to_dynamic
-    {
-      "additionalProperties" => @additional_properties,
-      "properties"           => @properties.to_dynamic,
-      "required"             => @required,
-      "title"                => @title,
-      "type"                 => @order_response_class_type,
-    }
-  end
-
-  def to_json(options = nil)
-    JSON.generate(to_dynamic, options)
-  end
-end
-
-class Definitions < Dry::Struct
-  attribute :data,           DataClass
-  attribute :order_response, OrderResponseClass
-
-  def self.from_dynamic!(d)
-    d = Types::Hash[d]
-    new(
-      data:           DataClass.from_dynamic!(d.fetch("Data")),
-      order_response: OrderResponseClass.from_dynamic!(d.fetch("OrderResponse")),
-    )
-  end
-
-  def self.from_json!(json)
-    from_dynamic!(JSON.parse(json))
-  end
-
-  def to_dynamic
-    {
-      "Data"          => @data.to_dynamic,
-      "OrderResponse" => @order_response.to_dynamic,
+      "order_id" => @order_id,
     }
   end
 
@@ -226,16 +45,14 @@ class Definitions < Dry::Struct
 end
 
 class OrderResponse < Dry::Struct
-  attribute :ref,         Types::String
-  attribute :schema,      Types::String
-  attribute :definitions, Definitions
+  attribute :data,   DataClass.optional
+  attribute :status, Types::String.optional
 
   def self.from_dynamic!(d)
     d = Types::Hash[d]
     new(
-      ref:         d.fetch("$ref"),
-      schema:      d.fetch("$schema"),
-      definitions: Definitions.from_dynamic!(d.fetch("definitions")),
+      data:   d["data"] ? DataClass.from_dynamic!(d["data"]) : nil,
+      status: d["status"],
     )
   end
 
@@ -245,9 +62,8 @@ class OrderResponse < Dry::Struct
 
   def to_dynamic
     {
-      "$ref"        => @ref,
-      "$schema"     => @schema,
-      "definitions" => @definitions.to_dynamic,
+      "data"   => @data&.to_dynamic,
+      "status" => @status,
     }
   end
 

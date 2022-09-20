@@ -4,7 +4,7 @@
 # To parse this JSON, add 'dry-struct' and 'dry-types' gems, then do:
 #
 #   positions = Positions.from_json! "{…}"
-#   puts positions.definitions.positions.required.first
+#   puts positions.data&.net&.first.average_price
 #
 # If from_json! succeeds, the value returned matches the schema.
 
@@ -15,46 +15,75 @@ require 'dry-struct'
 module Types
   include Dry::Types.module
 
-  Bool   = Strict::Bool
+  Int    = Strict::Int
   Hash   = Strict::Hash
   String = Strict::String
-  Type   = Strict::String.enum("integer", "number", "string")
-end
-
-class ItemsClass < Dry::Struct
-  attribute :ref, Types::String
-
-  def self.from_dynamic!(d)
-    d = Types::Hash[d]
-    new(
-      ref: d.fetch("$ref"),
-    )
-  end
-
-  def self.from_json!(json)
-    from_dynamic!(JSON.parse(json))
-  end
-
-  def to_dynamic
-    {
-      "$ref" => @ref,
-    }
-  end
-
-  def to_json(options = nil)
-    JSON.generate(to_dynamic, options)
-  end
+  Double = Strict::Float | Strict::Int
 end
 
 class Day < Dry::Struct
-  attribute :items,    ItemsClass
-  attribute :day_type, Types::String
+  attribute :average_price,      Types::Double.optional
+  attribute :buy_m2_m,           Types::Int.optional
+  attribute :buy_price,          Types::Double.optional
+  attribute :buy_quantity,       Types::Int.optional
+  attribute :buy_value,          Types::Int.optional
+  attribute :close_price,        Types::Int.optional
+  attribute :day_buy_price,      Types::Double.optional
+  attribute :day_buy_quantity,   Types::Int.optional
+  attribute :day_buy_value,      Types::Int.optional
+  attribute :day_sell_price,     Types::Int.optional
+  attribute :day_sell_quantity,  Types::Int.optional
+  attribute :day_sell_value,     Types::Int.optional
+  attribute :exchange,           Types::String.optional
+  attribute :instrument_token,   Types::Int.optional
+  attribute :last_price,         Types::Double.optional
+  attribute :m2_m,               Types::Int.optional
+  attribute :multiplier,         Types::Int.optional
+  attribute :overnight_quantity, Types::Int.optional
+  attribute :pnl,                Types::Int.optional
+  attribute :product,            Types::String.optional
+  attribute :quantity,           Types::Int.optional
+  attribute :realised,           Types::Int.optional
+  attribute :sell_m2_m,          Types::Int.optional
+  attribute :sell_price,         Types::Int.optional
+  attribute :sell_quantity,      Types::Int.optional
+  attribute :sell_value,         Types::Int.optional
+  attribute :tradingsymbol,      Types::String.optional
+  attribute :unrealised,         Types::Int.optional
+  attribute :value,              Types::Int.optional
 
   def self.from_dynamic!(d)
     d = Types::Hash[d]
     new(
-      items:    ItemsClass.from_dynamic!(d.fetch("items")),
-      day_type: d.fetch("type"),
+      average_price:      d["average_price"],
+      buy_m2_m:           d["buy_m2m"],
+      buy_price:          d["buy_price"],
+      buy_quantity:       d["buy_quantity"],
+      buy_value:          d["buy_value"],
+      close_price:        d["close_price"],
+      day_buy_price:      d["day_buy_price"],
+      day_buy_quantity:   d["day_buy_quantity"],
+      day_buy_value:      d["day_buy_value"],
+      day_sell_price:     d["day_sell_price"],
+      day_sell_quantity:  d["day_sell_quantity"],
+      day_sell_value:     d["day_sell_value"],
+      exchange:           d["exchange"],
+      instrument_token:   d["instrument_token"],
+      last_price:         d["last_price"],
+      m2_m:               d["m2m"],
+      multiplier:         d["multiplier"],
+      overnight_quantity: d["overnight_quantity"],
+      pnl:                d["pnl"],
+      product:            d["product"],
+      quantity:           d["quantity"],
+      realised:           d["realised"],
+      sell_m2_m:          d["sell_m2m"],
+      sell_price:         d["sell_price"],
+      sell_quantity:      d["sell_quantity"],
+      sell_value:         d["sell_value"],
+      tradingsymbol:      d["tradingsymbol"],
+      unrealised:         d["unrealised"],
+      value:              d["value"],
     )
   end
 
@@ -64,36 +93,35 @@ class Day < Dry::Struct
 
   def to_dynamic
     {
-      "items" => @items.to_dynamic,
-      "type"  => @day_type,
-    }
-  end
-
-  def to_json(options = nil)
-    JSON.generate(to_dynamic, options)
-  end
-end
-
-class DataProperties < Dry::Struct
-  attribute :day, Day
-  attribute :net, Day
-
-  def self.from_dynamic!(d)
-    d = Types::Hash[d]
-    new(
-      day: Day.from_dynamic!(d.fetch("day")),
-      net: Day.from_dynamic!(d.fetch("net")),
-    )
-  end
-
-  def self.from_json!(json)
-    from_dynamic!(JSON.parse(json))
-  end
-
-  def to_dynamic
-    {
-      "day" => @day.to_dynamic,
-      "net" => @net.to_dynamic,
+      "average_price"      => @average_price,
+      "buy_m2m"            => @buy_m2_m,
+      "buy_price"          => @buy_price,
+      "buy_quantity"       => @buy_quantity,
+      "buy_value"          => @buy_value,
+      "close_price"        => @close_price,
+      "day_buy_price"      => @day_buy_price,
+      "day_buy_quantity"   => @day_buy_quantity,
+      "day_buy_value"      => @day_buy_value,
+      "day_sell_price"     => @day_sell_price,
+      "day_sell_quantity"  => @day_sell_quantity,
+      "day_sell_value"     => @day_sell_value,
+      "exchange"           => @exchange,
+      "instrument_token"   => @instrument_token,
+      "last_price"         => @last_price,
+      "m2m"                => @m2_m,
+      "multiplier"         => @multiplier,
+      "overnight_quantity" => @overnight_quantity,
+      "pnl"                => @pnl,
+      "product"            => @product,
+      "quantity"           => @quantity,
+      "realised"           => @realised,
+      "sell_m2m"           => @sell_m2_m,
+      "sell_price"         => @sell_price,
+      "sell_quantity"      => @sell_quantity,
+      "sell_value"         => @sell_value,
+      "tradingsymbol"      => @tradingsymbol,
+      "unrealised"         => @unrealised,
+      "value"              => @value,
     }
   end
 
@@ -103,20 +131,14 @@ class DataProperties < Dry::Struct
 end
 
 class DataClass < Dry::Struct
-  attribute :additional_properties, Types::Bool
-  attribute :properties,            DataProperties
-  attribute :required,              Types.Array(Types::String)
-  attribute :title,                 Types::String
-  attribute :data_type,             Types::String
+  attribute :day, Types.Array(Day).optional
+  attribute :net, Types.Array(Day).optional
 
   def self.from_dynamic!(d)
     d = Types::Hash[d]
     new(
-      additional_properties: d.fetch("additionalProperties"),
-      properties:            DataProperties.from_dynamic!(d.fetch("properties")),
-      required:              d.fetch("required"),
-      title:                 d.fetch("title"),
-      data_type:             d.fetch("type"),
+      day: d["day"]&.map { |x| Day.from_dynamic!(x) },
+      net: d["net"]&.map { |x| Day.from_dynamic!(x) },
     )
   end
 
@@ -126,175 +148,8 @@ class DataClass < Dry::Struct
 
   def to_dynamic
     {
-      "additionalProperties" => @additional_properties,
-      "properties"           => @properties.to_dynamic,
-      "required"             => @required,
-      "title"                => @title,
-      "type"                 => @data_type,
-    }
-  end
-
-  def to_json(options = nil)
-    JSON.generate(to_dynamic, options)
-  end
-end
-
-module Type
-  Integer = "integer"
-  Number  = "number"
-  String  = "string"
-end
-
-class Property < Dry::Struct
-  attribute :property_type, Types::Type
-
-  def self.from_dynamic!(d)
-    d = Types::Hash[d]
-    new(
-      property_type: d.fetch("type"),
-    )
-  end
-
-  def self.from_json!(json)
-    from_dynamic!(JSON.parse(json))
-  end
-
-  def to_dynamic
-    {
-      "type" => @property_type,
-    }
-  end
-
-  def to_json(options = nil)
-    JSON.generate(to_dynamic, options)
-  end
-end
-
-class DayClass < Dry::Struct
-  attribute :additional_properties, Types::Bool
-  attribute :properties,            Types::Hash.meta(of: Property)
-  attribute :required,              Types.Array(Types::String)
-  attribute :title,                 Types::String
-  attribute :day_class_type,        Types::String
-
-  def self.from_dynamic!(d)
-    d = Types::Hash[d]
-    new(
-      additional_properties: d.fetch("additionalProperties"),
-      properties:            Types::Hash[d.fetch("properties")].map { |k, v| [k, Property.from_dynamic!(v)] }.to_h,
-      required:              d.fetch("required"),
-      title:                 d.fetch("title"),
-      day_class_type:        d.fetch("type"),
-    )
-  end
-
-  def self.from_json!(json)
-    from_dynamic!(JSON.parse(json))
-  end
-
-  def to_dynamic
-    {
-      "additionalProperties" => @additional_properties,
-      "properties"           => @properties.map { |k, v| [k, v.to_dynamic] }.to_h,
-      "required"             => @required,
-      "title"                => @title,
-      "type"                 => @day_class_type,
-    }
-  end
-
-  def to_json(options = nil)
-    JSON.generate(to_dynamic, options)
-  end
-end
-
-class PositionsProperties < Dry::Struct
-  attribute :data,   ItemsClass
-  attribute :status, Property
-
-  def self.from_dynamic!(d)
-    d = Types::Hash[d]
-    new(
-      data:   ItemsClass.from_dynamic!(d.fetch("data")),
-      status: Property.from_dynamic!(d.fetch("status")),
-    )
-  end
-
-  def self.from_json!(json)
-    from_dynamic!(JSON.parse(json))
-  end
-
-  def to_dynamic
-    {
-      "data"   => @data.to_dynamic,
-      "status" => @status.to_dynamic,
-    }
-  end
-
-  def to_json(options = nil)
-    JSON.generate(to_dynamic, options)
-  end
-end
-
-class PositionsClass < Dry::Struct
-  attribute :additional_properties, Types::Bool
-  attribute :properties,            PositionsProperties
-  attribute :required,              Types.Array(Types::String)
-  attribute :title,                 Types::String
-  attribute :positions_class_type,  Types::String
-
-  def self.from_dynamic!(d)
-    d = Types::Hash[d]
-    new(
-      additional_properties: d.fetch("additionalProperties"),
-      properties:            PositionsProperties.from_dynamic!(d.fetch("properties")),
-      required:              d.fetch("required"),
-      title:                 d.fetch("title"),
-      positions_class_type:  d.fetch("type"),
-    )
-  end
-
-  def self.from_json!(json)
-    from_dynamic!(JSON.parse(json))
-  end
-
-  def to_dynamic
-    {
-      "additionalProperties" => @additional_properties,
-      "properties"           => @properties.to_dynamic,
-      "required"             => @required,
-      "title"                => @title,
-      "type"                 => @positions_class_type,
-    }
-  end
-
-  def to_json(options = nil)
-    JSON.generate(to_dynamic, options)
-  end
-end
-
-class Definitions < Dry::Struct
-  attribute :data,      DataClass
-  attribute :day,       DayClass
-  attribute :positions, PositionsClass
-
-  def self.from_dynamic!(d)
-    d = Types::Hash[d]
-    new(
-      data:      DataClass.from_dynamic!(d.fetch("Data")),
-      day:       DayClass.from_dynamic!(d.fetch("Day")),
-      positions: PositionsClass.from_dynamic!(d.fetch("Positions")),
-    )
-  end
-
-  def self.from_json!(json)
-    from_dynamic!(JSON.parse(json))
-  end
-
-  def to_dynamic
-    {
-      "Data"      => @data.to_dynamic,
-      "Day"       => @day.to_dynamic,
-      "Positions" => @positions.to_dynamic,
+      "day" => @day&.map { |x| x.to_dynamic },
+      "net" => @net&.map { |x| x.to_dynamic },
     }
   end
 
@@ -304,16 +159,14 @@ class Definitions < Dry::Struct
 end
 
 class Positions < Dry::Struct
-  attribute :ref,         Types::String
-  attribute :schema,      Types::String
-  attribute :definitions, Definitions
+  attribute :data,   DataClass.optional
+  attribute :status, Types::String.optional
 
   def self.from_dynamic!(d)
     d = Types::Hash[d]
     new(
-      ref:         d.fetch("$ref"),
-      schema:      d.fetch("$schema"),
-      definitions: Definitions.from_dynamic!(d.fetch("definitions")),
+      data:   d["data"] ? DataClass.from_dynamic!(d["data"]) : nil,
+      status: d["status"],
     )
   end
 
@@ -323,9 +176,8 @@ class Positions < Dry::Struct
 
   def to_dynamic
     {
-      "$ref"        => @ref,
-      "$schema"     => @schema,
-      "definitions" => @definitions.to_dynamic,
+      "data"   => @data&.to_dynamic,
+      "status" => @status,
     }
   end
 

@@ -1,3 +1,7 @@
+# This code parses date/times, so please
+#
+#     pip install python-dateutil
+#
 # To use this code, make sure you
 #
 #     import json
@@ -6,26 +10,41 @@
 #
 #     result = quote_from_dict(json.loads(json_string))
 
-from enum import Enum
-from typing import Any, List, TypeVar, Type, cast, Callable
+from dataclasses import dataclass
+from typing import Optional, Any, List, Dict, TypeVar, Callable, Type, cast
+from datetime import datetime
+import dateutil.parser
 
 
 T = TypeVar("T")
-EnumT = TypeVar("EnumT", bound=Enum)
 
 
-def to_enum(c: Type[EnumT], x: Any) -> EnumT:
-    assert isinstance(x, c)
-    return x.value
+def from_int(x: Any) -> int:
+    assert isinstance(x, int) and not isinstance(x, bool)
+    return x
 
 
-def to_class(c: Type[T], x: Any) -> dict:
-    assert isinstance(x, c)
-    return cast(Any, x).to_dict()
+def from_none(x: Any) -> Any:
+    assert x is None
+    return x
 
 
-def from_bool(x: Any) -> bool:
-    assert isinstance(x, bool)
+def from_union(fs, x):
+    for f in fs:
+        try:
+            return f(x)
+        except:
+            pass
+    assert False
+
+
+def from_float(x: Any) -> float:
+    assert isinstance(x, (float, int)) and not isinstance(x, bool)
+    return float(x)
+
+
+def to_float(x: Any) -> float:
+    assert isinstance(x, float)
     return x
 
 
@@ -34,562 +53,171 @@ def from_list(f: Callable[[Any], T], x: Any) -> List[T]:
     return [f(y) for y in x]
 
 
+def to_class(c: Type[T], x: Any) -> dict:
+    assert isinstance(x, c)
+    return cast(Any, x).to_dict()
+
+
+def from_datetime(x: Any) -> datetime:
+    return dateutil.parser.parse(x)
+
+
+def from_dict(f: Callable[[Any], T], x: Any) -> Dict[str, T]:
+    assert isinstance(x, dict)
+    return { k: f(v) for (k, v) in x.items() }
+
+
 def from_str(x: Any) -> str:
     assert isinstance(x, str)
     return x
 
 
-class TypeEnum(Enum):
-    INTEGER = "integer"
-    NUMBER = "number"
-    STRING = "string"
-
-
-class Orders:
-    type: TypeEnum
-
-    def __init__(self, type: TypeEnum) -> None:
-        self.type = type
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'Orders':
-        assert isinstance(obj, dict)
-        type = TypeEnum(obj.get("type"))
-        return Orders(type)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["type"] = to_enum(TypeEnum, self.type)
-        return result
-
-
-class BuyProperties:
-    orders: Orders
-    price: Orders
-    quantity: Orders
-
-    def __init__(self, orders: Orders, price: Orders, quantity: Orders) -> None:
-        self.orders = orders
-        self.price = price
-        self.quantity = quantity
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'BuyProperties':
-        assert isinstance(obj, dict)
-        orders = Orders.from_dict(obj.get("orders"))
-        price = Orders.from_dict(obj.get("price"))
-        quantity = Orders.from_dict(obj.get("quantity"))
-        return BuyProperties(orders, price, quantity)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["orders"] = to_class(Orders, self.orders)
-        result["price"] = to_class(Orders, self.price)
-        result["quantity"] = to_class(Orders, self.quantity)
-        return result
-
-
+@dataclass(slots=True)
 class Buy:
-    additional_properties: bool
-    properties: BuyProperties
-    required: List[str]
-    title: str
-    type: str
-
-    def __init__(self, additional_properties: bool, properties: BuyProperties, required: List[str], title: str, type: str) -> None:
-        self.additional_properties = additional_properties
-        self.properties = properties
-        self.required = required
-        self.title = title
-        self.type = type
+    orders: Optional[int] = None
+    price: Optional[float] = None
+    quantity: Optional[int] = None
 
     @staticmethod
     def from_dict(obj: Any) -> 'Buy':
         assert isinstance(obj, dict)
-        additional_properties = from_bool(obj.get("additionalProperties"))
-        properties = BuyProperties.from_dict(obj.get("properties"))
-        required = from_list(from_str, obj.get("required"))
-        title = from_str(obj.get("title"))
-        type = from_str(obj.get("type"))
-        return Buy(additional_properties, properties, required, title, type)
+        orders = from_union([from_int, from_none], obj.get("orders"))
+        price = from_union([from_float, from_none], obj.get("price"))
+        quantity = from_union([from_int, from_none], obj.get("quantity"))
+        return Buy(orders, price, quantity)
 
     def to_dict(self) -> dict:
         result: dict = {}
-        result["additionalProperties"] = from_bool(self.additional_properties)
-        result["properties"] = to_class(BuyProperties, self.properties)
-        result["required"] = from_list(from_str, self.required)
-        result["title"] = from_str(self.title)
-        result["type"] = from_str(self.type)
+        result["orders"] = from_union([from_int, from_none], self.orders)
+        result["price"] = from_union([to_float, from_none], self.price)
+        result["quantity"] = from_union([from_int, from_none], self.quantity)
         return result
 
 
-class NseInfy:
-    ref: str
-
-    def __init__(self, ref: str) -> None:
-        self.ref = ref
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'NseInfy':
-        assert isinstance(obj, dict)
-        ref = from_str(obj.get("$ref"))
-        return NseInfy(ref)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["$ref"] = from_str(self.ref)
-        return result
-
-
-class DataProperties:
-    nse_infy: NseInfy
-
-    def __init__(self, nse_infy: NseInfy) -> None:
-        self.nse_infy = nse_infy
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'DataProperties':
-        assert isinstance(obj, dict)
-        nse_infy = NseInfy.from_dict(obj.get("NSE:INFY"))
-        return DataProperties(nse_infy)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["NSE:INFY"] = to_class(NseInfy, self.nse_infy)
-        return result
-
-
-class Data:
-    additional_properties: bool
-    properties: DataProperties
-    required: List[str]
-    title: str
-    type: str
-
-    def __init__(self, additional_properties: bool, properties: DataProperties, required: List[str], title: str, type: str) -> None:
-        self.additional_properties = additional_properties
-        self.properties = properties
-        self.required = required
-        self.title = title
-        self.type = type
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'Data':
-        assert isinstance(obj, dict)
-        additional_properties = from_bool(obj.get("additionalProperties"))
-        properties = DataProperties.from_dict(obj.get("properties"))
-        required = from_list(from_str, obj.get("required"))
-        title = from_str(obj.get("title"))
-        type = from_str(obj.get("type"))
-        return Data(additional_properties, properties, required, title, type)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["additionalProperties"] = from_bool(self.additional_properties)
-        result["properties"] = to_class(DataProperties, self.properties)
-        result["required"] = from_list(from_str, self.required)
-        result["title"] = from_str(self.title)
-        result["type"] = from_str(self.type)
-        return result
-
-
-class BuyClass:
-    items: NseInfy
-    type: str
-
-    def __init__(self, items: NseInfy, type: str) -> None:
-        self.items = items
-        self.type = type
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'BuyClass':
-        assert isinstance(obj, dict)
-        items = NseInfy.from_dict(obj.get("items"))
-        type = from_str(obj.get("type"))
-        return BuyClass(items, type)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["items"] = to_class(NseInfy, self.items)
-        result["type"] = from_str(self.type)
-        return result
-
-
-class DepthProperties:
-    buy: BuyClass
-    sell: BuyClass
-
-    def __init__(self, buy: BuyClass, sell: BuyClass) -> None:
-        self.buy = buy
-        self.sell = sell
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'DepthProperties':
-        assert isinstance(obj, dict)
-        buy = BuyClass.from_dict(obj.get("buy"))
-        sell = BuyClass.from_dict(obj.get("sell"))
-        return DepthProperties(buy, sell)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["buy"] = to_class(BuyClass, self.buy)
-        result["sell"] = to_class(BuyClass, self.sell)
-        return result
-
-
+@dataclass(slots=True)
 class Depth:
-    additional_properties: bool
-    properties: DepthProperties
-    required: List[str]
-    title: str
-    type: str
-
-    def __init__(self, additional_properties: bool, properties: DepthProperties, required: List[str], title: str, type: str) -> None:
-        self.additional_properties = additional_properties
-        self.properties = properties
-        self.required = required
-        self.title = title
-        self.type = type
+    buy: Optional[List[Buy]] = None
+    sell: Optional[List[Buy]] = None
 
     @staticmethod
     def from_dict(obj: Any) -> 'Depth':
         assert isinstance(obj, dict)
-        additional_properties = from_bool(obj.get("additionalProperties"))
-        properties = DepthProperties.from_dict(obj.get("properties"))
-        required = from_list(from_str, obj.get("required"))
-        title = from_str(obj.get("title"))
-        type = from_str(obj.get("type"))
-        return Depth(additional_properties, properties, required, title, type)
+        buy = from_union([lambda x: from_list(Buy.from_dict, x), from_none], obj.get("buy"))
+        sell = from_union([lambda x: from_list(Buy.from_dict, x), from_none], obj.get("sell"))
+        return Depth(buy, sell)
 
     def to_dict(self) -> dict:
         result: dict = {}
-        result["additionalProperties"] = from_bool(self.additional_properties)
-        result["properties"] = to_class(DepthProperties, self.properties)
-        result["required"] = from_list(from_str, self.required)
-        result["title"] = from_str(self.title)
-        result["type"] = from_str(self.type)
+        result["buy"] = from_union([lambda x: from_list(lambda x: to_class(Buy, x), x), from_none], self.buy)
+        result["sell"] = from_union([lambda x: from_list(lambda x: to_class(Buy, x), x), from_none], self.sell)
         return result
 
 
-class LastTradeTime:
-    format: str
-    type: TypeEnum
-
-    def __init__(self, format: str, type: TypeEnum) -> None:
-        self.format = format
-        self.type = type
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'LastTradeTime':
-        assert isinstance(obj, dict)
-        format = from_str(obj.get("format"))
-        type = TypeEnum(obj.get("type"))
-        return LastTradeTime(format, type)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["format"] = from_str(self.format)
-        result["type"] = to_enum(TypeEnum, self.type)
-        return result
-
-
-class NseInfyProperties:
-    average_price: Orders
-    buy_quantity: Orders
-    depth: NseInfy
-    instrument_token: Orders
-    last_price: Orders
-    last_quantity: Orders
-    last_trade_time: LastTradeTime
-    lower_circuit_limit: Orders
-    net_change: Orders
-    ohlc: NseInfy
-    oi: Orders
-    oi_day_high: Orders
-    oi_day_low: Orders
-    sell_quantity: Orders
-    timestamp: LastTradeTime
-    upper_circuit_limit: Orders
-    volume: Orders
-
-    def __init__(self, average_price: Orders, buy_quantity: Orders, depth: NseInfy, instrument_token: Orders, last_price: Orders, last_quantity: Orders, last_trade_time: LastTradeTime, lower_circuit_limit: Orders, net_change: Orders, ohlc: NseInfy, oi: Orders, oi_day_high: Orders, oi_day_low: Orders, sell_quantity: Orders, timestamp: LastTradeTime, upper_circuit_limit: Orders, volume: Orders) -> None:
-        self.average_price = average_price
-        self.buy_quantity = buy_quantity
-        self.depth = depth
-        self.instrument_token = instrument_token
-        self.last_price = last_price
-        self.last_quantity = last_quantity
-        self.last_trade_time = last_trade_time
-        self.lower_circuit_limit = lower_circuit_limit
-        self.net_change = net_change
-        self.ohlc = ohlc
-        self.oi = oi
-        self.oi_day_high = oi_day_high
-        self.oi_day_low = oi_day_low
-        self.sell_quantity = sell_quantity
-        self.timestamp = timestamp
-        self.upper_circuit_limit = upper_circuit_limit
-        self.volume = volume
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'NseInfyProperties':
-        assert isinstance(obj, dict)
-        average_price = Orders.from_dict(obj.get("average_price"))
-        buy_quantity = Orders.from_dict(obj.get("buy_quantity"))
-        depth = NseInfy.from_dict(obj.get("depth"))
-        instrument_token = Orders.from_dict(obj.get("instrument_token"))
-        last_price = Orders.from_dict(obj.get("last_price"))
-        last_quantity = Orders.from_dict(obj.get("last_quantity"))
-        last_trade_time = LastTradeTime.from_dict(obj.get("last_trade_time"))
-        lower_circuit_limit = Orders.from_dict(obj.get("lower_circuit_limit"))
-        net_change = Orders.from_dict(obj.get("net_change"))
-        ohlc = NseInfy.from_dict(obj.get("ohlc"))
-        oi = Orders.from_dict(obj.get("oi"))
-        oi_day_high = Orders.from_dict(obj.get("oi_day_high"))
-        oi_day_low = Orders.from_dict(obj.get("oi_day_low"))
-        sell_quantity = Orders.from_dict(obj.get("sell_quantity"))
-        timestamp = LastTradeTime.from_dict(obj.get("timestamp"))
-        upper_circuit_limit = Orders.from_dict(obj.get("upper_circuit_limit"))
-        volume = Orders.from_dict(obj.get("volume"))
-        return NseInfyProperties(average_price, buy_quantity, depth, instrument_token, last_price, last_quantity, last_trade_time, lower_circuit_limit, net_change, ohlc, oi, oi_day_high, oi_day_low, sell_quantity, timestamp, upper_circuit_limit, volume)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["average_price"] = to_class(Orders, self.average_price)
-        result["buy_quantity"] = to_class(Orders, self.buy_quantity)
-        result["depth"] = to_class(NseInfy, self.depth)
-        result["instrument_token"] = to_class(Orders, self.instrument_token)
-        result["last_price"] = to_class(Orders, self.last_price)
-        result["last_quantity"] = to_class(Orders, self.last_quantity)
-        result["last_trade_time"] = to_class(LastTradeTime, self.last_trade_time)
-        result["lower_circuit_limit"] = to_class(Orders, self.lower_circuit_limit)
-        result["net_change"] = to_class(Orders, self.net_change)
-        result["ohlc"] = to_class(NseInfy, self.ohlc)
-        result["oi"] = to_class(Orders, self.oi)
-        result["oi_day_high"] = to_class(Orders, self.oi_day_high)
-        result["oi_day_low"] = to_class(Orders, self.oi_day_low)
-        result["sell_quantity"] = to_class(Orders, self.sell_quantity)
-        result["timestamp"] = to_class(LastTradeTime, self.timestamp)
-        result["upper_circuit_limit"] = to_class(Orders, self.upper_circuit_limit)
-        result["volume"] = to_class(Orders, self.volume)
-        return result
-
-
-class NseInfyClass:
-    additional_properties: bool
-    properties: NseInfyProperties
-    required: List[str]
-    title: str
-    type: str
-
-    def __init__(self, additional_properties: bool, properties: NseInfyProperties, required: List[str], title: str, type: str) -> None:
-        self.additional_properties = additional_properties
-        self.properties = properties
-        self.required = required
-        self.title = title
-        self.type = type
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'NseInfyClass':
-        assert isinstance(obj, dict)
-        additional_properties = from_bool(obj.get("additionalProperties"))
-        properties = NseInfyProperties.from_dict(obj.get("properties"))
-        required = from_list(from_str, obj.get("required"))
-        title = from_str(obj.get("title"))
-        type = from_str(obj.get("type"))
-        return NseInfyClass(additional_properties, properties, required, title, type)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["additionalProperties"] = from_bool(self.additional_properties)
-        result["properties"] = to_class(NseInfyProperties, self.properties)
-        result["required"] = from_list(from_str, self.required)
-        result["title"] = from_str(self.title)
-        result["type"] = from_str(self.type)
-        return result
-
-
-class OhlcProperties:
-    close: Orders
-    high: Orders
-    low: Orders
-    open: Orders
-
-    def __init__(self, close: Orders, high: Orders, low: Orders, open: Orders) -> None:
-        self.close = close
-        self.high = high
-        self.low = low
-        self.open = open
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'OhlcProperties':
-        assert isinstance(obj, dict)
-        close = Orders.from_dict(obj.get("close"))
-        high = Orders.from_dict(obj.get("high"))
-        low = Orders.from_dict(obj.get("low"))
-        open = Orders.from_dict(obj.get("open"))
-        return OhlcProperties(close, high, low, open)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["close"] = to_class(Orders, self.close)
-        result["high"] = to_class(Orders, self.high)
-        result["low"] = to_class(Orders, self.low)
-        result["open"] = to_class(Orders, self.open)
-        return result
-
-
+@dataclass(slots=True)
 class Ohlc:
-    additional_properties: bool
-    properties: OhlcProperties
-    required: List[str]
-    title: str
-    type: str
-
-    def __init__(self, additional_properties: bool, properties: OhlcProperties, required: List[str], title: str, type: str) -> None:
-        self.additional_properties = additional_properties
-        self.properties = properties
-        self.required = required
-        self.title = title
-        self.type = type
+    close: Optional[float] = None
+    high: Optional[float] = None
+    low: Optional[float] = None
+    open: Optional[int] = None
 
     @staticmethod
     def from_dict(obj: Any) -> 'Ohlc':
         assert isinstance(obj, dict)
-        additional_properties = from_bool(obj.get("additionalProperties"))
-        properties = OhlcProperties.from_dict(obj.get("properties"))
-        required = from_list(from_str, obj.get("required"))
-        title = from_str(obj.get("title"))
-        type = from_str(obj.get("type"))
-        return Ohlc(additional_properties, properties, required, title, type)
+        close = from_union([from_float, from_none], obj.get("close"))
+        high = from_union([from_float, from_none], obj.get("high"))
+        low = from_union([from_float, from_none], obj.get("low"))
+        open = from_union([from_int, from_none], obj.get("open"))
+        return Ohlc(close, high, low, open)
 
     def to_dict(self) -> dict:
         result: dict = {}
-        result["additionalProperties"] = from_bool(self.additional_properties)
-        result["properties"] = to_class(OhlcProperties, self.properties)
-        result["required"] = from_list(from_str, self.required)
-        result["title"] = from_str(self.title)
-        result["type"] = from_str(self.type)
+        result["close"] = from_union([to_float, from_none], self.close)
+        result["high"] = from_union([to_float, from_none], self.high)
+        result["low"] = from_union([to_float, from_none], self.low)
+        result["open"] = from_union([from_int, from_none], self.open)
         return result
 
 
-class QuoteProperties:
-    data: NseInfy
-    status: Orders
-
-    def __init__(self, data: NseInfy, status: Orders) -> None:
-        self.data = data
-        self.status = status
+@dataclass(slots=True)
+class Datum:
+    average_price: Optional[float] = None
+    buy_quantity: Optional[int] = None
+    depth: Optional[Depth] = None
+    instrument_token: Optional[int] = None
+    last_price: Optional[float] = None
+    last_quantity: Optional[int] = None
+    last_trade_time: Optional[datetime] = None
+    lower_circuit_limit: Optional[float] = None
+    net_change: Optional[int] = None
+    ohlc: Optional[Ohlc] = None
+    oi: Optional[int] = None
+    oi_day_high: Optional[int] = None
+    oi_day_low: Optional[int] = None
+    sell_quantity: Optional[int] = None
+    timestamp: Optional[datetime] = None
+    upper_circuit_limit: Optional[float] = None
+    volume: Optional[int] = None
 
     @staticmethod
-    def from_dict(obj: Any) -> 'QuoteProperties':
+    def from_dict(obj: Any) -> 'Datum':
         assert isinstance(obj, dict)
-        data = NseInfy.from_dict(obj.get("data"))
-        status = Orders.from_dict(obj.get("status"))
-        return QuoteProperties(data, status)
+        average_price = from_union([from_float, from_none], obj.get("average_price"))
+        buy_quantity = from_union([from_int, from_none], obj.get("buy_quantity"))
+        depth = from_union([Depth.from_dict, from_none], obj.get("depth"))
+        instrument_token = from_union([from_int, from_none], obj.get("instrument_token"))
+        last_price = from_union([from_float, from_none], obj.get("last_price"))
+        last_quantity = from_union([from_int, from_none], obj.get("last_quantity"))
+        last_trade_time = from_union([from_datetime, from_none], obj.get("last_trade_time"))
+        lower_circuit_limit = from_union([from_float, from_none], obj.get("lower_circuit_limit"))
+        net_change = from_union([from_int, from_none], obj.get("net_change"))
+        ohlc = from_union([Ohlc.from_dict, from_none], obj.get("ohlc"))
+        oi = from_union([from_int, from_none], obj.get("oi"))
+        oi_day_high = from_union([from_int, from_none], obj.get("oi_day_high"))
+        oi_day_low = from_union([from_int, from_none], obj.get("oi_day_low"))
+        sell_quantity = from_union([from_int, from_none], obj.get("sell_quantity"))
+        timestamp = from_union([from_datetime, from_none], obj.get("timestamp"))
+        upper_circuit_limit = from_union([from_float, from_none], obj.get("upper_circuit_limit"))
+        volume = from_union([from_int, from_none], obj.get("volume"))
+        return Datum(average_price, buy_quantity, depth, instrument_token, last_price, last_quantity, last_trade_time, lower_circuit_limit, net_change, ohlc, oi, oi_day_high, oi_day_low, sell_quantity, timestamp, upper_circuit_limit, volume)
 
     def to_dict(self) -> dict:
         result: dict = {}
-        result["data"] = to_class(NseInfy, self.data)
-        result["status"] = to_class(Orders, self.status)
+        result["average_price"] = from_union([to_float, from_none], self.average_price)
+        result["buy_quantity"] = from_union([from_int, from_none], self.buy_quantity)
+        result["depth"] = from_union([lambda x: to_class(Depth, x), from_none], self.depth)
+        result["instrument_token"] = from_union([from_int, from_none], self.instrument_token)
+        result["last_price"] = from_union([to_float, from_none], self.last_price)
+        result["last_quantity"] = from_union([from_int, from_none], self.last_quantity)
+        result["last_trade_time"] = from_union([lambda x: x.isoformat(), from_none], self.last_trade_time)
+        result["lower_circuit_limit"] = from_union([to_float, from_none], self.lower_circuit_limit)
+        result["net_change"] = from_union([from_int, from_none], self.net_change)
+        result["ohlc"] = from_union([lambda x: to_class(Ohlc, x), from_none], self.ohlc)
+        result["oi"] = from_union([from_int, from_none], self.oi)
+        result["oi_day_high"] = from_union([from_int, from_none], self.oi_day_high)
+        result["oi_day_low"] = from_union([from_int, from_none], self.oi_day_low)
+        result["sell_quantity"] = from_union([from_int, from_none], self.sell_quantity)
+        result["timestamp"] = from_union([lambda x: x.isoformat(), from_none], self.timestamp)
+        result["upper_circuit_limit"] = from_union([to_float, from_none], self.upper_circuit_limit)
+        result["volume"] = from_union([from_int, from_none], self.volume)
         return result
 
 
-class QuoteClass:
-    additional_properties: bool
-    properties: QuoteProperties
-    required: List[str]
-    title: str
-    type: str
-
-    def __init__(self, additional_properties: bool, properties: QuoteProperties, required: List[str], title: str, type: str) -> None:
-        self.additional_properties = additional_properties
-        self.properties = properties
-        self.required = required
-        self.title = title
-        self.type = type
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'QuoteClass':
-        assert isinstance(obj, dict)
-        additional_properties = from_bool(obj.get("additionalProperties"))
-        properties = QuoteProperties.from_dict(obj.get("properties"))
-        required = from_list(from_str, obj.get("required"))
-        title = from_str(obj.get("title"))
-        type = from_str(obj.get("type"))
-        return QuoteClass(additional_properties, properties, required, title, type)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["additionalProperties"] = from_bool(self.additional_properties)
-        result["properties"] = to_class(QuoteProperties, self.properties)
-        result["required"] = from_list(from_str, self.required)
-        result["title"] = from_str(self.title)
-        result["type"] = from_str(self.type)
-        return result
-
-
-class Definitions:
-    buy: Buy
-    data: Data
-    depth: Depth
-    nse_infy: NseInfyClass
-    ohlc: Ohlc
-    quote: QuoteClass
-
-    def __init__(self, buy: Buy, data: Data, depth: Depth, nse_infy: NseInfyClass, ohlc: Ohlc, quote: QuoteClass) -> None:
-        self.buy = buy
-        self.data = data
-        self.depth = depth
-        self.nse_infy = nse_infy
-        self.ohlc = ohlc
-        self.quote = quote
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'Definitions':
-        assert isinstance(obj, dict)
-        buy = Buy.from_dict(obj.get("Buy"))
-        data = Data.from_dict(obj.get("Data"))
-        depth = Depth.from_dict(obj.get("Depth"))
-        nse_infy = NseInfyClass.from_dict(obj.get("NseInfy"))
-        ohlc = Ohlc.from_dict(obj.get("Ohlc"))
-        quote = QuoteClass.from_dict(obj.get("Quote"))
-        return Definitions(buy, data, depth, nse_infy, ohlc, quote)
-
-    def to_dict(self) -> dict:
-        result: dict = {}
-        result["Buy"] = to_class(Buy, self.buy)
-        result["Data"] = to_class(Data, self.data)
-        result["Depth"] = to_class(Depth, self.depth)
-        result["NseInfy"] = to_class(NseInfyClass, self.nse_infy)
-        result["Ohlc"] = to_class(Ohlc, self.ohlc)
-        result["Quote"] = to_class(QuoteClass, self.quote)
-        return result
-
-
+@dataclass(slots=True)
 class Quote:
-    ref: str
-    schema: str
-    definitions: Definitions
-
-    def __init__(self, ref: str, schema: str, definitions: Definitions) -> None:
-        self.ref = ref
-        self.schema = schema
-        self.definitions = definitions
+    data: Optional[Dict[str, Datum]] = None
+    status: Optional[str] = None
 
     @staticmethod
     def from_dict(obj: Any) -> 'Quote':
         assert isinstance(obj, dict)
-        ref = from_str(obj.get("$ref"))
-        schema = from_str(obj.get("$schema"))
-        definitions = Definitions.from_dict(obj.get("definitions"))
-        return Quote(ref, schema, definitions)
+        data = from_union([lambda x: from_dict(Datum.from_dict, x), from_none], obj.get("data"))
+        status = from_union([from_str, from_none], obj.get("status"))
+        return Quote(data, status)
 
     def to_dict(self) -> dict:
         result: dict = {}
-        result["$ref"] = from_str(self.ref)
-        result["$schema"] = from_str(self.schema)
-        result["definitions"] = to_class(Definitions, self.definitions)
+        result["data"] = from_union([lambda x: from_dict(lambda x: to_class(Datum, x), x), from_none], self.data)
+        result["status"] = from_union([from_str, from_none], self.status)
         return result
 
 

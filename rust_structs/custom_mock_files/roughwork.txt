@@ -1,0 +1,92 @@
+// https://stackoverflow.com/questions/61646536/converting-from-naivedatetime-to-datetimelocal
+
+
+
+pub fn optional_naive_date_time_from_str<'de, D>(
+    deserializer: D,
+) -> Result<Option<NaiveDateTime>, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    let maybe_naive_date_time_string: Option<String> = match Deserialize::deserialize(deserializer)
+    {
+        Ok(naive_date_time_string) => Some(naive_date_time_string),
+        Err(_) => None,
+    };
+
+    match maybe_naive_date_time_string {
+        Some(naive_date_time_string) => {
+            NaiveDateTime::parse_from_str(&naive_date_time_string, DT_FORMAT)
+                .map(Some)
+                .map_err(de::Error::custom)
+        }
+        None => Ok(None),
+    }
+}
+
+// pub fn naive_date_time_tz_from_str<'de, D>(deserializer: D) -> Result<NaiveDateTime, D::Error>
+// where
+//     D: Deserializer<'de>,
+// {
+//     let naive_date_time_tz_string = String::deserialize(deserializer)?;
+//     NaiveDateTime::parse_from_str(&naive_date_time_tz_string, "%Y-%m-%dT%H:%M:%S%z")
+//         .map_err(de::Error::custom)
+// }
+
+// pub fn optional_naive_date_time_with_timezone_from_str<'de, D>(
+//     deserializer: D,
+// ) -> Result<Option<NaiveDateTime>, D::Error>
+// where
+//     D: Deserializer<'de>,
+// {
+//     let maybe_naive_date_string: Option<String> = match Deserialize::deserialize(deserializer) {
+//         Ok(naive_date_string) => Some(naive_date_string),
+//         Err(_) => None,
+//     };
+
+//     match maybe_naive_date_string {
+//         Some(naive_date_string) => NaiveDateTime::parse_from_str(&naive_date_string, DT_TZ_FORMAT)
+//             .map(Some)
+//             .map_err(de::Error::custom),
+//         None => Ok(None),
+//     }
+// }
+
+// pub fn optional_str_dt_from_naive_dt<'de, S>(
+//     naive_date_time: std::option::Option<NaiveDateTime>,
+//     serializer: S,
+// ) -> Result<S::Ok, S::Error>
+// where
+//     S: ser::Serializer,
+// {
+// match naive_date_time {
+//     Some(ndt) => serializer
+//         .serialize_some(&ndt.format(DT_FORMAT).to_string())
+//         .map_err(ser::Error::custom),
+//     None => serializer.serialize_none(),
+// }
+// }
+
+// pub fn str_dt_tz_from_naive_dt<S>(
+//     naive_date_time_tz: NaiveDateTime,
+//     serializer: S,
+// ) -> Result<S::Ok, S::Error>
+// where
+//     S: Serializer,
+// {
+//     serializer
+//         .serialize_str(&naive_date_time_tz.format("%Y-%m-%dT%H:%M:%S%z").to_string())
+//         .map_err(ser::Error::custom)
+// }
+
+// fn null_to_default<'de, D, T>(d: D) -> Result<T, D::Error>
+// where
+//     D: Deserializer<'de>,
+//     T: Default + Deserialize<'de>,
+// {
+//     let opt = Option::deserialize(d)?;
+//     let val = opt.unwrap_or_else(T::default);
+//     Ok(val)
+// }
+
+
